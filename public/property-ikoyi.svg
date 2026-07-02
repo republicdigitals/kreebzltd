@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1200">
+  <rect fill="#1a1a1a" width="900" height="1200"/>
+  <rect fill="#0f0f0f" x="250" y="300" width="400" height="600"/>
+  <rect fill="#151515" x="300" y="400" width="120" height="150"/>
+  <rect fill="#151515" x="480" y="400" width="120" height="150"/>
+  <rect fill="#1f1f1f" x="350" y="650" width="200" height="200"/>
+  <text x="450" y="1000" font-family="serif" font-size="20" fill="#D4AF37" text-anchor="middle">Ikoyi</text>
+  <text x="450" y="1030" font-family="sans-serif" font-size="12" fill="#666" text-anchor="middle">property-ikoyi.jpg placeholder</text>
+</svg>

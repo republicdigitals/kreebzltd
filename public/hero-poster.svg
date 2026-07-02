@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080">
+  <rect fill="#0a0a0a" width="1920" height="1080"/>
+  <rect fill="#0f0f0f" x="610" y="240" width="700" height="600"/>
+  <rect fill="#151515" x="760" y="190" width="400" height="200"/>
+  <rect fill="#1a1a1a" x="810" y="210" width="300" height="160"/>
+  <circle fill="#1f1f1f" cx="960" cy="620" r="150"/>
+  <text x="960" y="540" font-family="serif" font-size="32" fill="#D4AF37" text-anchor="middle">KREEBZ</text>
+  <text x="960" y="580" font-family="sans-serif" font-size="16" fill="#666" text-anchor="middle">hero-loop.mp4 placeholder</text>
+</svg>

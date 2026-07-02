@@ -1,26 +1,128 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Inter:wght@100..900&display=swap');
 @import "tailwindcss";
 
+/* FONT SWAP: Replace Cormorant Garamond with [DESIGNER FONT] once webfont file is supplied */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Kreebz Color System */
+  --obsidian: #0A0A0A;        /* Primary background (Dark Charcoal) */
+  --obsidian-light: #111111;  /* Surface / card background */
+  --surface: #1A1A1A;         /* Elevated surface / inputs / placeholders */
+  --surface-chip: #333333;    /* Chips / tags */
+  --off-white: #F5F5F5;       /* Primary text */
+  --muted: rgba(245, 245, 245, 0.6);   /* Muted text */
+  --border: rgba(245, 245, 245, 0.08); /* Borders / dividers */
+  --border-strong: rgba(245, 245, 245, 0.3); /* Ghost button borders / input borders */
+  --gold: #D4AF37;            /* Accent / brand */
+  --gold-hover: #C4A030;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-obsidian: var(--obsidian);
+  --color-obsidian-light: var(--obsidian-light);
+  --color-surface: var(--surface);
+  --color-surface-chip: var(--surface-chip);
+  --color-off-white: var(--off-white);
+  --color-muted: var(--muted);
+  --color-gold: var(--gold);
+  --color-gold-hover: var(--gold-hover);
+  --font-sans: 'Inter', sans-serif;
+  --font-serif: 'Cormorant Garamond', serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--obsidian);
+  color: var(--off-white);
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ---------- Elliman-style Design System Utilities ---------- */
+
+/* Metadata / label / nav text: Inter, uppercase, wide tracking, small */
+.eyebrow {
+  font-family: 'Inter', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 11px;
+  line-height: 1;
+}
+
+/* Buttons — sharp corners (no radius) */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--gold);
+  color: var(--obsidian);
+  font-family: 'Inter', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 16px 32px;
+  border-radius: 0;
+  transition: background-color 0.3s ease;
+}
+.btn-primary:hover {
+  background-color: var(--gold-hover);
+}
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  color: var(--off-white);
+  border: 1px solid var(--border-strong);
+  font-family: 'Inter', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 12px;
+  padding: 15px 32px;
+  border-radius: 0;
+  transition: border-color 0.3s ease, color 0.3s ease;
+}
+.btn-ghost:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+/* Pill-shaped dark input */
+.input-pill {
+  background-color: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: 9999px;
+  color: var(--off-white);
+  font-family: 'Inter', sans-serif;
+}
+.input-pill::placeholder {
+  color: var(--muted);
+}
+.input-pill:focus {
+  outline: none;
+  border-color: var(--gold);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--obsidian);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gold);
 }

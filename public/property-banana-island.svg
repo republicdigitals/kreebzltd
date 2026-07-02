@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1200">
+  <rect fill="#1a1a1a" width="900" height="1200"/>
+  <path fill="#0f0f0f" d="M450 200 L750 600 L450 1000 L150 600 Z"/>
+  <path fill="#151515" d="M450 280 L670 600 L450 920 L230 600 Z"/>
+  <path fill="#1f1f1f" d="M450 360 L590 600 L450 840 L310 600 Z"/>
+  <text x="450" y="1000" font-family="serif" font-size="20" fill="#D4AF37" text-anchor="middle">Banana Island</text>
+  <text x="450" y="1030" font-family="sans-serif" font-size="12" fill="#666" text-anchor="middle">property-banana-island.jpg placeholder</text>
+</svg>
