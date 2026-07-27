@@ -1,0 +1,11 @@
+{
+  "entries": [
+    { "path": "MengTo/agent-skills/codex" },
+    { "path": "MengTo/agent-skills/customer-support" },
+    { "path": "MengTo/agent-skills/game-development" },
+    { "path": "MengTo/agent-skills/media" },
+    { "path": "MengTo/agent-skills/ui" },
+    { "path": "MengTo/agent-skills/web-design" },
+    { "path": "greensock/skills" }
+  ]
+}

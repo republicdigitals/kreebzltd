@@ -1,121 +1,103 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useRef } from "react";
+import Link from "next/link";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
+import { ArrowUpRight } from "lucide-react";
 
 /* ASSET SWAP: Replace background-color placeholders with real photography when service-1.jpg through service-4.jpg are supplied to /public/images/ */
 
 const services = [
   {
-    title: "Owner Representation",
-    description: "We act solely for property owners. Your interests, our priority.",
-    placeholder: "service-1.jpg"
+    title: "Marketing & Sales",
+    description: "The official marketing arm for Folio Properties and IBJ Property Development Company. We position, launch, and sell premium developments in Lagos.",
+    placeholder: "service-1.jpg",
+    href: "/services",
   },
   {
-    title: "Property & Estate Management",
-    description: "End-to-end oversight. Maintenance, compliance, and value preservation.",
-    placeholder: "service-2.jpg"
+    title: "Facility & Estate Management",
+    description: "End-to-end estate oversight: operations, maintenance, compliance, and value preservation — held to the standard your property deserves.",
+    placeholder: "service-2.jpg",
+    href: "/services",
   },
   {
-    title: "The Private Circle",
-    description: "Exclusive access. Pre-qualified tenants, discreet transactions.",
-    placeholder: "service-3.jpg"
+    title: "Concierge & Private Aviation",
+    description: "Resident-only concierge services and private jet arrangements, handled discreetly and delivered on time.",
+    placeholder: "service-3.jpg",
+    href: "/services/private-jet",
   },
   {
-    title: "Housekeeping & Specialist Care",
-    description: "Detail-oriented stewardship. From daily maintenance to concierge-level.",
-    placeholder: "service-4.jpg"
+    title: "Trusted Contractor Network",
+    description: "Vetted plumbers, electricians, and specialist tradespeople on call for residents — reliable help whenever it is needed.",
+    placeholder: "service-4.jpg",
+    href: "/services",
   }
 ];
 
 export default function Services() {
-  return (
-    <section id="services" className="py-24 lg:py-32 bg-obsidian">
-      <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
-        {/* Section Label */}
-        <motion.p
-          initial={{ y: 20, opacity: 0 }}
-          whileInView={{ y: 0, opacity: 1 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
-          className="text-gold uppercase text-center"
-          style={{ fontSize: "11px", letterSpacing: "0.3em" }}
-        >
-          WHAT WE DO
-        </motion.p>
+  const containerRef = useRef<HTMLElement>(null);
+  gsap.registerPlugin(ScrollTrigger, useGSAP);
 
-        <motion.h2
-          initial={{ y: 20, opacity: 0 }}
-          whileInView={{ y: 0, opacity: 1 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8, delay: 0.1, ease: [0.25, 0.1, 0.25, 1] }}
-          className="text-gold font-serif font-normal text-center mb-16 mt-4"
-          style={{ fontSize: "clamp(36px, 4vw, 56px)" }}
-        >
-          What We Do
-        </motion.h2>
+  useGSAP(() => {
+    gsap.from(".service-card", {
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: "top 80%",
+      },
+      y: 50,
+      opacity: 0,
+      duration: 1.2,
+      stagger: 0.15,
+      ease: "power3.out"
+    });
+  }, { scope: containerRef });
+
+  return (
+    <section ref={containerRef} id="services" className="dark-mode py-24 lg:py-32 bg-obsidian overflow-hidden">
+      <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
 
         {/* 2x2 Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6" style={{ gap: "24px" }}>
-          {services.map((service, index) => (
-            <motion.div
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 mt-12">
+          {services.map((service) => (
+            <Link
               key={service.title}
-              initial={{ y: 20, opacity: 0 }}
-              whileInView={{ y: 0, opacity: 1 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{
-                duration: 0.8,
-                delay: index * 0.1,
-                ease: [0.25, 0.1, 0.25, 1]
-              }}
-              className="overflow-hidden"
-              style={{ 
-                backgroundColor: "#111111",
-                borderRadius: "2px"
-              }}
+              href={service.href}
+              className="service-card group block overflow-hidden bg-obsidian border border-border/30 hover:border-gold/50 transition-all duration-700"
             >
               {/* Image Placeholder Area */}
               <div 
-                className="flex items-center justify-center"
-                style={{ 
-                  height: "400px",
-                  backgroundColor: "#1a1a1a"
-                }}
+                className="relative overflow-hidden flex items-center justify-center bg-obsidian-light"
+                style={{ height: "450px" }}
               >
-                <span 
-                  className="uppercase"
-                  style={{ 
-                    color: "#D4AF37",
-                    fontSize: "11px",
-                    letterSpacing: "0.3em"
-                  }}
-                >
+                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors duration-700 z-10" />
+                <span className="uppercase text-[11px] tracking-[0.3em] text-gold-light/50 group-hover:scale-105 transition-transform duration-1000 ease-out z-20">
                   {service.placeholder}
                 </span>
               </div>
 
               {/* Content Area */}
-              <div style={{ padding: "32px" }}>
-                <h3 
-                  className="font-serif font-normal mb-3"
-                  style={{ 
-                    fontSize: "28px",
-                    color: "#F5F5F5"
-                  }}
-                >
-                  {service.title}
-                </h3>
-                <p 
-                  className="font-sans"
-                  style={{ 
-                    fontSize: "15px",
-                    lineHeight: "1.7",
-                    color: "rgba(245, 245, 245, 0.7)"
-                  }}
-                >
-                  {service.description}
-                </p>
+              <div className="p-10 lg:p-14 flex justify-between items-start gap-6 relative">
+                <div>
+                  <h3 className="font-serif font-light mb-4 text-off-white text-[28px] lg:text-[32px]">
+                    {service.title}
+                  </h3>
+                  <p className="font-sans text-[15px] leading-[1.8] text-muted tracking-wide max-w-sm">
+                    {service.description}
+                  </p>
+                </div>
+                
+                <ArrowUpRight 
+                  size={24} 
+                  strokeWidth={1}
+                  className="text-gold-light/40 group-hover:text-gold transition-all duration-500 ease-out group-hover:-translate-y-1 group-hover:translate-x-1 shrink-0" 
+                />
+                
+                {/* Hover line effect */}
+                <div className="absolute bottom-0 left-0 w-0 h-[2px] bg-gold group-hover:w-full transition-all duration-700 ease-out" />
               </div>
-            </motion.div>
+            </Link>
           ))}
         </div>
       </div>

@@ -1,71 +1,95 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useRef } from "react";
 
-const steps = [
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
+import Button from "./ui/Button";
+
+const pillars = [
   {
     number: "01",
-    label: "Your brief.",
-    description: "We begin by understanding exactly what you expect of your property — and hold every decision against that brief."
+    label: "Absolute Discretion",
+    description: "Privacy is paramount. We handle high-profile acquisitions and off-market sales with complete confidentiality and zero public footprint.",
   },
   {
     number: "02",
-    label: "Your standard.",
-    description: "Your taste, your requirements, your thresholds. We operate to your standard, not an industry average."
+    label: "Uncompromising Curation",
+    description: "We do not list everything. We curate only the most exceptional properties globally, ensuring our portfolio remains the absolute pinnacle of luxury.",
   },
   {
     number: "03",
-    label: "Our presence.",
-    description: "A dedicated Kreebz principal remains present at your property so you never have to be."
-  }
+    label: "White-Glove Concierge",
+    description: "From private aviation to estate staffing and fine art logistics, our dedicated principals handle every detail of your lifestyle flawlessly.",
+  },
 ];
 
 export default function HowItWorks() {
-  return (
-    <section id="how-it-works" className="py-[100px]" style={{ backgroundColor: "#111111" }}>
-      <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
-        {/* Section Label */}
-        <motion.p
-          initial={{ y: 20, opacity: 0 }}
-          whileInView={{ y: 0, opacity: 1 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
-          className="text-gold uppercase text-center mb-16"
-          style={{ fontSize: "11px", letterSpacing: "0.3em" }}
-        >
-          HOW WE WORK
-        </motion.p>
+  const containerRef = useRef<HTMLElement>(null);
+  
+  gsap.registerPlugin(ScrollTrigger, useGSAP);
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-16" style={{ gap: "64px" }}>
-          {steps.map((step, index) => (
-            <motion.div
-              key={step.number}
-              initial={{ y: 20, opacity: 0 }}
-              whileInView={{ y: 0, opacity: 1 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{
-                duration: 0.8,
-                delay: index * 0.15,
-                ease: [0.25, 0.1, 0.25, 1]
-              }}
-            >
-              <span className="text-gold/50 font-serif text-sm tracking-widest mb-4 block">
-                {step.number}
+  useGSAP(() => {
+    gsap.fromTo(".how-it-works-parallax", 
+      { y: 80 },
+      {
+        y: -80,
+        ease: "none",
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: true,
+        }
+      }
+    );
+
+    gsap.from(".pillar-reveal", {
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: "top 80%"
+      },
+      y: 40,
+      opacity: 0,
+      duration: 1.2,
+      stagger: 0.15,
+      ease: "power3.out"
+    });
+  }, { scope: containerRef });
+
+  return (
+    <section ref={containerRef} id="how-it-works" className="dark-mode py-24 lg:py-40 bg-obsidian overflow-hidden">
+      <div className="how-it-works-parallax max-w-[1400px] mx-auto px-6 lg:px-12">
+        <div className="text-center mb-20 lg:mb-32">
+          <p className="pillar-reveal eyebrow text-gold-light/70 tracking-[0.3em] mb-6">
+            The Kreebz Standard
+          </p>
+          <h2 className="pillar-reveal font-serif text-off-white text-[clamp(36px,5vw,72px)] leading-[1.1] font-light mx-auto" style={{ maxWidth: "20ch" }}>
+            A relationship, not a transaction.
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8 lg:gap-16">
+          {pillars.map((pillar) => (
+            <div key={pillar.number} className="pillar-reveal flex flex-col items-center md:items-start text-center md:text-left">
+              <span className="font-serif text-gold/60 text-4xl lg:text-5xl mb-6 block font-light">
+                {pillar.number}
               </span>
-              <h3 
-                className="text-off-white font-serif font-normal mb-4"
-                style={{ fontSize: "28px" }}
-              >
-                {step.label}
+              <h3 className="font-serif text-off-white text-2xl lg:text-3xl mb-4 font-light">
+                {pillar.label}
               </h3>
-              <p 
-                className="font-sans leading-relaxed"
-                style={{ fontSize: "15px", color: "rgba(245, 245, 245, 0.7)" }}
-              >
-                {step.description}
+              <p className="font-sans text-muted leading-relaxed">
+                {pillar.description}
               </p>
-            </motion.div>
+            </div>
           ))}
+        </div>
+
+        <div className="pillar-reveal mt-20 lg:mt-32 flex justify-center">
+          <Button href="/contact">
+            Speak to a Principal
+          </Button>
         </div>
       </div>
     </section>

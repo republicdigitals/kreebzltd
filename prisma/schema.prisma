@@ -1,0 +1,32 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Property {
+  id               String   @id
+  price            String
+  address          String
+  neighbourhood    String
+  city             String
+  beds             Int
+  baths            Int
+  status           String
+  type             String
+  priceValue       Int
+  lat              Float
+  lng              Float
+  imagePlaceholder String
+  image            String?
+  photoCount       Int
+  gallery          String[]
+  description      String
+  rooms            Json
+  floorPlans       Json?
+  principal        Json
+}

@@ -4,17 +4,17 @@ import { motion } from "framer-motion";
 
 export default function SingleSentence() {
   return (
-    <section className="py-[120px] bg-obsidian">
+    <section className="py-[120px] section-paper-alt" style={{ borderTop: "1px solid var(--ink-border)", borderBottom: "1px solid var(--ink-border)" }}>
       <div className="w-full px-6 lg:px-12 text-center">
         <motion.p
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 1.2, ease: [0.25, 0.1, 0.25, 1] }}
-          className="text-gold font-serif font-normal italic"
-          style={{ fontSize: "clamp(28px, 3.5vw, 48px)" }}
+          className="font-serif text-ink"
+          style={{ fontSize: "clamp(30px, 4vw, 56px)", lineHeight: 1.15 }}
         >
-          Where others manage, Kreebz represents.
+          Marketing, management, and lifestyle services for Lagos&apos;s most discerning properties.
         </motion.p>
       </div>
     </section>
