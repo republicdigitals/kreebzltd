@@ -1,10 +1,10 @@
 import { Search, Mail, Phone, Calendar, MoreHorizontal, User } from "lucide-react";
 
 const DUMMY_LEADS = [
-  { id: "L-1029", name: "Sarah Jenkins", email: "sarah.j@example.com", phone: "+234 812 345 6789", property: "ikoyi-villa-1", date: "2026-07-27", status: "New" },
-  { id: "L-1028", name: "Michael Okoye", email: "mokoye@company.com", phone: "+234 803 987 6543", property: "banana-house-ibj", date: "2026-07-26", status: "Contacted" },
-  { id: "L-1027", name: "David Chen", email: "d.chen@investments.co", phone: "+44 7911 123456", property: "banana-villa-d10a", date: "2026-07-25", status: "Qualified" },
-  { id: "L-1026", name: "Amira Hassan", email: "ahassan@mail.com", phone: "+971 50 123 4567", property: "townhouse-ibj", date: "2026-07-22", status: "Lost" },
+  { id: "L-1029", name: "Sarah Jenkins", email: "sarah.j@example.com", phone: "+234 800 000 0001", property: "ikoyi-villa-1", date: "2026-07-27", status: "New" },
+  { id: "L-1028", name: "Michael Okoye", email: "m.okoye@example.com", phone: "+234 800 000 0002", property: "banana-house-ibj", date: "2026-07-26", status: "Contacted" },
+  { id: "L-1027", name: "David Chen", email: "d.chen@example.org", phone: "+44 7000 000000", property: "banana-villa-d10a", date: "2026-07-25", status: "Qualified" },
+  { id: "L-1026", name: "Amira Hassan", email: "a.hassan@example.com", phone: "+971 50 000 0000", property: "townhouse-ibj", date: "2026-07-22", status: "Lost" },
 ];
 
 export default function LeadsPage() {

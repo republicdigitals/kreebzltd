@@ -17,9 +17,11 @@
 /.next/
 /out/
 
-# production
+# production / build artifacts
 /build
 /dist/
+deploy.zip
+*.zip
 
 # misc
 .DS_Store

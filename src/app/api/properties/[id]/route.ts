@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
-import type { Property, Prisma } from "@prisma/client";
+
 
 export const dynamic = "force-dynamic";
 
@@ -20,7 +20,7 @@ export async function GET(
     
     return NextResponse.json(property);
   } catch (error) {
-    console.error(error);
+    console.error("Property fetch error:", error instanceof Error ? error.message : "Unknown error");
     return NextResponse.json({ error: "Failed to fetch property" }, { status: 500 });
   }
 }
@@ -31,8 +31,27 @@ export async function PUT(
 ) {
   try {
     const { id } = await params;
-    const updatedData = await request.json() as Prisma.PropertyUpdateInput;
+    const body = await request.json();
     
+    // Whitelist: only allow these fields to be updated via the API
+    const allowedFields = [
+      "price", "address", "neighbourhood", "city",
+      "beds", "baths", "status", "type", "priceValue",
+      "description", "image", "gallery", "photoCount",
+      "rooms", "floorPlans",
+    ] as const;
+
+    const updatedData: Record<string, unknown> = {};
+    for (const key of allowedFields) {
+      if (key in body) {
+        updatedData[key] = body[key];
+      }
+    }
+
+    if (Object.keys(updatedData).length === 0) {
+      return NextResponse.json({ error: "No valid fields to update" }, { status: 400 });
+    }
+
     const existing = await prisma.property.findUnique({
       where: { id }
     });
@@ -48,7 +67,7 @@ export async function PUT(
 
     return NextResponse.json(updated);
   } catch (error) {
-    console.error(error);
+    console.error("Property update error:", error instanceof Error ? error.message : "Unknown error");
     return NextResponse.json({ error: "Failed to update property" }, { status: 500 });
   }
 }
@@ -74,7 +93,7 @@ export async function DELETE(
 
     return new NextResponse(null, { status: 204 });
   } catch (error) {
-    console.error(error);
+    console.error("Property delete error:", error instanceof Error ? error.message : "Unknown error");
     return NextResponse.json({ error: "Failed to delete property" }, { status: 500 });
   }
 }

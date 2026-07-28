@@ -45,9 +45,8 @@ export default function Contact() {
   const onSubmit = async (data: ContactFormValues) => {
     setIsSubmitting(true);
     try {
-      // Mock API call
+      // TODO: Connect to a real backend API or email service
       await new Promise((resolve) => setTimeout(resolve, 1500));
-      console.log("Form submitted:", data);
       setIsSuccess(true);
       reset();
       // Reset success message after 5 seconds

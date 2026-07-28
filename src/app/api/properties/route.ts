@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import type { Property } from "@prisma/client";
 
+
 export const dynamic = "force-dynamic";
 
 export async function GET() {
@@ -9,7 +10,7 @@ export async function GET() {
     const properties = await prisma.property.findMany();
     return NextResponse.json(properties);
   } catch (error) {
-    console.error(error);
+    console.error("Properties list error:", error instanceof Error ? error.message : "Unknown error");
     return NextResponse.json({ error: "Failed to read properties data" }, { status: 500 });
   }
 }
@@ -46,7 +47,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json(created, { status: 201 });
   } catch (error) {
-    console.error(error);
+    console.error("Property create error:", error instanceof Error ? error.message : "Unknown error");
     return NextResponse.json({ error: "Failed to create property" }, { status: 500 });
   }
 }
