@@ -5,6 +5,8 @@ import HowItWorks from "@/components/HowItWorks";
 import BrandLogos from "@/components/BrandLogos";
 import { getProperties } from "@/data/properties";
 
+export const dynamic = "force-dynamic";
+
 export default async function Home() {
   const properties = await getProperties();
   

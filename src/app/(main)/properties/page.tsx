@@ -9,6 +9,8 @@ export const metadata: Metadata = {
   description: "Explore our portfolio of prime residences currently under management across Lagos.",
 };
 
+export const dynamic = "force-dynamic";
+
 export default async function PropertiesPage() {
   const properties = await getProperties();
   

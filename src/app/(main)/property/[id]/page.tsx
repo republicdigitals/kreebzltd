@@ -2,10 +2,7 @@ import { notFound } from "next/navigation";
 import PropertyDetail from "@/components/PropertyDetail";
 import { getProperties, getProperty } from "@/data/properties";
 
-export async function generateStaticParams() {
-  const properties = await getProperties();
-  return properties.map((p) => ({ id: p.id }));
-}
+export const dynamic = "force-dynamic";
 
 export default async function PropertyPage({
   params,
