@@ -45,14 +45,28 @@ export default function Contact() {
   const onSubmit = async (data: ContactFormValues) => {
     setIsSubmitting(true);
     try {
-      // TODO: Connect to a real backend API or email service
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      const res = await fetch("/api/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: data.name,
+          email: data.email,
+          phone: data.phone || undefined,
+          interest: data.interest,
+          message: data.message,
+        }),
+      });
+
+      if (!res.ok) {
+        throw new Error(`Submission failed: ${res.status}`);
+      }
+
       setIsSuccess(true);
       reset();
       // Reset success message after 5 seconds
       setTimeout(() => setIsSuccess(false), 5000);
     } catch (error) {
-      console.error(error);
+      console.error("[Contact form]", error);
     } finally {
       setIsSubmitting(false);
     }

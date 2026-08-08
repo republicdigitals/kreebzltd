@@ -13,6 +13,13 @@ import type { NextRequest } from "next/server";
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
+  // ── Public write routes (no auth required) ──────────────────────
+  // POST /api/leads — accepts contact form, concierge, and newsletter
+  // submissions from the public-facing website without admin credentials.
+  if (pathname === "/api/leads" && request.method === "POST") {
+    return NextResponse.next();
+  }
+
   // ── Protect write-method API routes ─────────────────────────────
   if (pathname.startsWith("/api/properties")) {
     if (["POST", "PUT", "DELETE"].includes(request.method)) {
@@ -26,6 +33,25 @@ export function proxy(request: NextRequest) {
       if (!hasValidBearer && !hasValidCookie) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
       }
+    }
+  }
+
+  // ── Protect lead management + settings API routes ────────────────
+  // GET /api/leads, PATCH /api/leads/[id], DELETE /api/leads/[id],
+  // GET /api/settings, PUT /api/settings — all require admin session.
+  if (
+    (pathname.startsWith("/api/leads") && request.method !== "POST") ||
+    pathname.startsWith("/api/settings")
+  ) {
+    const authHeader = request.headers.get("authorization");
+    const sessionCookie = request.cookies.get("kreebz_admin_session");
+    const expectedKey = process.env.ADMIN_API_KEY;
+
+    const hasValidBearer = expectedKey && authHeader === `Bearer ${expectedKey}`;
+    const hasValidCookie = expectedKey && sessionCookie?.value === expectedKey;
+
+    if (!hasValidBearer && !hasValidCookie) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
   }
 

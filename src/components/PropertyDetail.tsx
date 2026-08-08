@@ -9,6 +9,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import type { Property } from "@/data/properties";
 import Button from "./ui/Button";
+import FloorPlanViewer from "./FloorPlanViewer";
 
 /*
  * ASSET SWAP: When `property.image` is supplied, the hero gallery renders the
@@ -173,13 +174,10 @@ export default function PropertyDetail({ property }: { property: Property }) {
         {activeTab === "floor" && (
           <div className="absolute inset-0 flex flex-col">
             {hasFloorPlans && floorPlan ? (
-              <Image
-                src={floorPlan.image}
-                alt={floorPlan.title}
-                fill
-                priority
-                className="object-contain"
-                sizes="100vw"
+              <FloorPlanViewer
+                floorPlans={property.floorPlans!}
+                activeIndex={activeFloorPlan}
+                onIndexChange={setActiveFloorPlan}
               />
             ) : (
               <div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center">
@@ -195,10 +193,22 @@ export default function PropertyDetail({ property }: { property: Property }) {
         )}
 
         {activeTab === "map" && (
-          <div className="absolute inset-0 flex items-center justify-center">
-            <span className="uppercase text-gold-light/50 text-[11px] tracking-[0.3em]">
-              Map — {property.neighbourhood}
-            </span>
+          <div className="absolute inset-0">
+            <iframe
+              src={`https://maps.google.com/maps?q=${property.lat},${property.lng}&z=16&output=embed&t=k`}
+              width="100%"
+              height="100%"
+              style={{ border: 0, filter: "grayscale(0.2) contrast(1.05)" }}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title={`Map — ${property.address}`}
+              aria-label={`Interactive map showing ${property.neighbourhood}, Lagos`}
+            />
+            {/* Subtle overlay to match dark brand aesthetic */}
+            <div className="absolute top-4 left-4 z-10 px-4 py-2 bg-black/70 backdrop-blur-md border border-white/10">
+              <p className="uppercase text-[9px] tracking-[0.25em] text-gold">{property.neighbourhood}</p>
+              <p className="text-[11px] text-off-white/80 mt-0.5">{property.city}</p>
+            </div>
           </div>
         )}
       </div>
@@ -322,7 +332,7 @@ export default function PropertyDetail({ property }: { property: Property }) {
           <aside>
             <div className="principal-card lg:sticky lg:top-32 p-10 bg-obsidian-light border border-border/20 text-center">
               {/* Headshot placeholder */}
-              <div className="w-24 h-24 rounded-full mb-6 flex items-center justify-center mx-auto bg-obsidian border border-border/30">
+              <div className="w-24 h-24 rounded-full mb-6 flex items-center justify-center mx-auto bg-obsidian border border-border/30" aria-hidden="true">
                 <span className="uppercase text-gold-light/60 tracking-[0.2em] text-[10px]">
                   Photo
                 </span>

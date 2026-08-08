@@ -30,3 +30,30 @@ model Property {
   floorPlans       Json?
   principal        Json
 }
+
+model Lead {
+  id         String   @id @default(cuid())
+  name       String
+  email      String
+  phone      String?
+  interest   String   // "buying" | "renting" | "management" | "other" | "newsletter" | concierge types
+  message    String?
+  propertyId String?
+  status     String   @default("New") // "New" | "Contacted" | "Qualified" | "Lost"
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model AgencySettings {
+  id              String  @id @default("singleton")
+  agencyName      String  @default("Kreebz Ltd")
+  agencyEmail     String  @default("hello@kreebzltd.com")
+  agencyPhone     String  @default("")
+  agencyAddress   String  @default("")
+  principalName   String  @default("")
+  principalTitle  String  @default("")
+  notifyNewLeads  Boolean @default(true)
+  notifyEmail     String  @default("")
+  updatedAt       DateTime @updatedAt
+}
+

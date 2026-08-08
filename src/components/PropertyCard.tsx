@@ -23,7 +23,7 @@ export default function PropertyCard({
           {property.image ? (
             <Image
               src={property.image}
-              alt={property.address}
+              alt={`${property.type} in ${property.neighbourhood} — ${property.address}`}
               fill
               className="object-cover transition-transform duration-[1.5s] ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:scale-105"
               sizes="(max-width: 768px) 100vw, 33vw"
@@ -31,6 +31,7 @@ export default function PropertyCard({
           ) : (
             <div
               className="absolute inset-0 flex items-center justify-center bg-obsidian-light"
+              aria-hidden="true"
             >
               <span className="uppercase text-[10px] text-muted tracking-[0.3em]">
                 {property.imagePlaceholder || "IMAGE PENDING"}

@@ -64,7 +64,7 @@
   --font-accent: 'Playfair Display', serif;
 }
 
-* {
+html {
   scroll-behavior: smooth;
 }
 
@@ -282,4 +282,27 @@ body {
 .animate-marquee-ltr:hover,
 .animate-marquee-rtl:hover {
   animation-play-state: paused;
+}
+
+/* Focus-visible ring — gold highlight for keyboard accessibility */
+.focus-gold:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+/* Skeleton shimmer for loading states */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--obsidian-light) 25%,
+    rgba(255, 255, 255, 0.04) 50%,
+    var(--obsidian-light) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.8s ease-in-out infinite;
 }

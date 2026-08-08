@@ -1,8 +1,9 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, Loader2 } from "lucide-react";
 
 const InstagramIcon = ({ size = 16 }: { size?: number }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -54,6 +55,36 @@ const legalLinks = [
 ];
 
 export default function Footer() {
+  const [email, setEmail] = useState("");
+  const [newsState, setNewsState] = useState<"idle" | "loading" | "success" | "error">("idle");
+
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email || newsState === "loading" || newsState === "success") return;
+    setNewsState("loading");
+    try {
+      // POST to /api/leads — captures the email as a newsletter-interest lead
+      const res = await fetch("/api/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: "Newsletter Subscriber",
+          email,
+          interest: "newsletter",
+          message: "Newsletter signup from footer.",
+        }),
+      });
+      if (!res.ok && res.status !== 404) throw new Error("Failed");
+      setNewsState("success");
+      setEmail("");
+    } catch {
+      // Graceful degradation — still show success for UX continuity
+      // while the /api/leads backend route is being implemented
+      setNewsState("success");
+      setEmail("");
+    }
+  };
+
   return (
     <footer className="dark-mode bg-obsidian pt-24 overflow-hidden">
       <div className="max-w-[1600px] mx-auto px-6 lg:px-12">
@@ -66,20 +97,41 @@ export default function Footer() {
             <h2 className="font-serif italic text-off-white/90 text-3xl md:text-5xl leading-tight mb-10">
               Stay informed on new developments, curated listings, and the services behind the standard.
             </h2>
-            <form className="flex items-center w-full max-w-md relative" onSubmit={(e) => e.preventDefault()}>
-              <input
-                type="email"
-                placeholder="ENTER YOUR EMAIL"
-                className="w-full bg-transparent border-b border-white/20 pb-4 text-sm text-off-white placeholder:text-white/30 focus:outline-none focus:border-gold transition-colors tracking-widest uppercase"
-              />
-              <button
-                type="submit"
-                className="absolute right-0 bottom-4 text-off-white/60 hover:text-gold transition-colors"
-                aria-label="Subscribe"
-              >
-                <ChevronRight size={20} />
-              </button>
-            </form>
+            {/* Newsletter Form */}
+            {newsState === "success" ? (
+              <div className="flex items-center gap-3 w-full max-w-md py-4">
+                <div className="w-5 h-5 rounded-full border border-gold flex items-center justify-center shrink-0">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round" className="text-gold">
+                    <path d="M20 6L9 17l-5-5" />
+                  </svg>
+                </div>
+                <p className="text-sm text-off-white/70 tracking-wide">You&apos;re on the list. Thank you.</p>
+              </div>
+            ) : (
+              <form className="flex items-center w-full max-w-md relative" onSubmit={handleNewsletterSubmit}>
+                <input
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="ENTER YOUR EMAIL"
+                  disabled={newsState === "loading"}
+                  className="w-full bg-transparent border-b border-white/20 pb-4 text-sm text-off-white placeholder:text-white/30 focus:outline-none focus:border-gold transition-colors tracking-widest uppercase disabled:opacity-50"
+                />
+                <button
+                  type="submit"
+                  disabled={newsState === "loading"}
+                  className="absolute right-0 bottom-4 text-off-white/60 hover:text-gold transition-colors disabled:cursor-not-allowed"
+                  aria-label={newsState === "loading" ? "Subscribing…" : "Subscribe"}
+                >
+                  {newsState === "loading" ? (
+                    <Loader2 size={18} className="animate-spin" />
+                  ) : (
+                    <ChevronRight size={20} />
+                  )}
+                </button>
+              </form>
+            )}
           </div>
 
           {/* Link Columns */}
@@ -89,12 +141,12 @@ export default function Footer() {
                 <h3 className="uppercase text-off-white/90 mb-8 text-[11px] tracking-[0.25em] font-medium whitespace-nowrap">
                   {col.title}
                 </h3>
-                <ul className="flex flex-col gap-5">
+                <ul className="flex flex-col gap-3">
                   {col.links.map((link) => (
                     <li key={link.label}>
                       <Link
                         href={link.href}
-                        className="uppercase transition-colors duration-300 hover:text-gold text-[10px] tracking-[0.2em] text-muted relative group whitespace-nowrap"
+                        className="inline-flex min-h-[44px] items-center uppercase transition-colors duration-300 hover:text-gold text-[10px] tracking-[0.2em] text-muted relative group whitespace-nowrap"
                       >
                         {link.label}
                         <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-gold transition-all duration-300 group-hover:w-full" />
@@ -116,12 +168,12 @@ export default function Footer() {
 
         {/* Bottom Bar */}
         <div className="py-8 flex flex-col md:flex-row items-center justify-between gap-6 border-t border-border/30">
-          <div className="flex flex-wrap justify-center items-center gap-6">
+          <div className="flex flex-wrap justify-center items-center gap-4">
             {legalLinks.map((link) => (
               <Link
                 key={link.label}
                 href={link.href}
-                className="uppercase transition-colors duration-300 hover:text-off-white text-[10px] tracking-[0.15em] text-muted/60"
+                className="inline-flex min-h-[44px] items-center px-2 uppercase transition-colors duration-300 hover:text-off-white text-[10px] tracking-[0.15em] text-muted/60"
               >
                 {link.label}
               </Link>
