@@ -21,7 +21,7 @@ export default function PageTransition({ children }: { children: ReactNode }) {
   }, [routeKey]);
 
   return (
-    <div className="relative w-full h-full">
+    <div className="relative w-full flex flex-col min-h-screen">
       {/* 
         The Luxury Staggered Wipe
         A double-layer wipe (Obsidian followed by Gold) using 5 staggered columns
@@ -91,7 +91,7 @@ export default function PageTransition({ children }: { children: ReactNode }) {
           ease: [0.22, 1, 0.36, 1],
           delay: 0.8 // Waits for the wipe to clear the center
         }}
-        className="w-full h-full"
+        className="w-full flex-1 flex flex-col"
       >
         {children}
       </motion.div>
