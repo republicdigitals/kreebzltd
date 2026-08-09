@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { type ReactNode, useEffect } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import Image from "next/image";
 
 // Symmetrical stagger for the 5 columns (edges move last, center moves first)
@@ -10,10 +10,10 @@ const STAGGER_DELAYS = [0.15, 0.05, 0, 0.05, 0.15];
 
 export default function PageTransition({ children }: { children: ReactNode }) {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
   
-  // Combine pathname and searchParams to ensure transition runs on query changes too
-  const routeKey = `${pathname}${searchParams.toString()}`;
+  // Use pathname as the route key so transitions only trigger on actual page changes,
+  // not on query parameter updates (which should be seamless).
+  const routeKey = pathname;
 
   // Fix scroll position on route change
   useEffect(() => {
