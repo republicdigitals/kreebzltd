@@ -39,7 +39,7 @@ export default function BrandStatement() {
   }, { scope: containerRef });
 
   return (
-    <section ref={containerRef} className="dark-mode py-32 lg:py-48 px-6 lg:px-12 bg-obsidian text-center overflow-hidden relative">
+    <section ref={containerRef} className="py-32 lg:py-48 px-6 lg:px-12 bg-obsidian text-center overflow-hidden relative">
       <div className="statement-parallax max-w-[1200px] mx-auto relative z-10 flex flex-col items-center">
         <p className="statement-reveal eyebrow text-gold-light/70 tracking-[0.3em] mb-12">
           The Kreebz Philosophy

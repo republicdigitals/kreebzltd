@@ -46,66 +46,77 @@ export default function PropertyDetail({ property }: { property: Property }) {
   const prevPhoto = () => setCurrentPhoto((i) => (i - 1 + photoCount) % photoCount);
 
   useGSAP(() => {
-    // Gallery initial reveal
-    gsap.from(".gallery-container", {
-      opacity: 0,
-      scale: 0.98,
-      duration: 1.5,
-      ease: "power2.out"
-    });
+    const mm = gsap.matchMedia();
+    
+    // Desktop: Full cinematic animations
+    mm.add("(min-width: 768px)", () => {
+      // Gallery initial reveal
+      gsap.from(".gallery-container", {
+        opacity: 0,
+        scale: 0.98,
+        duration: 1.5,
+        ease: "power2.out"
+      });
 
-    // Content reveal sequence
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: ".content-header",
-        start: "top 80%",
-      }
-    });
-
-    tl.from(".reveal-title", {
-      y: 30,
-      opacity: 0,
-      duration: 1,
-      ease: "power3.out"
-    })
-    .from(".reveal-price", {
-      y: 20,
-      opacity: 0,
-      duration: 0.8,
-      ease: "power3.out"
-    }, "-=0.6")
-    .from(".reveal-meta", {
-      y: 10,
-      opacity: 0,
-      duration: 0.8,
-      ease: "power3.out"
-    }, "-=0.6");
-
-    // Room reveals
-    const rooms = gsap.utils.toArray('.room-section') as HTMLElement[];
-    rooms.forEach((room, i) => {
-      gsap.from(room, {
+      // Content reveal sequence
+      const tl = gsap.timeline({
         scrollTrigger: {
-          trigger: room,
-          start: "top 85%"
-        },
-        y: 40,
+          trigger: ".content-header",
+          start: "top 80%",
+        }
+      });
+
+      tl.from(".reveal-title", {
+        y: 30,
         opacity: 0,
         duration: 1,
+        ease: "power3.out"
+      })
+      .from(".reveal-price", {
+        y: 20,
+        opacity: 0,
+        duration: 0.8,
+        ease: "power3.out"
+      }, "-=0.6")
+      .from(".reveal-meta", {
+        y: 10,
+        opacity: 0,
+        duration: 0.8,
+        ease: "power3.out"
+      }, "-=0.6");
+
+      // Room reveals
+      const rooms = gsap.utils.toArray('.room-section') as HTMLElement[];
+      rooms.forEach((room, i) => {
+        gsap.from(room, {
+          scrollTrigger: {
+            trigger: room,
+            start: "top 85%"
+          },
+          y: 40,
+          opacity: 0,
+          duration: 1,
+          ease: "power3.out"
+        });
+      });
+
+      // Principal card sticky reveal
+      gsap.from(".principal-card", {
+        scrollTrigger: {
+          trigger: ".principal-card",
+          start: "top 85%"
+        },
+        y: 50,
+        opacity: 0,
+        duration: 1.2,
         ease: "power3.out"
       });
     });
 
-    // Principal card sticky reveal
-    gsap.from(".principal-card", {
-      scrollTrigger: {
-        trigger: ".principal-card",
-        start: "top 85%"
-      },
-      y: 50,
-      opacity: 0,
-      duration: 1.2,
-      ease: "power3.out"
+    // Mobile: Lightweight fade-ins
+    mm.add("(max-width: 767px)", () => {
+      gsap.from(".gallery-container", { opacity: 0, duration: 0.8 });
+      gsap.from(".content-header", { opacity: 0, duration: 0.8, delay: 0.2 });
     });
 
   }, { scope: containerRef });
@@ -117,7 +128,7 @@ export default function PropertyDetail({ property }: { property: Property }) {
         {/* Back button */}
         <button
           onClick={() => router.back()}
-          className="absolute top-6 left-6 z-20 flex items-center gap-3 px-5 py-3 bg-black/40 backdrop-blur-md rounded-none text-off-white border border-white/20 hover:bg-black/80 hover:border-gold hover:text-gold transition-all duration-500 uppercase text-[10px] tracking-[0.2em]"
+          className="absolute top-6 left-6 z-20 flex items-center gap-3 px-5 py-3 bg-black/40 border border-gold/30 rounded-sm uppercase tracking-[0.2em] text-[10px] font-semibold text-gold-light backdrop-blur-md shadow-xl hover:bg-black/60 hover:border-gold/60 hover:text-gold active:scale-95 transition-all duration-300"
           aria-label="Go back"
         >
           <ArrowLeft size={14} strokeWidth={1.5} />
@@ -151,14 +162,14 @@ export default function PropertyDetail({ property }: { property: Property }) {
               <>
                 <button
                   onClick={prevPhoto}
-                  className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20 w-12 h-12 flex items-center justify-center rounded-none bg-black/40 backdrop-blur-md text-off-white border border-white/20 hover:bg-black/80 hover:border-gold hover:text-gold transition-all duration-500"
+                  className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20 w-12 h-12 flex items-center justify-center bg-black/40 border border-gold/30 rounded-sm text-gold-light backdrop-blur-md shadow-xl hover:bg-black/60 hover:border-gold/60 hover:text-gold active:scale-90 transition-all duration-300"
                   aria-label="Previous photo"
                 >
                   <ChevronLeft size={20} strokeWidth={1.5} />
                 </button>
                 <button
                   onClick={nextPhoto}
-                  className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20 w-12 h-12 flex items-center justify-center rounded-none bg-black/40 backdrop-blur-md text-off-white border border-white/20 hover:bg-black/80 hover:border-gold hover:text-gold transition-all duration-500"
+                  className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20 w-12 h-12 flex items-center justify-center bg-black/40 border border-gold/30 rounded-sm text-gold-light backdrop-blur-md shadow-xl hover:bg-black/60 hover:border-gold/60 hover:text-gold active:scale-90 transition-all duration-300"
                   aria-label="Next photo"
                 >
                   <ChevronRight size={20} strokeWidth={1.5} />
@@ -223,7 +234,7 @@ export default function PropertyDetail({ property }: { property: Property }) {
                 <button
                   key={tab.key}
                   onClick={() => setActiveTab(tab.key)}
-                  className="px-6 py-3 uppercase tracking-[0.2em] text-[10px] font-medium transition-all duration-500"
+                  className="px-6 py-3 uppercase tracking-[0.2em] text-[10px] font-medium active:scale-95 transition-all duration-300"
                   style={{
                     border: activeTab === tab.key ? "1px solid var(--gold)" : "1px solid rgba(255,255,255,0.1)",
                     backgroundColor: activeTab === tab.key ? "rgba(201, 169, 104, 0.1)" : "transparent",
@@ -260,7 +271,7 @@ export default function PropertyDetail({ property }: { property: Property }) {
           <div className="flex items-center gap-8">
             <button
               onClick={() => setFavourited((f) => !f)}
-              className="inline-flex items-center gap-3 uppercase tracking-[0.2em] text-[10px] text-muted hover:text-gold transition-colors duration-300"
+              className="inline-flex items-center gap-3 uppercase tracking-[0.2em] text-[10px] text-muted hover:text-gold active:scale-95 transition-all duration-300"
             >
               <Heart
                 size={16}

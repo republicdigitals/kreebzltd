@@ -17,13 +17,13 @@ export default function Button({
   ...props
 }: ButtonProps) {
   const baseClasses =
-    "group relative inline-flex items-center justify-center gap-3 px-10 py-5 rounded-none uppercase tracking-[0.2em] text-xs font-medium transition-all duration-700";
+    "group relative inline-flex items-center justify-center px-10 py-5 rounded-sm uppercase tracking-[0.2em] text-[10px] font-semibold transition-all duration-700";
 
   const variantClasses = {
     primary:
-      "border border-border-strong text-off-white hover:border-gold hover:text-gold hover:bg-white/5",
+      "bg-black/40 border border-gold/30 text-gold-light backdrop-blur-md shadow-2xl hover:bg-black/60 hover:border-gold/60 hover:text-gold",
     secondary:
-      "bg-off-white text-obsidian hover:bg-gold hover:text-off-white shadow-2xl",
+      "bg-gold text-obsidian shadow-2xl hover:bg-[#D4AF37]/80 hover:text-white",
   };
 
   const combinedClasses = cn(baseClasses, variantClasses[variant], className);

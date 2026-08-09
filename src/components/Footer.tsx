@@ -18,9 +18,7 @@ const footerColumns = [
     title: "COMPANY",
     links: [
       { label: "ABOUT US", href: "/about" },
-      { label: "WHAT WE DO", href: "/services" },
-      { label: "HOW WE WORK", href: "/how-it-works" },
-      { label: "CAREERS", href: "/contact" },
+      { label: "SERVICES", href: "/services" },
       { label: "CONTACT US", href: "/contact" },
     ],
   },
@@ -28,10 +26,7 @@ const footerColumns = [
     title: "RESOURCES",
     links: [
       { label: "THE PORTFOLIO", href: "/properties" },
-      { label: "MARKETING & SALES", href: "/services" },
-      { label: "FACILITY MANAGEMENT", href: "/services" },
-      { label: "PRIVATE JET", href: "/services/private-jet" },
-      { label: "TRUSTED CONTRACTORS", href: "/services" },
+      { label: "ADMIN PORTAL", href: "/admin" },
     ],
   },
   {
@@ -86,7 +81,7 @@ export default function Footer() {
   };
 
   return (
-    <footer className="dark-mode bg-obsidian pt-24 overflow-hidden">
+    <footer className="bg-obsidian pt-24 overflow-hidden">
       <div className="max-w-[1600px] mx-auto px-6 lg:px-12">
         {/* Top Section: Newsletter and Brand */}
         <div className="flex flex-col xl:flex-row justify-between items-start gap-16 pb-24 border-b border-border/50">

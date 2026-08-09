@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function ContactPage() {
   return (
-    <div className="dark-mode bg-obsidian pt-24 md:pt-28">
+    <div className="bg-obsidian pt-24 md:pt-28">
       <Contact />
     </div>
   );

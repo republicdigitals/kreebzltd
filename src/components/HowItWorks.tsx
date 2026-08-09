@@ -59,7 +59,7 @@ export default function HowItWorks() {
   }, { scope: containerRef });
 
   return (
-    <section ref={containerRef} id="how-it-works" className="dark-mode py-24 lg:py-40 bg-obsidian overflow-hidden">
+    <section ref={containerRef} id="how-it-works" className="py-24 lg:py-40 bg-obsidian overflow-hidden">
       <div className="how-it-works-parallax max-w-[1400px] mx-auto px-6 lg:px-12">
         <div className="text-center mb-20 lg:mb-32">
           <p className="pillar-reveal eyebrow text-gold-light/70 tracking-[0.3em] mb-6">

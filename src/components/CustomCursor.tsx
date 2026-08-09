@@ -62,10 +62,8 @@ export default function CustomCursor() {
     return () => clearTimeout(timeout);
   }, [pathname]);
 
-  // Don't render on mobile (touch devices)
-  if (typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches) {
-    return null;
-  }
+  // Removed window.matchMedia check to prevent hydration mismatch.
+  // The cursor is hidden on mobile via CSS (hidden md:flex).
 
   return (
     <motion.div

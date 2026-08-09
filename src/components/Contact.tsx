@@ -100,20 +100,24 @@ export default function Contact() {
             whileInView={{ y: 0, opacity: 1 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
-            className="flex flex-col gap-2"
+            className="flex flex-col items-center"
           >
-            <a
-              href="mailto:hello@kreebzltd.com"
-              className="font-sans text-off-white hover:text-gold transition-colors duration-300 text-lg tracking-wide"
-            >
-              hello@kreebzltd.com
-            </a>
-            <a
-              href="tel:+2348000000000"
-              className="font-sans text-off-white hover:text-gold transition-colors duration-300 text-lg tracking-wide"
-            >
-              +234 800 000 0000
-            </a>
+            <p className="font-serif text-off-white text-2xl tracking-wide mb-2">Michael Eugene</p>
+            <p className="font-sans text-gold uppercase tracking-[0.2em] text-[10px] mb-6">Key Principal</p>
+            <div className="flex flex-col gap-2 items-center">
+              <a
+                href="mailto:hello@kreebzltd.com"
+                className="font-sans text-muted hover:text-gold transition-colors duration-300 text-sm tracking-widest uppercase"
+              >
+                hello@kreebzltd.com
+              </a>
+              <a
+                href="tel:08069949948"
+                className="font-sans text-muted hover:text-gold transition-colors duration-300 text-sm tracking-widest"
+              >
+                +234 806 994 9948
+              </a>
+            </div>
           </motion.div>
         </div>
 

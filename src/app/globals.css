@@ -8,29 +8,7 @@
 /* FONT SWAP: Replace Cormorant Garamond with [DESIGNER FONT] once webfont file is supplied */
 
 :root {
-  /* Default to Light Mode (Elliman-style body) */
-  --paper: #FAF8F3;           /* Ivory body background */
-  --paper-alt: #FFFFFF;       /* Card / alternating surface */
-  --ink: #1A1A1A;             /* Primary text on light */
-  --ink-muted: rgba(26, 26, 26, 0.5); /* Secondary text on light */
-  --ink-border: rgba(26, 26, 26, 0.06); /* Invisible dividers on light */
-  --gold-ink: #8A6D1A;        /* Darkened gold for text on light (WCAG) */
-
-  --obsidian: var(--paper);
-  --obsidian-light: var(--paper-alt);
-  --surface: #FFFFFF;
-  --surface-chip: #F0EDE5;
-  --off-white: var(--ink);
-  --muted: var(--ink-muted);
-  --border: var(--ink-border);
-  --border-strong: rgba(26, 26, 26, 0.15);
-  --gold: var(--gold-ink);
-  --gold-hover: #6A5312;
-  --gold-light: #B89745;
-}
-
-/* Dark Mode Overrides */
-.dark-mode {
+  /* Default to Dark Mode (Obsidian) */
   --obsidian: #000000;
   --obsidian-light: #0A0A0A;
   --surface: #111111;
@@ -54,18 +32,13 @@
   --color-gold: var(--gold);
   --color-gold-hover: var(--gold-hover);
   --color-gold-light: var(--gold-light);
-  --color-paper: var(--paper);
-  --color-paper-alt: var(--paper-alt);
-  --color-ink: var(--ink);
-  --color-ink-muted: var(--ink-muted);
-  --color-gold-ink: var(--gold-ink);
   --font-sans: 'Inter', sans-serif;
   --font-serif: 'Cormorant Garamond', serif;
   --font-accent: 'Playfair Display', serif;
 }
 
 html {
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
 }
 
 body {
@@ -83,14 +56,6 @@ body {
 }
 
 /* Section theming helpers */
-.section-light {
-  background-color: var(--paper);
-  color: var(--ink);
-}
-.section-paper-alt {
-  background-color: var(--paper-alt);
-  color: var(--ink);
-}
 .section-dark {
   background-color: var(--obsidian);
   color: var(--off-white);
@@ -172,25 +137,7 @@ body {
   color: var(--gold);
 }
 
-/* Light ghost button for use on paper backgrounds */
-.btn-ghost-ink {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background-color: transparent;
-  color: var(--ink);
-  border: 1px solid var(--ink-border);
-  font-family: 'Inter', sans-serif;
-  text-transform: uppercase;
-  letter-spacing: 0.18em;
-  font-size: 12px;
-  padding: 15px 32px;
-  border-radius: 0;
-  transition: border-color 0.3s ease, color 0.3s ease;
-}
-.btn-ghost-ink:hover {
-  border-color: var(--ink);
-}
+
 
 /* Pill-shaped dark input */
 .input-pill {
@@ -208,21 +155,7 @@ body {
   border-color: var(--gold);
 }
 
-/* Pill-shaped light input (paper backgrounds) */
-.input-pill-light {
-  background-color: var(--paper-alt);
-  border: 1px solid var(--ink-border);
-  border-radius: 9999px;
-  color: var(--ink);
-  font-family: 'Inter', sans-serif;
-}
-.input-pill-light::placeholder {
-  color: var(--ink-muted);
-}
-.input-pill-light:focus {
-  outline: none;
-  border-color: var(--ink);
-}
+
 
 /* Custom scrollbar */
 ::-webkit-scrollbar {
@@ -230,7 +163,7 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--paper);
+  background: var(--obsidian);
 }
 
 ::-webkit-scrollbar-thumb {

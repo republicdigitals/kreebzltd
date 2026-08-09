@@ -169,7 +169,7 @@ export default function SettingsPage() {
                         type="tel"
                         value={form.agencyPhone}
                         onChange={(e) => set("agencyPhone", e.target.value)}
-                        placeholder="+234 800 000 0000"
+                        placeholder="+234 806 994 9948"
                         className={INPUT_CLASS}
                       />
                     </div>
@@ -211,7 +211,7 @@ export default function SettingsPage() {
                         type="text"
                         value={form.principalTitle}
                         onChange={(e) => set("principalTitle", e.target.value)}
-                        placeholder="e.g. Founder & Principal"
+                        placeholder="e.g. Key Principal"
                         className={INPUT_CLASS}
                       />
                     </div>

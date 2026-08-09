@@ -80,7 +80,7 @@ export default function SearchBar({
   const activePriceLabel = useActivePriceLabel(filters);
 
   return (
-    <section className="w-full bg-obsidian dark-mode border-b border-border/20 relative z-20">
+    <section className="w-full bg-obsidian border-b border-border/20 relative z-20">
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12 py-5">
         <div className="flex flex-col gap-6">
           {/* Top row: search + meta */}
@@ -88,14 +88,7 @@ export default function SearchBar({
             <div className="flex items-center gap-3 px-5 py-3 flex-1 max-w-xl bg-obsidian-light border border-white/10 rounded-none focus-within:border-gold/50 transition-colors duration-300">
               {showChip && (
                 <span
-                  className="inline-flex items-center gap-2 px-3 py-1 shrink-0"
-                  style={{
-                    backgroundColor: "var(--gold)",
-                    color: "var(--obsidian)",
-                    fontSize: "11px",
-                    letterSpacing: "0.1em",
-                    textTransform: "uppercase",
-                  }}
+                  className="inline-flex items-center gap-2 px-3 py-1 shrink-0 bg-black/40 border border-gold/30 rounded-sm text-gold-light backdrop-blur-md shadow-xl uppercase text-[11px] tracking-[0.1em]"
                 >
                   Lagos, Nigeria
                   <button
@@ -333,10 +326,7 @@ export default function SearchBar({
 
             <button
               onClick={clearFilters}
-              className="inline-flex items-center gap-2 px-5 py-2 eyebrow text-muted hover:text-gold transition-colors duration-300 ml-2"
-              style={{
-                border: "1px solid rgba(255, 255, 255, 0.2)",
-              }}
+              className="inline-flex items-center gap-2 px-5 py-2 eyebrow text-gold-light bg-black/40 border border-gold/30 rounded-sm backdrop-blur-md shadow-xl hover:bg-black/60 hover:border-gold/60 hover:text-gold transition-all duration-300 ml-2"
             >
               <RotateCcw size={13} />
               Reset
@@ -354,10 +344,7 @@ export default function SearchBar({
               </p>
               <button
                 onClick={onToggleView}
-                className="hidden lg:inline-flex items-center gap-2 px-5 py-2 eyebrow text-muted hover:text-off-white hover:border-gold transition-all duration-300"
-                style={{
-                  border: "1px solid rgba(255, 255, 255, 0.2)",
-                }}
+                className="hidden lg:inline-flex items-center gap-2 px-5 py-2 eyebrow text-gold-light bg-black/40 border border-gold/30 rounded-sm backdrop-blur-md shadow-xl hover:bg-black/60 hover:border-gold/60 hover:text-gold transition-all duration-300"
                 aria-label={viewMode === "list" ? "Show map and list" : "Show list only"}
               >
                 {viewMode === "list" ? <Map size={14} /> : <List size={14} />}

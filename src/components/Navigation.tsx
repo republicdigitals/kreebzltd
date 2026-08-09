@@ -10,15 +10,14 @@ import { AnimatePresence, motion } from "framer-motion";
 
 const primaryLinks = [
   { label: "BUY", href: "/properties?intent=buy" },
-  { label: "RENT", href: "/properties?intent=rent" },
-  { label: "SELL", href: "/properties?intent=sell" },
-  { label: "SERVICES", href: "/services" },
+  { label: "RENT", href: "#", disabled: true },
+  { label: "SELL", href: "#", disabled: true },
 ];
 
 const utilityLinks = [
-  { label: "WHAT WE DO", href: "/services" },
-  { label: "PRIVATE JET", href: "/services/private-jet" },
-  { label: "HOW WE WORK", href: "/how-it-works" },
+  { label: "HOME", href: "/" },
+  { label: "PORTFOLIO", href: "/properties" },
+  { label: "SERVICES", href: "/services" },
   { label: "ABOUT", href: "/about" },
   { label: "CONTACT", href: "/contact" },
 ];
@@ -32,13 +31,23 @@ export default function Navigation() {
   // Register GSAP plugins
   gsap.registerPlugin(useGSAP);
 
-  // Initial load animation
+  // Initial load animation (mobile-optimized)
   useGSAP(() => {
-    gsap.from(headerRef.current, {
-      y: -100,
-      opacity: 0,
-      duration: 1.2,
-      ease: "power3.out",
+    const mm = gsap.matchMedia();
+    mm.add("(min-width: 768px)", () => {
+      gsap.from(headerRef.current, {
+        y: -100,
+        opacity: 0,
+        duration: 1.2,
+        ease: "power3.out",
+      });
+    });
+    mm.add("(max-width: 767px)", () => {
+      gsap.from(headerRef.current, {
+        opacity: 0,
+        duration: 0.8,
+        ease: "power2.out",
+      });
     });
   }, { scope: headerRef });
 
@@ -64,25 +73,46 @@ export default function Navigation() {
     <>
       <header
         ref={headerRef}
-        className={`fixed top-0 left-0 right-0 z-[60] transition-all duration-700 dark-mode ${
+        className={`fixed top-0 left-0 right-0 z-[60] transition-all duration-700 ${
           isScrolled && !menuOpen ? "bg-obsidian/90 backdrop-blur-md" : "bg-transparent"
         }`}
       >
         <div className="max-w-[1400px] mx-auto px-6 lg:px-12 relative z-10">
           <div className="flex items-center justify-between h-24 md:h-28">
-            {/* Left: Menu Toggle */}
-            <div className="flex-1">
+            {/* Left: Mobile Menu Toggle & Desktop Primary Links */}
+            <div className="flex-1 flex items-center">
               <button
                 onClick={() => setMenuOpen(!menuOpen)}
-                className="group flex items-center gap-4 text-off-white hover:text-gold transition-colors duration-500 eyebrow"
+                className="md:hidden group flex items-center gap-4 text-off-white hover:text-gold active:scale-[0.95] transition-all duration-300 eyebrow"
                 aria-label="Toggle menu"
               >
                 <div className="relative w-8 h-2 flex flex-col justify-between">
                   <span className={`block h-[1px] bg-current transition-all duration-500 absolute w-full ${menuOpen ? "rotate-45 top-1" : "top-0"}`} />
                   <span className={`block h-[1px] bg-current transition-all duration-500 absolute w-full ${menuOpen ? "-rotate-45 top-1" : "top-2"}`} />
                 </div>
-                <span className="hidden sm:block">{menuOpen ? "CLOSE" : "MENU"}</span>
               </button>
+
+              <div className="hidden md:flex items-center gap-8">
+                {primaryLinks.map((link) => (
+                  link.disabled ? (
+                    <span
+                      key={link.label}
+                      className="eyebrow text-[10px] tracking-[0.2em] text-off-white/40 cursor-not-allowed"
+                      title="Coming Soon"
+                    >
+                      {link.label}
+                    </span>
+                  ) : (
+                    <Link
+                      key={link.label}
+                      href={link.href}
+                      className="eyebrow text-[10px] tracking-[0.2em] text-off-white/80 hover:text-gold transition-colors duration-300"
+                    >
+                      {link.label}
+                    </Link>
+                  )
+                ))}
+              </div>
             </div>
 
             {/* Center: Logo */}
@@ -90,7 +120,7 @@ export default function Navigation() {
               <Link
                 href="/"
                 onClick={() => setMenuOpen(false)}
-                className="group flex items-center hover:opacity-80 transition-opacity duration-700"
+                className="group flex items-center hover:opacity-80 active:scale-[0.98] transition-all duration-300"
                 aria-label="Kreebz — home"
               >
                 <Image
@@ -104,23 +134,37 @@ export default function Navigation() {
               </Link>
             </div>
 
-            {/* Right: Search */}
-            <div className="flex justify-end flex-1">
+            {/* Right: Desktop Utility Links & Search */}
+            <div className="flex justify-end flex-1 items-center gap-8">
+              <div className="hidden md:flex items-center gap-8">
+                {utilityLinks
+                  .filter((l) => l.label !== "HOME") // Avoid redundancy on navbar
+                  .map((link) => (
+                    <Link
+                      key={link.label}
+                      href={link.href}
+                      className="eyebrow text-[10px] tracking-[0.2em] text-off-white/80 hover:text-gold transition-colors duration-300"
+                    >
+                      {link.label}
+                    </Link>
+                  ))}
+              </div>
+
               <Link
                 href="/properties"
                 onClick={() => setMenuOpen(false)}
-                className="flex items-center gap-3 text-off-white hover:text-gold transition-colors duration-500 eyebrow"
+                className="flex items-center gap-3 text-off-white hover:text-gold active:scale-[0.95] transition-all duration-300 eyebrow"
                 aria-label="Search properties"
               >
-                <span className="hidden sm:block">SEARCH</span>
-                <Search size={18} strokeWidth={1.5} />
+                <span className="hidden sm:block text-[10px] tracking-[0.2em]">SEARCH</span>
+                <Search size={16} strokeWidth={1.5} />
               </Link>
             </div>
           </div>
         </div>
       </header>
 
-      {/* Full-Screen Immersive Menu */}
+      {/* Mobile-Only Immersive Menu */}
       <AnimatePresence>
         {menuOpen && (
           <motion.div
@@ -128,7 +172,7 @@ export default function Navigation() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed inset-0 z-[50] bg-obsidian/95 backdrop-blur-2xl flex flex-col justify-center"
+            className="fixed inset-0 z-[50] bg-obsidian/95 backdrop-blur-2xl flex flex-col justify-center md:hidden"
           >
             <div className="max-w-[1400px] w-full mx-auto px-6 lg:px-12 grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-8 pt-20">
               
@@ -142,14 +186,21 @@ export default function Navigation() {
                     exit={{ y: 20, opacity: 0 }}
                     transition={{ delay: 0.1 + i * 0.1, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
                   >
-                    <Link
-                      href={link.href}
-                      onClick={() => setMenuOpen(false)}
-                      className="group flex items-center justify-between font-serif font-light text-[clamp(40px,7vw,80px)] text-off-white hover:text-gold transition-colors duration-500 leading-none"
-                    >
-                      <span className="italic">{link.label}</span>
-                      <ArrowRight size={clampSize()} className="opacity-0 -translate-x-8 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-700" strokeWidth={1} />
-                    </Link>
+                    {link.disabled ? (
+                      <span className="group flex items-center justify-between font-serif font-light text-[clamp(40px,7vw,80px)] text-off-white/30 cursor-not-allowed leading-none relative">
+                        <span className="italic">{link.label}</span>
+                        <span className="absolute -right-4 top-2 text-[10px] tracking-widest font-sans uppercase text-off-white/50 bg-white/5 px-2 py-1 rounded-sm">Soon</span>
+                      </span>
+                    ) : (
+                      <Link
+                        href={link.href}
+                        onClick={() => setMenuOpen(false)}
+                        className="group flex items-center justify-between font-serif font-light text-[clamp(40px,7vw,80px)] text-off-white hover:text-gold active:scale-[0.98] transition-all duration-300 leading-none"
+                      >
+                        <span className="italic">{link.label}</span>
+                        <ArrowRight size={clampSize()} className="opacity-0 -translate-x-8 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-700" strokeWidth={1} />
+                      </Link>
+                    )}
                   </motion.div>
                 ))}
               </div>
@@ -168,7 +219,7 @@ export default function Navigation() {
                       <Link
                         href={link.href}
                         onClick={() => setMenuOpen(false)}
-                        className="eyebrow text-off-white/70 hover:text-gold transition-colors duration-500 flex items-center gap-4"
+                        className="eyebrow text-off-white/70 hover:text-gold active:scale-[0.95] transition-all duration-300 flex items-center gap-4"
                       >
                         <span className="w-8 h-[1px] bg-gold opacity-0 transition-opacity duration-300" />
                         {link.label}
@@ -177,7 +228,6 @@ export default function Navigation() {
                   ))}
                 </div>
 
-                {/* Additional Info */}
                 <motion.div 
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -186,7 +236,7 @@ export default function Navigation() {
                   className="mt-16 pt-8 border-t border-white/5 flex flex-col sm:flex-row justify-between gap-6 eyebrow text-off-white/50"
                 >
                   <p>LAGOS, NIGERIA</p>
-                  <a href="mailto:concierge@kreebz.com" className="hover:text-gold transition-colors">CONCIERGE@KREEBZ.COM</a>
+                  <a href="mailto:concierge@kreebzltd.com" className="hover:text-gold transition-colors">CONCIERGE@KREEBZLTD.COM</a>
                 </motion.div>
               </div>
 

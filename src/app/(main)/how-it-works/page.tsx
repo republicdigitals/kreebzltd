@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function HowItWorksPage() {
   return (
-    <div className="bg-paper">
+    <div className="bg-obsidian">
       <PageHeader
         eyebrow="How We Work"
         title="The Kreebz Approach"

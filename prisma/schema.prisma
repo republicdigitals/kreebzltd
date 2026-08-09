@@ -48,10 +48,10 @@ model AgencySettings {
   id              String  @id @default("singleton")
   agencyName      String  @default("Kreebz Ltd")
   agencyEmail     String  @default("hello@kreebzltd.com")
-  agencyPhone     String  @default("")
+  agencyPhone     String  @default("+234 806 994 9948")
   agencyAddress   String  @default("")
-  principalName   String  @default("")
-  principalTitle  String  @default("")
+  principalName   String  @default("Michael Eugene")
+  principalTitle  String  @default("Key Principal")
   notifyNewLeads  Boolean @default(true)
   notifyEmail     String  @default("")
   updatedAt       DateTime @updatedAt

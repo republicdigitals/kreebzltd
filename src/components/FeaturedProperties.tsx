@@ -105,14 +105,14 @@ export default function FeaturedProperties({ properties }: { properties: Propert
           onMouseEnter={() => setPaused(true)}
           onMouseLeave={() => setPaused(false)}
         >
-          <div className="relative overflow-hidden bg-obsidian-light rounded-none" ref={emblaRef}>
-            <div className="flex touch-pan-y" style={{ backfaceVisibility: "hidden" }}>
+          <div className="relative overflow-hidden bg-transparent rounded-none" ref={emblaRef}>
+            <div className="flex touch-pan-y -ml-4 md:-ml-8" style={{ backfaceVisibility: "hidden" }}>
               {featured.map((property) => (
                 <div
                   key={property.id}
-                  className="relative flex-[0_0_100%] md:flex-[0_0_50%] lg:flex-[0_0_33.333333%] min-w-0 pr-4 md:pr-8"
+                  className="relative flex-[0_0_100%] md:flex-[0_0_50%] lg:flex-[0_0_33.333333%] min-w-0 pl-4 md:pl-8"
                 >
-                  <Link href={`/property/${property.id}`} className="block w-full aspect-[4/5] sm:aspect-[3/4] group relative overflow-hidden" draggable={false}>
+                  <Link href={`/property/${property.id}`} className="block w-full aspect-[4/5] sm:aspect-[3/4] group relative overflow-hidden rounded-sm" draggable={false}>
                     {property.image ? (
                       <Image
                         src={property.image}
@@ -125,7 +125,7 @@ export default function FeaturedProperties({ properties }: { properties: Propert
                       />
                     ) : (
                       <div className="absolute inset-0 flex items-center justify-center bg-obsidian-light">
-                        <span className="uppercase text-[11px] text-ink-muted tracking-[0.3em]">
+                        <span className="uppercase text-[11px] text-muted tracking-[0.3em]">
                           {property.imagePlaceholder || "IMAGE PENDING"}
                         </span>
                       </div>
@@ -143,8 +143,8 @@ export default function FeaturedProperties({ properties }: { properties: Propert
                     {/* Content overlay */}
                     <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8">
                       <div className="flex flex-col gap-4 text-white">
-                        <div className="min-w-0">
-                          <span className="uppercase block text-[9px] tracking-[0.3em] text-gold-light/90 w-max mb-3">
+                        <div className="min-w-0 mb-2">
+                          <span className="inline-flex items-center justify-center px-3 py-1.5 bg-black/40 border border-gold/30 rounded-sm uppercase text-[9px] tracking-[0.3em] text-gold-light backdrop-blur-md mb-4 shadow-xl">
                             {property.status} &middot; {property.neighbourhood}
                           </span>
                           <p className="font-serif text-white text-[clamp(24px,4vw,32px)] leading-[1.1] font-light">
@@ -177,14 +177,14 @@ export default function FeaturedProperties({ properties }: { properties: Propert
             <button
               onClick={scrollPrev}
               aria-label="Previous property"
-              className="hidden sm:flex absolute left-6 top-1/2 -translate-y-1/2 z-10 items-center justify-center w-12 h-12 rounded-none bg-black/20 text-off-white backdrop-blur-md hover:bg-black/80 hover:text-gold transition-all duration-500"
+              className="hidden sm:flex absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-10 items-center justify-center w-12 h-12 rounded-sm bg-black/40 border border-gold/30 text-gold-light backdrop-blur-md shadow-xl hover:bg-black/60 hover:border-gold/60 hover:text-gold transition-all duration-500"
             >
               <ArrowLeft size={18} strokeWidth={1.5} />
             </button>
             <button
               onClick={scrollNext}
               aria-label="Next property"
-              className="hidden sm:flex absolute right-6 top-1/2 -translate-y-1/2 z-10 items-center justify-center w-12 h-12 rounded-none bg-black/20 text-off-white backdrop-blur-md hover:bg-black/80 hover:text-gold transition-all duration-500"
+              className="hidden sm:flex absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-10 items-center justify-center w-12 h-12 rounded-sm bg-black/40 border border-gold/30 text-gold-light backdrop-blur-md shadow-xl hover:bg-black/60 hover:border-gold/60 hover:text-gold transition-all duration-500"
             >
               <ArrowRight size={18} strokeWidth={1.5} />
             </button>
@@ -221,13 +221,12 @@ export default function FeaturedProperties({ properties }: { properties: Propert
         <div className="reveal-up flex justify-center mt-20">
           <Link
             href="/properties"
-            className="group inline-flex items-center gap-4 px-10 py-5 rounded-none text-off-white uppercase tracking-[0.2em] text-xs font-medium transition-all duration-700 hover:text-gold relative overflow-hidden"
+            className="group relative inline-flex items-center justify-center px-10 py-5 bg-black/40 border border-gold/30 rounded-sm uppercase tracking-[0.2em] text-[10px] font-semibold text-gold-light backdrop-blur-md shadow-2xl transition-all duration-700 hover:bg-black/60 hover:border-gold/60 hover:text-gold"
           >
             <span className="relative z-10 flex items-center gap-4">
               View All Properties
               <ArrowRight size={16} strokeWidth={1.5} className="transition-transform duration-500 group-hover:translate-x-2" />
             </span>
-            <span className="absolute bottom-0 left-10 right-10 h-[1px] bg-gold scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
           </Link>
         </div>
       </div>

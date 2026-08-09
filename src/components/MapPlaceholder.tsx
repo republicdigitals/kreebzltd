@@ -112,7 +112,7 @@ export default function MapPlaceholder({
             >
               <motion.path
                 d="M0,-8 C-4.4,-8 -8,-4.4 -8,0 C-8,4.4 0,11 0,11 C0,11 8,4.4 8,0 C8,-4.4 4.4,-8 0,-8 Z"
-                fill={isActive ? "var(--gold)" : "var(--ink)"}
+                fill={isActive ? "var(--gold)" : "var(--off-white)"}
                 stroke="#FFFFFF"
                 strokeWidth={1.5}
                 initial={{ scale: 0, opacity: 0 }}
@@ -144,8 +144,8 @@ export default function MapPlaceholder({
               if (!p) return null;
               return (
                 <div>
-                  <p className="font-serif text-ink text-base">{p.price}</p>
-                  <p className="text-xs text-ink/70 truncate">{p.address}</p>
+                  <p className="font-serif text-off-white text-base">{p.price}</p>
+                  <p className="text-xs text-muted truncate">{p.address}</p>
                 </div>
               );
             })()}
@@ -154,7 +154,7 @@ export default function MapPlaceholder({
       )}
 
       {/* Pin count badge */}
-      <div className="absolute bottom-4 left-4 px-3 py-1.5 rounded-full bg-white/90 shadow text-ink text-xs tracking-wide">
+      <div className="absolute bottom-4 left-4 px-3 py-1.5 rounded-full bg-black/90 shadow text-off-white text-xs tracking-wide">
         {properties.length} {properties.length === 1 ? "property" : "properties"} on map
       </div>
     </div>

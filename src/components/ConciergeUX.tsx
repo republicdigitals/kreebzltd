@@ -1,14 +1,14 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { X, ArrowRight, ArrowLeft, Sun, Moon, Sparkles } from "lucide-react";
+import { X, ArrowRight, ArrowLeft, Sparkles } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function ConciergeUX() {
   const [isOpen, setIsOpen] = useState(false);
   const [step, setStep] = useState(1);
   const [inquiryType, setInquiryType] = useState("");
-  const [isDarkMode, setIsDarkMode] = useState(false);
+
   const [formData, setFormData] = useState({ name: "", email: "", phone: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
@@ -30,14 +30,7 @@ export default function ConciergeUX() {
     };
   }, [isOpen]);
 
-  // Handle Theme
-  useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.add("dark-mode");
-    } else {
-      document.documentElement.classList.remove("dark-mode");
-    }
-  }, [isDarkMode]);
+
 
   const inquiryOptions = [
     "Acquiring a Property",
@@ -51,17 +44,6 @@ export default function ConciergeUX() {
     <>
       {/* Floating Action Buttons Container */}
       <div className="fixed bottom-6 right-6 md:bottom-8 md:right-8 z-[90] flex items-center gap-3">
-        {/* Theme Toggle Button */}
-        <motion.button
-          initial={{ y: 100, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 1.2, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          onClick={() => setIsDarkMode(!isDarkMode)}
-          className="bg-surface border border-border text-off-white w-12 h-12 md:px-6 md:w-auto md:h-14 rounded-full flex items-center justify-center gap-3 shadow-xl hover:border-gold hover:text-gold transition-colors duration-500"
-          aria-label="Toggle Theme"
-        >
-          {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
-        </motion.button>
 
         {/* Concierge Button */}
         <motion.button

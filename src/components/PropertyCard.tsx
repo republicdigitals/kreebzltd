@@ -14,7 +14,7 @@ export default function PropertyCard({
   const [favourited, setFavourited] = useState(false);
 
   return (
-    <Link href={`/property/${property.id}`} className="block group h-full">
+    <Link href={`/property/${property.id}`} className="block group h-full active:scale-[0.98] transition-transform duration-300">
       <article
         className="h-full flex flex-col overflow-hidden transition-all duration-700 bg-transparent hover:bg-obsidian-light"
       >
@@ -25,7 +25,7 @@ export default function PropertyCard({
               src={property.image}
               alt={`${property.type} in ${property.neighbourhood} — ${property.address}`}
               fill
-              className="object-cover transition-transform duration-[1.5s] ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:scale-105"
+              className="object-cover transition-transform duration-[1.5s] ease-[cubic-bezier(0.25,0.1,0.25,1)] md:group-hover:scale-105"
               sizes="(max-width: 768px) 100vw, 33vw"
             />
           ) : (
@@ -40,7 +40,7 @@ export default function PropertyCard({
           )}
           
           {/* Subtle gradient overlay to darken bottom of image for contrast if needed */}
-          <div className="absolute inset-0 bg-gradient-to-t from-obsidian/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+          <div className="absolute inset-0 bg-gradient-to-t from-obsidian/40 to-transparent opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-700" />
 
           {/* Favourite heart */}
           <button
@@ -64,7 +64,7 @@ export default function PropertyCard({
         <div className="px-6 pt-6 pb-8 flex-1 flex flex-col justify-between">
           <div>
             <div className="flex items-start justify-between gap-3 mb-2">
-              <span className="shrink-0 px-2 py-1 text-[9px] uppercase tracking-[0.25em] bg-transparent text-gold">
+              <span className="shrink-0 px-3 py-1 text-[9px] uppercase tracking-[0.25em] bg-gold/10 border border-gold/30 rounded-sm text-gold-light backdrop-blur-md">
                 {property.status}
               </span>
               <p className="uppercase text-[10px] tracking-[0.2em] text-muted text-right">
@@ -90,7 +90,7 @@ export default function PropertyCard({
             </p>
             
             {/* Minimal view details arrow indicator */}
-            <span className="text-gold opacity-0 -translate-x-2 transition-all duration-500 ease-out group-hover:opacity-100 group-hover:translate-x-0">
+            <span className="text-gold opacity-100 translate-x-0 md:opacity-0 md:-translate-x-2 transition-all duration-500 ease-out md:group-hover:opacity-100 md:group-hover:translate-x-0">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>

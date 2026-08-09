@@ -85,7 +85,7 @@ export default function Hero() {
   }, { scope: containerRef });
 
   return (
-    <section ref={containerRef} id="hero" className="relative h-screen w-full overflow-hidden bg-obsidian dark-mode">
+    <section ref={containerRef} id="hero" className="relative h-screen w-full overflow-hidden bg-obsidian">
       {/* Background Setup */}
       <div className="absolute inset-0 overflow-hidden">
         {/* Background Image with slow cinematic scale */}
@@ -112,29 +112,29 @@ export default function Hero() {
             ref={subtitleRef}
             className="eyebrow text-gold-light/80 mb-6"
           >
-            Folio Properties & IBJ Property Development
+            A Curated Collection By Folio & IBJ
           </p>
 
           <h1
             ref={titleRef}
             className="text-off-white font-serif font-light leading-[1.1] tracking-normal text-[clamp(42px,7vw,100px)]"
           >
-            <RevealText text="Find your extraordinary." delay={0.5} />
+            <RevealText text="Masterpieces of modern living." delay={0.5} />
           </h1>
 
           <div ref={buttonRef} className="mt-14">
             <button
               onClick={() => setIsModalOpen(true)}
               className={cn(
-                "group relative inline-flex items-center justify-center gap-3 px-10 py-5 rounded-none",
-                "bg-white/5 text-off-white uppercase tracking-[0.2em] text-xs font-medium",
-                "transition-all duration-700 hover:border-gold hover:text-gold hover:bg-white/5",
+                "group relative inline-flex items-center justify-center px-10 py-5",
+                "bg-black/40 border border-gold/30 rounded-sm uppercase tracking-[0.2em] text-[10px] font-semibold text-gold-light backdrop-blur-md shadow-2xl",
+                "transition-all duration-700 hover:bg-black/60 hover:border-gold/60 hover:text-gold",
                 "focus:outline-none focus:ring-1 focus:ring-gold"
               )}
               aria-expanded={isModalOpen}
               aria-haspopup="dialog"
             >
-              Start Your Search
+              Explore The Portfolio
             </button>
           </div>
 
