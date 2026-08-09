@@ -46,7 +46,7 @@ export default function RevealText({
   return (
     <motion.span
       ref={ref}
-      style={{ overflow: "hidden", display: "inline-flex", flexWrap: "wrap" }}
+      style={{ overflow: "hidden", display: "inline-flex", flexWrap: "wrap", justifyContent: "center" }}
       className={className}
       variants={container}
       initial="hidden"

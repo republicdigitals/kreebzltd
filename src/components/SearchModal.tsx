@@ -1,38 +1,24 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import { ChevronRight, X } from "lucide-react";
+import { X, ArrowRight } from "lucide-react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { cn } from "@/lib/utils";
 
-interface LocationChild {
+interface Neighbourhood {
   id: string;
   name: string;
   image: string;
 }
 
-interface LocationRegion {
-  id: string;
-  name: string;
-  image: string;
-  children: LocationChild[];
-}
-
-const locations: LocationRegion[] = [
-  {
-    id: "lagos",
-    name: "Lagos",
-    image: "/images/hero-placeholder.jpg",
-    children: [
-      { id: "ikoyi", name: "Ikoyi", image: "/images/hero-placeholder.jpg" },
-      { id: "victoria-island", name: "Victoria Island", image: "/images/hero-placeholder.jpg" },
-      { id: "lekki", name: "Lekki", image: "/images/hero-placeholder.jpg" },
-      { id: "lagos-island", name: "Lagos Island", image: "/images/hero-placeholder.jpg" },
-      { id: "ikeja", name: "Ikeja", image: "/images/hero-placeholder.jpg" },
-    ],
-  },
+const neighbourhoods: Neighbourhood[] = [
+  { id: "ikoyi", name: "Ikoyi", image: "/images/hero-placeholder.jpg" },
+  { id: "victoria-island", name: "Victoria Island", image: "/images/hero-placeholder.jpg" },
+  { id: "lekki", name: "Lekki", image: "/images/hero-placeholder.jpg" },
+  { id: "lagos-island", name: "Lagos Island", image: "/images/hero-placeholder.jpg" },
+  { id: "ikeja", name: "Ikeja", image: "/images/hero-placeholder.jpg" },
 ];
 
 interface SearchModalProps {
@@ -46,29 +32,29 @@ export default function SearchModal({
   onClose,
   onSelect,
 }: SearchModalProps) {
-  const [selectedRegionId, setSelectedRegionId] = useState("lagos");
-  const [hoveredChildId, setHoveredChildId] = useState<string | null>(null);
+  const [hoveredId, setHoveredId] = useState<string>(neighbourhoods[0].id);
 
-  const selectedRegion = useMemo(
-    () => locations.find((r) => r.id === selectedRegionId) || locations[0],
-    [selectedRegionId]
-  );
+  // Reset hover state when opened
+  useEffect(() => {
+    if (isOpen) {
+      setHoveredId(neighbourhoods[0].id);
+    }
+  }, [isOpen]);
 
-  const hoveredChild = useMemo(() => {
-    if (!hoveredChildId) return null;
-    return selectedRegion.children.find((c) => c.id === hoveredChildId) || null;
-  }, [hoveredChildId, selectedRegion]);
+  const displayedImage = neighbourhoods.find(n => n.id === hoveredId)?.image || neighbourhoods[0].image;
 
-  const displayedImage = hoveredChild?.image || selectedRegion.image;
-
-  const handleRegionClick = (regionId: string) => {
-    setSelectedRegionId(regionId);
-    setHoveredChildId(null);
-  };
-
-  const handleChildClick = (childName: string) => {
-    onSelect(childName);
-    onClose();
+  // Responsive font size calculation logic for arrow
+  const [windowWidth, setWindowWidth] = useState(0);
+  useEffect(() => {
+    setWindowWidth(window.innerWidth);
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+  
+  const clampSize = () => {
+    if (windowWidth < 768) return 24;
+    return 40; 
   };
 
   return (
@@ -81,131 +67,119 @@ export default function SearchModal({
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.25 }}
-                className="fixed inset-0 z-40 bg-black/70 backdrop-blur-sm"
+                transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                className="fixed inset-0 z-40 bg-obsidian"
               />
             </Dialog.Overlay>
             
             <Dialog.Content asChild>
               <motion.div
-                initial={{ opacity: 0, y: -20, scale: 0.98 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: -20, scale: 0.98 }}
-                transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
-                className={cn(
-                  "fixed z-50 left-[50%] top-[50%] w-full max-w-5xl translate-x-[-50%] translate-y-[-50%] overflow-hidden rounded-2xl shadow-2xl",
-                  "max-h-[85vh] md:max-h-[480px] bg-[#0f0f0f]/95 backdrop-blur-md"
-                )}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.5 }}
+                className="fixed inset-0 z-[999] flex flex-col md:flex-row overflow-hidden bg-obsidian"
               >
                 <Dialog.Title className="sr-only">Select a location</Dialog.Title>
-                <Dialog.Description className="sr-only">Choose a region and neighborhood to search for properties.</Dialog.Description>
+                <Dialog.Description className="sr-only">Choose a neighborhood to search for properties.</Dialog.Description>
 
-                {/* Mobile close + drag handle */}
-                <div className="md:hidden flex flex-col items-center pt-4 pb-2">
-                  <div className="w-12 h-1 rounded-full bg-white/30 mb-4" />
-                  <Dialog.Close asChild>
-                    <button
-                      className="p-2 hover:bg-white/10 rounded-full transition-colors"
-                      aria-label="Close location selector"
-                    >
-                      <X size={20} className="text-off-white" />
-                    </button>
-                  </Dialog.Close>
-                </div>
+                {/* Left Column / Foreground (Mobile) */}
+                <div className="w-full md:w-[45%] h-full md:h-full relative z-20 flex flex-col justify-center px-6 md:px-16 pt-24 pb-12">
+                  {/* Close button */}
+                  <button
+                    onClick={onClose}
+                    className="absolute top-8 left-6 md:left-16 p-3 rounded-full border border-white/10 text-white/50 hover:text-gold hover:border-gold/50 transition-colors z-50 backdrop-blur-md"
+                  >
+                    <X size={20} />
+                  </button>
+                  
+                  <div className="absolute top-10 right-6 md:hidden z-50">
+                    <p className="text-white/70 uppercase text-[10px] tracking-[0.25em]">Lagos Portfolio</p>
+                  </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 h-full">
-                  {/* Column 1: Primary Regions */}
-                  <div className="border-b md:border-b-0 md:border-r border-white/10 p-4 md:p-6">
-                    <h3 className="text-white/50 uppercase text-[11px] mb-4 tracking-[0.25em]">
-                      Region
-                    </h3>
-                    <div className="overflow-y-auto max-h-[200px] md:max-h-[380px] pr-2 location-scrollbar">
-                      {locations.map((region) => (
-                        <button
-                          key={region.id}
-                          onClick={() => handleRegionClick(region.id)}
-                          onMouseEnter={() => {
-                            setSelectedRegionId(region.id);
-                            setHoveredChildId(null);
-                          }}
-                          className={cn(
-                            "w-full flex items-center justify-between px-4 py-3.5 text-left text-sm uppercase tracking-wider transition-all duration-200 rounded-lg outline-none focus-visible:ring-1 focus-visible:ring-gold",
-                            selectedRegionId === region.id
-                              ? "bg-white/10 text-white"
-                              : "text-white/70 hover:text-white hover:bg-white/5"
-                          )}
-                        >
-                          <span>{region.name}</span>
-                          <ChevronRight
-                            size={16}
+                  <div className="hidden md:block absolute top-10 left-32">
+                    <p className="text-white/50 uppercase text-[10px] tracking-[0.25em] mb-2 border-b border-white/10 pb-2 inline-block">Region</p>
+                    <p className="text-white/80 uppercase text-[12px] tracking-[0.2em]">Lagos</p>
+                  </div>
+
+                  <div className="flex flex-col justify-center gap-4 md:gap-8 mt-auto md:mt-0 max-h-[70vh] overflow-y-auto location-scrollbar pr-4">
+                    {neighbourhoods.map((child, i) => (
+                      <motion.button
+                        key={child.id}
+                        initial={{ opacity: 0, x: -30 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: -30 }}
+                        transition={{ delay: 0.1 + i * 0.1, duration: 1, ease: [0.16, 1, 0.3, 1] }}
+                        onClick={() => {
+                          onSelect(child.name);
+                          onClose();
+                        }}
+                        onMouseEnter={() => setHoveredId(child.id)}
+                        className={cn(
+                          "group w-full flex items-center gap-6 text-left transition-all duration-700 py-2",
+                          hoveredId === child.id ? "text-gold" : "text-white/20 hover:text-white/50"
+                        )}
+                      >
+                        <span className="font-sans text-[10px] md:text-xs tracking-widest opacity-50 mb-auto mt-4 md:mt-6">
+                          0{i + 1}
+                        </span>
+                        <span className={cn(
+                          "font-serif font-light text-[clamp(45px,7vw,100px)] leading-[1] transition-all duration-700 origin-left",
+                          hoveredId === child.id ? "italic translate-x-4 md:translate-x-8" : ""
+                        )}>
+                          {child.name}
+                        </span>
+                        
+                        <div className="ml-auto flex items-center justify-center">
+                          <ArrowRight 
+                            size={clampSize()} 
+                            strokeWidth={1}
                             className={cn(
-                              "transition-transform duration-200",
-                              selectedRegionId === region.id
-                                ? "text-white translate-x-0.5"
-                                : "text-white/30"
+                              "transition-all duration-700",
+                              hoveredId === child.id ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-12"
                             )}
                           />
-                        </button>
-                      ))}
-                    </div>
+                        </div>
+                      </motion.button>
+                    ))}
                   </div>
+                </div>
 
-                  {/* Column 2: Sub-locations */}
-                  <div className="border-b md:border-b-0 md:border-r border-white/10 p-4 md:p-6">
-                    <h3 className="text-white/50 uppercase text-[11px] mb-4 tracking-[0.25em]">
-                      {selectedRegion.name} Neighbourhoods
-                    </h3>
-                    <div className="overflow-y-auto max-h-[200px] md:max-h-[380px] pr-2 location-scrollbar">
-                      {selectedRegion.children.map((child) => (
-                        <button
-                          key={child.id}
-                          onClick={() => handleChildClick(child.name)}
-                          onMouseEnter={() => setHoveredChildId(child.id)}
-                          onMouseLeave={() => setHoveredChildId(null)}
-                          className={cn(
-                            "w-full px-4 py-3.5 text-left text-sm uppercase tracking-wider transition-all duration-200 rounded-lg outline-none focus-visible:ring-1 focus-visible:ring-gold",
-                            hoveredChildId === child.id
-                              ? "bg-white/10 text-white"
-                              : "text-white/70 hover:text-white hover:bg-white/5"
-                          )}
-                        >
-                          {child.name}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
+                {/* Right Column / Background */}
+                <div className="absolute inset-0 md:relative md:inset-auto md:w-[55%] h-full z-10 md:z-20 bg-obsidian overflow-hidden pointer-events-none">
+                  {/* Mobile dark gradient to ensure text readability */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-obsidian via-obsidian/90 to-transparent md:hidden z-10" />
+                  
+                  {/* Desktop smooth ultra-wide fade gradient */}
+                  <div className="hidden md:block absolute inset-y-0 left-0 w-[60%] bg-gradient-to-r from-obsidian via-obsidian/80 to-transparent z-10" />
+                  
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={displayedImage}
+                      initial={{ opacity: 0, scale: 1.1 }}
+                      animate={{ opacity: 0.85, scale: 1.02 }}
+                      exit={{ opacity: 0, scale: 1 }}
+                      transition={{ duration: 1.2, ease: "easeInOut" }}
+                      className="absolute inset-0 origin-right"
+                    >
+                      <Image
+                        src={displayedImage}
+                        alt="Location view"
+                        fill
+                        className="object-cover"
+                        sizes="(min-width: 768px) 55vw, 100vw"
+                        priority
+                      />
+                      {/* Deep vignette overlay to integrate with the dark luxury aesthetic */}
+                      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-transparent via-obsidian/20 to-obsidian/80 mix-blend-multiply" />
+                    </motion.div>
+                  </AnimatePresence>
 
-                  {/* Column 3: Featured Image */}
-                  <div className="relative hidden md:block h-[200px] md:h-[420px] bg-obsidian">
-                    <AnimatePresence mode="wait">
-                      <motion.div
-                        key={displayedImage}
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.4, ease: "easeInOut" }}
-                        className="absolute inset-0"
-                      >
-                        <Image
-                          src={displayedImage}
-                          alt={`${hoveredChild?.name || selectedRegion.name} properties`}
-                          fill
-                          className="object-cover"
-                          sizes="(min-width: 768px) 33vw, 0vw"
-                          priority
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                      </motion.div>
-                    </AnimatePresence>
-
-                    <div className="absolute bottom-6 left-6 right-6 z-10">
-                      <p className="text-white uppercase text-xs tracking-[0.25em] mb-1 opacity-70">
-                        Viewing
-                      </p>
-                      <p className="text-white font-serif text-2xl">
-                        {hoveredChild?.name || selectedRegion.name}
-                      </p>
-                    </div>
+                  <div className="hidden md:block absolute bottom-16 right-16 z-20 text-right">
+                    <p className="text-gold/50 uppercase text-[10px] tracking-[0.4em] mb-4">Selected Region</p>
+                    <p className="text-white font-serif text-5xl md:text-6xl italic drop-shadow-2xl">
+                      {neighbourhoods.find(n => n.id === hoveredId)?.name}
+                    </p>
                   </div>
                 </div>
               </motion.div>

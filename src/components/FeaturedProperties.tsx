@@ -121,7 +121,7 @@ export default function FeaturedProperties({ properties }: { properties: Propert
                         priority
                         draggable={false}
                         className="object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.03] pointer-events-none"
-                        sizes="100vw"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       />
                     ) : (
                       <div className="absolute inset-0 flex items-center justify-center bg-obsidian-light">
