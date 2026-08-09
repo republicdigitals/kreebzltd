@@ -44,28 +44,30 @@ export default function PropertiesClient() {
   const showMap = viewMode === "split";
 
   return (
-    <div className="min-h-[100dvh] bg-obsidian pt-24 md:pt-28 flex flex-col">
-      {/* Search / filter bar */}
-      <div className="shrink-0 z-20 border-b border-border/20 bg-obsidian">
+    <div className="bg-obsidian pt-24 md:pt-28 flex flex-col">
+      {/* Sticky Search / filter bar */}
+      <div className="sticky top-24 md:top-28 z-40 border-b border-border/20 bg-obsidian">
         <SearchBar viewMode={viewMode} onToggleView={toggleView} />
       </div>
 
       {/* Content area: list or split */}
-      <div className="flex-1 flex overflow-hidden">
-        {/* List panel */}
-        <div className={`h-full overflow-y-auto custom-scrollbar ${showMap ? "w-full lg:w-1/2" : "w-full"}`}>
+      <div className="flex-1 flex">
+        {/* List panel (native scroll) */}
+        <div className={`pb-20 ${showMap ? "w-full lg:w-1/2" : "w-full"}`}>
           <PropertyListings />
         </div>
 
-        {/* Map panel */}
+        {/* Map panel (Sticky sidebar) */}
         {showMap && (
-          <div className="hidden lg:block w-1/2 h-full border-l border-border/20 bg-obsidian-light">
-            <MapPlaceholder
-              properties={filtered}
-              activePropertyId={activePropertyId}
-              onPinClick={handlePinClick}
-              onPinHover={setActivePropertyId}
-            />
+          <div className="hidden lg:block w-1/2 border-l border-border/20 bg-obsidian-light">
+            <div className="sticky top-[calc(7rem+85px)] h-[calc(100vh-7rem-85px)]">
+              <MapPlaceholder
+                properties={filtered}
+                activePropertyId={activePropertyId}
+                onPinClick={handlePinClick}
+                onPinHover={setActivePropertyId}
+              />
+            </div>
           </div>
         )}
       </div>
