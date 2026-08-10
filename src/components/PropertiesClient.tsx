@@ -45,8 +45,8 @@ export default function PropertiesClient() {
 
   return (
     <div className="bg-obsidian pt-24 md:pt-28 flex flex-col">
-      {/* Sticky Search / filter bar */}
-      <div className="sticky top-24 md:top-28 z-40 border-b border-border/20 bg-obsidian">
+      {/* Search / filter bar */}
+      <div className="border-b border-border/20 bg-obsidian">
         <SearchBar viewMode={viewMode} onToggleView={toggleView} />
       </div>
 
@@ -60,7 +60,7 @@ export default function PropertiesClient() {
         {/* Map panel (Sticky sidebar) */}
         {showMap && (
           <div className="hidden lg:block w-1/2 border-l border-border/20 bg-obsidian-light">
-            <div className="sticky top-[calc(7rem+85px)] h-[calc(100vh-7rem-85px)]">
+            <div className="sticky top-24 md:top-28 h-[calc(100vh-6rem)] md:h-[calc(100vh-7rem)]">
               <MapPlaceholder
                 properties={filtered}
                 activePropertyId={activePropertyId}

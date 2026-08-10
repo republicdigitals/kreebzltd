@@ -15,10 +15,6 @@ interface Neighbourhood {
 
 const neighbourhoods: Neighbourhood[] = [
   { id: "ikoyi", name: "Ikoyi", image: "/images/hero-placeholder.jpg" },
-  { id: "victoria-island", name: "Victoria Island", image: "/images/hero-placeholder.jpg" },
-  { id: "lekki", name: "Lekki", image: "/images/hero-placeholder.jpg" },
-  { id: "lagos-island", name: "Lagos Island", image: "/images/hero-placeholder.jpg" },
-  { id: "ikeja", name: "Ikeja", image: "/images/hero-placeholder.jpg" },
 ];
 
 interface SearchModalProps {

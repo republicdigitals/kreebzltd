@@ -112,14 +112,14 @@ export default function Hero() {
             ref={subtitleRef}
             className="eyebrow text-gold-light/80 mb-6"
           >
-            A Curated Collection By Folio & IBJ
+            Exclusive Properties By Folio & IBJ
           </p>
 
           <h1
             ref={titleRef}
             className="text-off-white font-serif font-light leading-[1.1] tracking-normal text-[clamp(42px,7vw,100px)]"
           >
-            <RevealText text="Masterpieces of modern living." delay={0.5} />
+            <RevealText text="Elevating the standard of luxury living." delay={0.5} />
           </h1>
 
           <div ref={buttonRef} className="mt-14">
