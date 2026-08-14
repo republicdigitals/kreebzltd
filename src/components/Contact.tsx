@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { cn } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 
 // 1. Define the schema
 const contactSchema = z.object({
@@ -16,13 +17,14 @@ const contactSchema = z.object({
     message: "Please select an area of interest",
   }),
   message: z.string().min(10, "Message must be at least 10 characters"),
+  website: z.string().optional(), // Honeypot
 });
 
 type ContactFormValues = z.infer<typeof contactSchema>;
 
 export default function Contact() {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
+  const router = useRouter();
 
   // 2. Initialize the form
   const {
@@ -38,6 +40,7 @@ export default function Contact() {
       phone: "",
       interest: "buying",
       message: "",
+      website: "",
     },
   });
 
@@ -54,6 +57,7 @@ export default function Contact() {
           phone: data.phone || undefined,
           interest: data.interest,
           message: data.message,
+          website: data.website,
         }),
       });
 
@@ -61,10 +65,8 @@ export default function Contact() {
         throw new Error(`Submission failed: ${res.status}`);
       }
 
-      setIsSuccess(true);
       reset();
-      // Reset success message after 5 seconds
-      setTimeout(() => setIsSuccess(false), 5000);
+      router.push("/thank-you");
     } catch (error) {
       console.error("[Contact form]", error);
     } finally {
@@ -118,6 +120,13 @@ export default function Contact() {
                 +234 806 994 9948
               </a>
             </div>
+            
+            <div className="mt-8 px-4 py-2 border border-gold/20 bg-gold/5 rounded-full">
+              <p className="text-gold text-xs uppercase tracking-widest font-medium flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-gold animate-pulse"></span>
+                Response guaranteed within 2 hours
+              </p>
+            </div>
           </motion.div>
         </div>
 
@@ -129,26 +138,19 @@ export default function Contact() {
           transition={{ duration: 0.8, delay: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
           className="bg-[#151515] p-8 md:p-12 rounded-xl border border-white/5 shadow-2xl relative overflow-hidden"
         >
-          <AnimatePresence>
-            {isSuccess && (
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-[#151515]/95 backdrop-blur-sm"
-              >
-                <div className="w-16 h-16 rounded-full border border-gold flex items-center justify-center mb-6">
-                  <svg className="w-6 h-6 text-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                </div>
-                <h3 className="text-2xl font-serif text-white mb-2">Message Received</h3>
-                <p className="text-white/60">A principal will be in touch shortly.</p>
-              </motion.div>
-            )}
-          </AnimatePresence>
-
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            {/* Honeypot field - visually hidden but available to screen readers/bots */}
+            <div className="absolute opacity-0 -z-10 w-0 h-0 overflow-hidden" aria-hidden="true">
+              <label htmlFor="website">Website</label>
+              <input
+                id="website"
+                type="text"
+                tabIndex={-1}
+                autoComplete="off"
+                {...register("website")}
+              />
+            </div>
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
                 <label htmlFor="name" className="text-xs uppercase tracking-widest text-white/50">Name</label>

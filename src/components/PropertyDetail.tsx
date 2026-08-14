@@ -10,6 +10,7 @@ import { useGSAP } from "@gsap/react";
 import type { Property } from "@/data/properties";
 import Button from "./ui/Button";
 import FloorPlanViewer from "./FloorPlanViewer";
+import Breadcrumbs from "./Breadcrumbs";
 
 /*
  * ASSET SWAP: When `property.image` is supplied, the hero gallery renders the
@@ -206,14 +207,14 @@ export default function PropertyDetail({ property }: { property: Property }) {
         {activeTab === "map" && (
           <div className="absolute inset-0">
             <iframe
-              src={`https://maps.google.com/maps?q=${property.lat},${property.lng}&z=16&output=embed&t=k`}
+              title={`Map of ${property.address}`}
               width="100%"
               height="100%"
-              style={{ border: 0, filter: "grayscale(0.2) contrast(1.05)" }}
+              style={{ border: 0 }}
               loading="lazy"
+              allowFullScreen
               referrerPolicy="no-referrer-when-downgrade"
-              title={`Map — ${property.address}`}
-              aria-label={`Interactive map showing ${property.neighbourhood}, Lagos`}
+              src={`https://maps.google.com/maps?q=${encodeURIComponent(property.address)}&t=&z=13&ie=UTF8&iwloc=&output=embed`}
             />
             {/* Subtle overlay to match dark brand aesthetic */}
             <div className="absolute top-4 left-4 z-10 px-4 py-2 bg-black/70 backdrop-blur-md border border-white/10">
@@ -291,7 +292,17 @@ export default function PropertyDetail({ property }: { property: Property }) {
         </div>
 
         {/* Content Header */}
-        <div className="content-header text-center py-20">
+        <div className="content-header text-center py-20 relative">
+          <div className="absolute top-8 left-0 right-0 flex justify-center">
+            <Breadcrumbs 
+              items={[
+                { label: "Home", href: "/" },
+                { label: "Properties", href: "/#properties" },
+                { label: property.address }
+              ]} 
+            />
+          </div>
+          
           <h1 className="reveal-title font-serif text-off-white font-light leading-[1.1]" style={{ fontSize: "clamp(36px, 5vw, 64px)" }}>
             {property.address}
           </h1>

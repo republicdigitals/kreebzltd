@@ -1,13 +1,20 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import prisma from "@/lib/prisma";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 
 /**
  * GET /api/leads
- * Returns all leads, newest first. Admin-protected (via proxy.ts).
+ * Returns all leads, newest first. Admin-protected.
  */
 export async function GET() {
   try {
+    const session = await getServerSession(authOptions);
+    if (!session) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const leads = await prisma.lead.findMany({
       orderBy: { createdAt: "desc" },
     });
@@ -29,7 +36,13 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { name, email, phone, interest, message, propertyId } = body;
+    const { name, email, phone, interest, message, propertyId, website } = body;
+
+    // Honeypot check for bots
+    if (website) {
+      // Return 201 so the bot thinks it succeeded, but don't save anything
+      return NextResponse.json({ success: true }, { status: 201 });
+    }
 
     if (!name || !email || !interest) {
       return NextResponse.json(

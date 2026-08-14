@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { LayoutDashboard, Home, Users, Settings, LogOut, Menu, X } from "lucide-react";
+import { signOut } from "next-auth/react";
 
 export default function AdminSidebar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -75,11 +76,18 @@ export default function AdminSidebar() {
           })}
         </nav>
         
-        <div className="p-4 border-t border-border">
-          <Link href="/" className="flex items-center gap-3 px-4 py-3 rounded-lg text-red-500 hover:text-red-400 hover:bg-obsidian transition-colors">
-            <LogOut className="w-5 h-5" />
-            <span>Exit Admin</span>
+        <div className="p-4 border-t border-border space-y-2">
+          <Link href="/" className="flex items-center gap-3 px-4 py-3 rounded-lg text-muted hover:text-off-white hover:bg-obsidian transition-colors">
+            <Home className="w-5 h-5" />
+            <span>Public Site</span>
           </Link>
+          <button 
+            onClick={() => signOut({ callbackUrl: '/' })}
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-red-500 hover:text-red-400 hover:bg-obsidian transition-colors"
+          >
+            <LogOut className="w-5 h-5" />
+            <span>Sign Out</span>
+          </button>
         </div>
       </aside>
     </>

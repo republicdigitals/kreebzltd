@@ -7,37 +7,40 @@ import { X, ArrowRight } from "lucide-react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { cn } from "@/lib/utils";
 
-interface Neighbourhood {
+export interface Neighbourhood {
   id: string;
   name: string;
   image: string;
 }
 
-const neighbourhoods: Neighbourhood[] = [
-  { id: "ikoyi", name: "Ikoyi", image: "/images/hero-placeholder.jpg" },
-];
-
 interface SearchModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSelect: (location: string) => void;
+  neighbourhoods: Neighbourhood[];
 }
 
 export default function SearchModal({
   isOpen,
   onClose,
   onSelect,
+  neighbourhoods,
 }: SearchModalProps) {
-  const [hoveredId, setHoveredId] = useState<string>(neighbourhoods[0].id);
+  // Fallback to prevent crash if array is empty
+  const safeNeighbourhoods = neighbourhoods?.length > 0 ? neighbourhoods : [
+    { id: "ikoyi", name: "Ikoyi", image: "/images/hero-placeholder.jpg" }
+  ];
+
+  const [hoveredId, setHoveredId] = useState<string>(safeNeighbourhoods[0].id);
 
   // Reset hover state when opened
   useEffect(() => {
     if (isOpen) {
-      setHoveredId(neighbourhoods[0].id);
+      setHoveredId(safeNeighbourhoods[0].id);
     }
-  }, [isOpen]);
+  }, [isOpen, safeNeighbourhoods]);
 
-  const displayedImage = neighbourhoods.find(n => n.id === hoveredId)?.image || neighbourhoods[0].image;
+  const displayedImage = safeNeighbourhoods.find(n => n.id === hoveredId)?.image || safeNeighbourhoods[0].image;
 
   // Responsive font size calculation logic for arrow
   const [windowWidth, setWindowWidth] = useState(0);
@@ -99,7 +102,7 @@ export default function SearchModal({
                   </div>
 
                   <div className="flex flex-col justify-center gap-4 md:gap-8 mt-auto md:mt-0 max-h-[70vh] overflow-y-auto location-scrollbar pr-4">
-                    {neighbourhoods.map((child, i) => (
+                    {safeNeighbourhoods.map((child, i) => (
                       <motion.button
                         key={child.id}
                         initial={{ opacity: 0, x: -30 }}
@@ -174,7 +177,7 @@ export default function SearchModal({
                   <div className="hidden md:block absolute bottom-16 right-16 z-20 text-right">
                     <p className="text-gold/50 uppercase text-[10px] tracking-[0.4em] mb-4">Selected Region</p>
                     <p className="text-white font-serif text-5xl md:text-6xl italic drop-shadow-2xl">
-                      {neighbourhoods.find(n => n.id === hoveredId)?.name}
+                      {safeNeighbourhoods.find(n => n.id === hoveredId)?.name}
                     </p>
                   </div>
                 </div>

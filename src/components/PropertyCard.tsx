@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { Heart } from "lucide-react";
 import type { Property } from "@/data/properties";
+import RichTooltip from "./ui/RichTooltip";
 
 export default function PropertyCard({
   property,
@@ -72,9 +73,11 @@ export default function PropertyCard({
               </p>
             </div>
             
-            <p className="font-serif text-off-white font-light text-[clamp(24px,2.5vw,28px)] leading-[1.1] mt-5">
-              {property.price}
-            </p>
+            <RichTooltip content="Subject to contract and availability" position="top">
+              <p className="font-serif text-off-white font-light text-[clamp(24px,2.5vw,28px)] leading-[1.1] mt-5">
+                {property.price}
+              </p>
+            </RichTooltip>
             
             <p className="text-off-white/90 font-light mt-3 text-sm leading-relaxed tracking-wide truncate">
               {property.address}

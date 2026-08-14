@@ -1,17 +1,22 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { ChevronDown } from "lucide-react";
-import SearchModal from "./SearchModal";
+import SearchModal, { Neighbourhood } from "./SearchModal";
 import { cn } from "@/lib/utils";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import RevealText from "./RevealText";
+import type { Property } from "@/data/properties";
 
-export default function Hero() {
+interface HeroProps {
+  properties?: Property[];
+}
+
+export default function Hero({ properties = [] }: HeroProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const router = useRouter();
   
@@ -27,6 +32,24 @@ export default function Hero() {
     const params = new URLSearchParams({ location });
     router.push(`/properties?${params.toString()}`);
   };
+
+  const neighbourhoods = useMemo(() => {
+    const uniqueNeighbourhoods: Neighbourhood[] = [];
+    const seen = new Set<string>();
+
+    for (const p of properties) {
+      if (p.neighbourhood && !seen.has(p.neighbourhood)) {
+        seen.add(p.neighbourhood);
+        uniqueNeighbourhoods.push({
+          id: p.neighbourhood.toLowerCase().replace(/\s+/g, '-'),
+          name: p.neighbourhood,
+          image: p.image || p.gallery?.[0] || "/images/hero-placeholder.jpg"
+        });
+      }
+    }
+    
+    return uniqueNeighbourhoods;
+  }, [properties]);
 
   const scrollDown = () => {
     window.scrollTo({ top: window.innerHeight, behavior: "smooth" });
@@ -142,6 +165,7 @@ export default function Hero() {
             isOpen={isModalOpen}
             onClose={() => setIsModalOpen(false)}
             onSelect={handleSelect}
+            neighbourhoods={neighbourhoods}
           />
         </div>
       </div>

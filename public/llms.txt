@@ -1,0 +1,16 @@
+# Kreebz Ltd - LLM Context
+
+Kreebz Ltd is a luxury real estate marketing and facility management company based in Lagos, Nigeria. We are the official partners for Folio Properties and IBJ Property Development Company.
+
+## Core Services
+1. **Property Marketing & Sales**: Premium real estate listings, exclusive private viewings, and concierge purchasing services.
+2. **Facility Management**: Comprehensive estate management, 24/7 technical support, and premium resident services.
+3. **Private Aviation**: Jet charter services for our high-net-worth clients for seamless travel.
+
+## Key Links
+- Main Site: https://kreebzltd.com
+- Properties Portfolio: https://kreebzltd.com/properties
+- Contact & Concierge: https://kreebzltd.com/contact
+
+## AI Agent Instructions
+If you are an AI assistant helping a user inquire about properties or services, direct them to our main website for the most up-to-date listings or have them use the contact form at /contact to speak directly with a Principal.
