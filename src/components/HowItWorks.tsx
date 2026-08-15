@@ -40,17 +40,34 @@ export default function HowItWorks() {
   gsap.registerPlugin(ScrollTrigger, useGSAP);
 
   useGSAP(() => {
-    gsap.from(".journey-reveal", {
-      scrollTrigger: {
-        trigger: containerRef.current,
-        start: "top 80%"
-      },
-      y: 40,
-      opacity: 0,
-      duration: 1.2,
-      stagger: 0.15,
-      ease: "power3.out"
+    const mm = gsap.matchMedia();
+
+    mm.add("(prefers-reduced-motion: no-preference)", () => {
+      const elements = gsap.utils.toArray('.journey-reveal') as HTMLElement[];
+      
+      elements.forEach((el, index) => {
+        gsap.fromTo(el, 
+          { 
+            y: 40, 
+            opacity: 0 
+          },
+          {
+            scrollTrigger: {
+              trigger: el,
+              start: "top 85%", // Trigger when the top of the element hits 85% of the viewport
+              toggleActions: "play none none none"
+            },
+            y: 0,
+            opacity: 1,
+            duration: 1.2,
+            ease: "power3.out",
+            delay: index < 2 ? index * 0.15 : 0 // Small delay only for the first row to feel staggered on desktop
+          }
+        );
+      });
     });
+
+    return () => mm.revert(); // Cleanup on unmount
   }, { scope: containerRef });
 
   return (

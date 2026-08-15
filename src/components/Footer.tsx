@@ -34,7 +34,7 @@ const footerColumns = [
     links: [
       { label: "BUY", href: "/properties?intent=buy" },
       { label: "RENT", href: "/properties?intent=rent" },
-      { label: "SELL", href: "/properties?intent=sell" },
+      { label: "SELL", href: "/sell" },
       { label: "IKOYI", href: "/properties" },
       { label: "VICTORIA ISLAND", href: "/properties" },
       { label: "BANANA ISLAND", href: "/properties" },

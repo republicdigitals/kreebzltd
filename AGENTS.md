@@ -28,6 +28,7 @@ This version has breaking changes — APIs, conventions, and file structure may 
 - Use TypeScript strict mode and define explicit interfaces for all component props.
 - Use Tailwind v4 utility classes for all styling.
 - Build with a mobile-first responsive approach.
+- Ensure strict container boundaries to prevent horizontal overflow on 320px screens. Avoid `w-screen` and enforce `overflow-x-hidden` on the root. Use `break-words` and clamped typography carefully to prevent text overflow.
 
 ### Don't
 - Don't use legacy class components.

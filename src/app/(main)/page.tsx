@@ -5,7 +5,6 @@ import HowItWorks from "@/components/HowItWorks";
 import CaseStudies from "@/components/CaseStudies";
 import Testimonials from "@/components/Testimonials";
 import FAQ from "@/components/FAQ";
-import BrandLogos from "@/components/BrandLogos";
 import { getProperties } from "@/data/properties";
 
 export const dynamic = "force-dynamic";
@@ -22,7 +21,6 @@ export default async function Home() {
       <CaseStudies />
       <Testimonials />
       <FAQ />
-      <BrandLogos />
     </div>
   );
 }

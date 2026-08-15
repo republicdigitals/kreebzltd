@@ -13,9 +13,7 @@ export default function SellPage() {
           <h1 className="font-serif text-off-white text-[clamp(40px,5vw,72px)] leading-[1.1] font-light mb-6">
             List Your Asset
           </h1>
-          <p className="font-sans text-muted tracking-wide text-lg leading-relaxed">
-            [Kreebz Content Placeholder: Describe your approach to property valuation, marketing strategy, and access to qualified buyers. Avoid making unverifiable performance guarantees here.]
-          </p>
+
         </div>
 
         <div className="max-w-2xl mx-auto">

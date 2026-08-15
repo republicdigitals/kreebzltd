@@ -83,7 +83,7 @@ export default function SearchModal({
                 <Dialog.Description className="sr-only">Choose a neighborhood to search for properties.</Dialog.Description>
 
                 {/* Left Column / Foreground (Mobile) */}
-                <div className="w-full md:w-[45%] h-full md:h-full relative z-20 flex flex-col justify-center px-6 md:px-16 pt-24 pb-12">
+                <div className="w-full md:w-[45%] h-full md:h-full relative z-20 flex flex-col justify-center px-4 sm:px-6 md:px-16 pt-20 pb-8">
                   {/* Close button */}
                   <button
                     onClick={onClose}
@@ -123,7 +123,7 @@ export default function SearchModal({
                           0{i + 1}
                         </span>
                         <span className={cn(
-                          "font-serif font-light text-[clamp(45px,7vw,100px)] leading-[1] transition-all duration-700 origin-left",
+                          "font-serif font-light text-[clamp(36px,10vw,100px)] leading-[1] transition-all duration-700 origin-left break-words whitespace-normal",
                           hoveredId === child.id ? "italic translate-x-4 md:translate-x-8" : ""
                         )}>
                           {child.name}

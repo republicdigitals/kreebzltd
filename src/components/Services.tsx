@@ -29,7 +29,7 @@ const services = [
   },
   {
     title: "Residents",
-    description: "[Kreebz Content Placeholder: Detail resident-specific services such as concierge, private aviation, or vetted contractor networks, if applicable.]",
+    description: "Support for current property residents.",
     placeholder: "residents.jpg",
     href: "/contact?subject=Resident%20Services",
   }

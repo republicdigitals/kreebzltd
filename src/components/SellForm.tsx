@@ -44,14 +44,14 @@ export default function SellForm() {
       <div className="p-8 border border-gold/20 bg-gold/5 text-center">
         <h3 className="font-serif text-2xl text-off-white font-light mb-4">Inquiry Received</h3>
         <p className="font-sans text-muted tracking-wide text-sm leading-relaxed">
-          Thank you. A principal will be in touch shortly to discuss your property and [Kreebz Content Placeholder: outline next steps for valuation/marketing].
+          Thank you. A principal will be in touch shortly to discuss your property.
         </p>
       </div>
     );
   }
 
   return (
-    <div className="p-8 lg:p-12 border border-white/10 bg-white/5">
+    <div className="p-6 sm:p-8 lg:p-12 border border-white/10 bg-white/5">
       <form onSubmit={handleSubmit} className="space-y-8">
         {/* Honeypot field - hidden from humans */}
         <div className="hidden" aria-hidden="true">

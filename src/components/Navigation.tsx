@@ -10,8 +10,9 @@ import { AnimatePresence, motion } from "framer-motion";
 
 const primaryLinks = [
   { label: "BUY", href: "/properties?intent=buy" },
-  { label: "RENT", href: "#", disabled: true },
-  { label: "SELL", href: "#", disabled: true },
+  { label: "RENT", href: "/properties?intent=rent" },
+  { label: "SELL", href: "/sell" },
+  { label: "DEVELOP", href: "/services" },
 ];
 
 const utilityLinks = [
@@ -94,23 +95,13 @@ export default function Navigation() {
 
               <div className="hidden md:flex items-center gap-8">
                 {primaryLinks.map((link) => (
-                  link.disabled ? (
-                    <span
-                      key={link.label}
-                      className="eyebrow text-[10px] tracking-[0.2em] text-off-white/40 cursor-not-allowed"
-                      title="Coming Soon"
-                    >
-                      {link.label}
-                    </span>
-                  ) : (
-                    <Link
-                      key={link.label}
-                      href={link.href}
-                      className="eyebrow text-[10px] tracking-[0.2em] text-off-white/80 hover:text-gold transition-colors duration-300"
-                    >
-                      {link.label}
-                    </Link>
-                  )
+                  <Link
+                    key={link.label}
+                    href={link.href}
+                    className="eyebrow text-[10px] tracking-[0.2em] text-off-white/80 hover:text-gold transition-colors duration-300"
+                  >
+                    {link.label}
+                  </Link>
                 ))}
               </div>
             </div>
@@ -172,9 +163,9 @@ export default function Navigation() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed inset-0 z-[50] bg-obsidian/95 backdrop-blur-2xl flex flex-col justify-center md:hidden"
+            className="fixed inset-0 z-[50] bg-obsidian/95 backdrop-blur-2xl flex flex-col md:hidden overflow-y-auto overflow-x-hidden"
           >
-            <div className="max-w-[1400px] w-full mx-auto px-6 lg:px-12 grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-8 pt-20">
+            <div className="max-w-[1400px] w-full min-h-full mx-auto px-6 lg:px-12 grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-8 py-20">
               
               {/* Primary Huge Links */}
               <div className="flex flex-col gap-4">
@@ -186,21 +177,14 @@ export default function Navigation() {
                     exit={{ y: 20, opacity: 0 }}
                     transition={{ delay: 0.1 + i * 0.1, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
                   >
-                    {link.disabled ? (
-                      <span className="group flex items-center justify-between font-serif font-light text-[clamp(40px,7vw,80px)] text-off-white/30 cursor-not-allowed leading-none relative">
-                        <span className="italic">{link.label}</span>
-                        <span className="absolute -right-4 top-2 text-[10px] tracking-widest font-sans uppercase text-off-white/50 bg-white/5 px-2 py-1 rounded-sm">Soon</span>
-                      </span>
-                    ) : (
-                      <Link
-                        href={link.href}
-                        onClick={() => setMenuOpen(false)}
-                        className="group flex items-center justify-between font-serif font-light text-[clamp(40px,7vw,80px)] text-off-white hover:text-gold active:scale-[0.98] transition-all duration-300 leading-none"
-                      >
-                        <span className="italic">{link.label}</span>
-                        <ArrowRight size={clampSize()} className="opacity-0 -translate-x-8 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-700" strokeWidth={1} />
-                      </Link>
-                    )}
+                    <Link
+                      href={link.href}
+                      onClick={() => setMenuOpen(false)}
+                      className="group flex items-center justify-between font-serif font-light text-[clamp(32px,10vw,80px)] text-off-white hover:text-gold active:scale-[0.98] transition-all duration-300 leading-none"
+                    >
+                      <span className="italic">{link.label}</span>
+                      <ArrowRight size={clampSize()} className="opacity-0 -translate-x-8 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-700" strokeWidth={1} />
+                    </Link>
                   </motion.div>
                 ))}
               </div>
