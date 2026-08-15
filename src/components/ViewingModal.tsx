@@ -49,7 +49,12 @@ export default function ViewingModal({ isOpen, onClose, propertyTitle }: Viewing
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-obsidian/80 backdrop-blur-sm">
+    <div 
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-obsidian/80 backdrop-blur-sm"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modal-title"
+    >
       <div className="relative w-full max-w-lg bg-obsidian border border-white/10 p-8 sm:p-12 shadow-2xl">
         <button
           onClick={onClose}
@@ -61,7 +66,7 @@ export default function ViewingModal({ isOpen, onClose, propertyTitle }: Viewing
 
         {status === "success" ? (
           <div className="text-center py-8">
-            <h3 className="font-serif text-2xl text-off-white font-light mb-4">Request Received</h3>
+            <h3 id="modal-title" className="font-serif text-2xl text-off-white font-light mb-4">Request Received</h3>
             <p className="font-sans text-muted tracking-wide text-sm leading-relaxed mb-8">
               Thank you. A principal will be in touch shortly to schedule your private viewing of {propertyTitle}.
             </p>
@@ -71,7 +76,7 @@ export default function ViewingModal({ isOpen, onClose, propertyTitle }: Viewing
           </div>
         ) : (
           <>
-            <h3 className="font-serif text-2xl text-off-white font-light mb-2">Request Private Viewing</h3>
+            <h3 id="modal-title" className="font-serif text-2xl text-off-white font-light mb-2">Request Private Viewing</h3>
             <p className="font-sans text-muted tracking-wide text-sm leading-relaxed mb-8">
               {propertyTitle}
             </p>
