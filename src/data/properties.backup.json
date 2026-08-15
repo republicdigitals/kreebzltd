@@ -1,0 +1,587 @@
+[
+  {
+    "id": "townhouse-ibj",
+    "price": "$4,800,000.00",
+    "address": "Bourdillon Road",
+    "neighbourhood": "Ikoyi",
+    "city": "Lagos, Nigeria",
+    "beds": 5,
+    "baths": 6,
+    "status": "Off-Plan",
+    "type": "Townhouse",
+    "priceValue": 4800000,
+    "lat": 6.452,
+    "lng": 3.441,
+    "imagePlaceholder": "townhouse-ibj.jpg",
+    "image": "/images/townhouse-ibj-render.webp",
+    "photoCount": 10,
+    "gallery": [
+      "/images/townhouse-ibj-render.webp",
+      "/images/townhouse-ibj-floor-ground.webp",
+      "/images/townhouse-ibj-floor-first.webp",
+      "/images/townhouse-ibj-floor-second.webp",
+      "/images/townhouse-ibj-floor-third.webp",
+      "/images/townhouse-ibj-floor-fourth.webp",
+      "/images/townhouse-ibj-floor-fifth.webp",
+      "/images/townhouse-ibj-floor-rooftop.webp"
+    ],
+    "description": "A stunning off-plan five-bedroom townhouse with service quarters on Bourdillon Road, Ikoyi. Spanning six intelligent floors, the home features a striking futuristic façade, an elevator, private swimming pool, cinema, family lounge, rooftop jacuzzi, sauna, and gym. Estimated completion is December 2027.",
+    "rooms": [
+      {
+        "heading": "Ground & Lower Floors",
+        "body": "The ground floor features parking, an entrance lobby, and the service quarters. The first floor hosts the primary living and dining areas with an open-plan kitchen."
+      },
+      {
+        "heading": "Upper Floors & Rooftop",
+        "body": "The second, third, and fourth floors contain the en-suite bedrooms and family lounges. The fifth floor is dedicated to the master suite. The rooftop features a private jacuzzi, gym, sauna, and terrace."
+      }
+    ],
+    "floorPlans": [
+      {
+        "title": "Ground Floor",
+        "image": "/images/townhouse-ibj-floor-ground.webp"
+      },
+      {
+        "title": "First Floor",
+        "image": "/images/townhouse-ibj-floor-first.webp"
+      },
+      {
+        "title": "Second Floor",
+        "image": "/images/townhouse-ibj-floor-second.webp"
+      },
+      {
+        "title": "Third Floor",
+        "image": "/images/townhouse-ibj-floor-third.webp"
+      },
+      {
+        "title": "Fourth Floor",
+        "image": "/images/townhouse-ibj-floor-fourth.webp"
+      },
+      {
+        "title": "Fifth Floor",
+        "image": "/images/townhouse-ibj-floor-fifth.webp"
+      },
+      {
+        "title": "Rooftop",
+        "image": "/images/townhouse-ibj-floor-rooftop.webp"
+      }
+    ],
+    "principal": {
+      "name": "Michael Eugene",
+      "title": "Key Principal",
+      "phone": "+234 806 994 9948"
+    }
+  },
+  {
+    "id": "banana-house-ibj",
+    "price": "$5,500,000.00",
+    "address": "Banana Island Foreshore",
+    "neighbourhood": "Ikoyi",
+    "city": "Lagos, Nigeria",
+    "beds": 5,
+    "baths": 6,
+    "status": "For Sale",
+    "type": "House",
+    "priceValue": 5500000,
+    "lat": 6.462,
+    "lng": 3.46,
+    "imagePlaceholder": "banana-house.jpg",
+    "image": "/images/banana-house-render.webp",
+    "photoCount": 12,
+    "gallery": [
+      "/images/banana-house-render.webp",
+      "/images/banana-house-floor-ground.webp",
+      "/images/banana-house-floor-first.webp",
+      "/images/banana-house-floor-second.webp",
+      "/images/banana-house-floor-pent.webp"
+    ],
+    "description": "A stunning modern residence on a 515.66m² plot in Banana Island. Designed with an emphasis on flow and connection, the home features a double-height living room, a private pool, and extensive terraces.",
+    "rooms": [
+      {
+        "heading": "Ground & First Floor",
+        "body": "The ground floor hosts a 108m² living room, open kitchen, and guest suite. The first floor features a 20m² pool, home cinema, and gym."
+      },
+      {
+        "heading": "Upper Floors",
+        "body": "The second floor contains the family lounge and secondary bedrooms. The pent floor is a dedicated master suite with a private lounge, spa, sauna, and a 37m² porch."
+      }
+    ],
+    "floorPlans": [
+      {
+        "title": "Ground Floor",
+        "image": "/images/banana-house-floor-ground.webp"
+      },
+      {
+        "title": "First Floor",
+        "image": "/images/banana-house-floor-first.webp"
+      },
+      {
+        "title": "Second Floor",
+        "image": "/images/banana-house-floor-second.webp"
+      },
+      {
+        "title": "Pent Floor",
+        "image": "/images/banana-house-floor-pent.webp"
+      }
+    ],
+    "principal": {
+      "name": "Michael Eugene",
+      "title": "Key Principal",
+      "phone": "+234 806 994 9948"
+    }
+  },
+  {
+    "id": "banana-villa-d10a",
+    "price": "$7,200,000.00",
+    "address": "Plot D10(A), Banana Island Foreshore Estate",
+    "neighbourhood": "Ikoyi",
+    "city": "Lagos, Nigeria",
+    "beds": 6,
+    "baths": 7,
+    "status": "For Sale",
+    "type": "Villa",
+    "priceValue": 7200000,
+    "lat": 6.463,
+    "lng": 3.462,
+    "imagePlaceholder": "banana-villa.jpg",
+    "image": "/images/banana-villa-render.png",
+    "photoCount": 18,
+    "gallery": [
+      "/images/banana-villa-render.png",
+      "/images/banana-villa-floor-ground.webp",
+      "/images/banana-villa-floor-first.webp",
+      "/images/banana-villa-floor-second.webp",
+      "/images/banana-villa-floor-third.webp"
+    ],
+    "description": "A monumental multi-level villa occupying a prime plot off Onikoyi Road. The architecture utilizes striking geometric facades, extensive glass, and integrated green spaces.",
+    "rooms": [
+      {
+        "heading": "Ground & First Floor",
+        "body": "The ground floor features a vast living room, dining area, wet and dry kitchens, and a wrap-around water fountain. The first floor offers a secondary living space and outdoor pool."
+      },
+      {
+        "heading": "Upper Quarters",
+        "body": "The second floor includes a private lounge, gym, and multiple bedrooms. The third floor is dedicated to the 'Madams Room' and the Master Bedroom with a large outdoor area."
+      }
+    ],
+    "floorPlans": [
+      {
+        "title": "Ground Floor",
+        "image": "/images/banana-villa-floor-ground.webp"
+      },
+      {
+        "title": "First Floor",
+        "image": "/images/banana-villa-floor-first.webp"
+      },
+      {
+        "title": "Second Floor",
+        "image": "/images/banana-villa-floor-second.webp"
+      },
+      {
+        "title": "Third Floor",
+        "image": "/images/banana-villa-floor-third.webp"
+      }
+    ],
+    "principal": {
+      "name": "Michael Eugene",
+      "title": "Key Principal",
+      "phone": "+234 806 994 9948"
+    }
+  },
+  {
+    "id": "ikoyi-banana-crescent",
+    "price": "$3,850,000.00",
+    "address": "41b Bourdillon Road",
+    "neighbourhood": "Ikoyi",
+    "city": "Lagos, Nigeria",
+    "beds": 5,
+    "baths": 6,
+    "status": "For Sale",
+    "type": "House",
+    "priceValue": 3850000,
+    "lat": 6.454,
+    "lng": 3.416,
+    "imagePlaceholder": "property-ikoyi.jpg",
+    "image": null,
+    "photoCount": 20,
+    "description": "A commanding residence on one of Ikoyi's most established streets. Designed for principals who expect discretion without compromise, the home balances generous entertaining space with private family quarters. Floor-to-ceiling glazing frames the mature gardens, while the interior architecture favours restraint — stone, warm timber, and considered light.",
+    "rooms": [
+      {
+        "heading": "The Residence",
+        "body": "Five bedroom suites arranged across two floors, each with private bathing and dressing rooms. A double-height reception hall anchors the ground floor."
+      },
+      {
+        "heading": "Principal Rooms",
+        "body": "Formal drawing room, a panelled study, a chef's kitchen with adjoining scullery, and a covered terrace overlooking the pool and grounds."
+      }
+    ],
+    "principal": {
+      "name": "Michael Eugene",
+      "title": "Key Principal",
+      "phone": "+234 806 994 9948"
+    }
+  },
+  {
+    "id": "vi-eko-atlantic",
+    "price": "$1,650,000.00",
+    "address": "Tower Two, Eko Atlantic, Victoria Island",
+    "neighbourhood": "Victoria Island",
+    "city": "Lagos, Nigeria",
+    "beds": 4,
+    "baths": 5,
+    "status": "For Sale",
+    "type": "Apartment",
+    "priceValue": 1650000,
+    "lat": 6.431,
+    "lng": 3.423,
+    "imagePlaceholder": "property-vi.jpg",
+    "image": null,
+    "photoCount": 16,
+    "description": "A full-floor apartment in the commercial and residential heart of Lagos. Panoramic views span the Atlantic and the marina below. The layout is engineered for entertaining at scale, with seamless flow between the reception rooms and a wraparound terrace.",
+    "rooms": [
+      {
+        "heading": "The Residence",
+        "body": "Four bedroom suites, a media room, and staff accommodation, all served by a private lift lobby."
+      },
+      {
+        "heading": "Principal Rooms",
+        "body": "Open-plan reception, a formal dining room for twelve, and a show kitchen finished in stone and brushed brass."
+      }
+    ],
+    "principal": {
+      "name": "Michael Eugene",
+      "title": "Key Principal",
+      "phone": "+234 806 994 9948"
+    }
+  },
+  {
+    "id": "banana-island-waterfront",
+    "price": "$4,200,000.00",
+    "address": "9 Ocean Parade, Banana Island",
+    "neighbourhood": "Banana Island",
+    "city": "Lagos, Nigeria",
+    "beds": 6,
+    "baths": 7,
+    "status": "For Sale",
+    "type": "Villa",
+    "priceValue": 4200000,
+    "lat": 6.458,
+    "lng": 3.46,
+    "imagePlaceholder": "property-banana-island.jpg",
+    "image": null,
+    "photoCount": 24,
+    "description": "Exclusive waterfront living at its finest. This landmark home occupies a rare double plot with direct lagoon frontage, a private jetty, and grounds designed by an internationally recognised landscape studio. Every principal room opens to water.",
+    "rooms": [
+      {
+        "heading": "The Residence",
+        "body": "Six bedroom suites, a wellness wing with pool and spa, and a self-contained guest pavilion."
+      },
+      {
+        "heading": "Principal Rooms",
+        "body": "Waterfront drawing room, a cinema, a temperature-controlled cellar, and an entertainer's terrace with an outdoor kitchen."
+      }
+    ],
+    "principal": {
+      "name": "Michael Eugene",
+      "title": "Key Principal",
+      "phone": "+234 806 994 9948"
+    }
+  },
+  {
+    "id": "ikoyi-parkview-villa",
+    "price": "₦1,980,000,000",
+    "address": "3 Parkview Estate, Ikoyi",
+    "neighbourhood": "Ikoyi",
+    "city": "Lagos, Nigeria",
+    "beds": 4,
+    "baths": 5,
+    "status": "For Lease",
+    "type": "Villa",
+    "priceValue": 1320000,
+    "lat": 6.455,
+    "lng": 3.429,
+    "imagePlaceholder": "property-parkview.jpg",
+    "image": null,
+    "photoCount": 18,
+    "description": "A discreet villa within the gated calm of Parkview Estate. Recently reimagined, the home pairs a classical envelope with a fully contemporary interior. Ideal for a principal seeking a turnkey residence with mature privacy and immediate presence.",
+    "rooms": [
+      {
+        "heading": "The Residence",
+        "body": "Four bedroom suites, a family lounge, and a home office positioned for quiet."
+      },
+      {
+        "heading": "Principal Rooms",
+        "body": "Reception room, dining room, and a kitchen opening to a landscaped courtyard and pool."
+      }
+    ],
+    "principal": {
+      "name": "Michael Eugene",
+      "title": "Key Principal",
+      "phone": "+234 806 994 9948"
+    }
+  },
+  {
+    "id": "ikoyi-gerard-road",
+    "price": "₦850,000,000",
+    "address": "18 Gerard Road, Ikoyi",
+    "neighbourhood": "Ikoyi",
+    "city": "Lagos, Nigeria",
+    "beds": 4,
+    "baths": 5,
+    "status": "For Lease",
+    "type": "House",
+    "priceValue": 566666,
+    "lat": 6.448,
+    "lng": 3.413,
+    "imagePlaceholder": "property-gerard.jpg",
+    "image": null,
+    "photoCount": 14,
+    "description": "A refined lease residence on one of Ikoyi's most prestigious residential streets. The house has been freshly updated, with a new kitchen, restored herringbone floors, and a landscaped rear garden with a pool terrace.",
+    "rooms": [
+      {
+        "heading": "The Residence",
+        "body": "Four bedroom suites, formal drawing room, and a separate family wing with a media lounge."
+      },
+      {
+        "heading": "Principal Rooms",
+        "body": "Dining room for ten, a chef's kitchen, and a study opening onto the garden."
+      }
+    ],
+    "principal": {
+      "name": "Michael Eugene",
+      "title": "Key Principal",
+      "phone": "+234 806 994 9948"
+    }
+  },
+  {
+    "id": "vi-oniru-waterfront",
+    "price": "$1,100,000.00",
+    "address": "23 Oniru Road, Victoria Island",
+    "neighbourhood": "Victoria Island",
+    "city": "Lagos, Nigeria",
+    "beds": 3,
+    "baths": 4,
+    "status": "For Sale",
+    "type": "Apartment",
+    "priceValue": 1100000,
+    "lat": 6.425,
+    "lng": 3.428,
+    "imagePlaceholder": "property-oniru.jpg",
+    "image": null,
+    "photoCount": 12,
+    "description": "A boutique waterfront apartment with direct views of the marina and the Five Cowrie Creek. The interior is finished in a light palette of oak and stone, with generous balconies off every reception room.",
+    "rooms": [
+      {
+        "heading": "The Residence",
+        "body": "Three bedroom suites, an open-plan reception, and a separate utility and staff area."
+      },
+      {
+        "heading": "Principal Rooms",
+        "body": "Living/dining room with a show kitchen, plus a master suite with a private terrace."
+      }
+    ],
+    "principal": {
+      "name": "Michael Eugene",
+      "title": "Key Principal",
+      "phone": "+234 806 994 9948"
+    }
+  },
+  {
+    "id": "banana-island-landmark",
+    "price": "$6,500,000.00",
+    "address": "15 Close 102, Banana Island",
+    "neighbourhood": "Banana Island",
+    "city": "Lagos, Nigeria",
+    "beds": 7,
+    "baths": 8,
+    "status": "For Sale",
+    "type": "Villa",
+    "priceValue": 6500000,
+    "lat": 6.46,
+    "lng": 3.463,
+    "imagePlaceholder": "property-banana-landmark.jpg",
+    "image": null,
+    "photoCount": 28,
+    "description": "A landmark estate with two private residences on a single gated site. The compound includes a tennis court, a private dock, formal gardens, and separate guest and staff quarters.",
+    "rooms": [
+      {
+        "heading": "The Residence",
+        "body": "Seven bedroom suites across two buildings, each with its own reception and kitchen facilities."
+      },
+      {
+        "heading": "Principal Rooms",
+        "body": "Grand reception hall, formal dining room, two studies, a wine cellar, and a cinema."
+      }
+    ],
+    "principal": {
+      "name": "Michael Eugene",
+      "title": "Key Principal",
+      "phone": "+234 806 994 9948"
+    }
+  },
+  {
+    "id": "ikoyi-queens-drive",
+    "price": "$3,200,000.00",
+    "address": "7 Queens Drive, Ikoyi",
+    "neighbourhood": "Ikoyi",
+    "city": "Lagos, Nigeria",
+    "beds": 5,
+    "baths": 5,
+    "status": "For Sale",
+    "type": "House",
+    "priceValue": 3200000,
+    "lat": 6.452,
+    "lng": 3.418,
+    "imagePlaceholder": "property-queens.jpg",
+    "image": null,
+    "photoCount": 19,
+    "description": "A classic Ikoyi residence with a strong architectural presence and mature grounds. The home has been carefully modernised while keeping its original scale and proportion.",
+    "rooms": [
+      {
+        "heading": "The Residence",
+        "body": "Five bedroom suites, a formal lounge, a family kitchen, and a separate guest suite."
+      },
+      {
+        "heading": "Principal Rooms",
+        "body": "Double-height reception, dining room, library, and an outdoor loggia beside the pool."
+      }
+    ],
+    "principal": {
+      "name": "Michael Eugene",
+      "title": "Key Principal",
+      "phone": "+234 806 994 9948"
+    }
+  },
+  {
+    "id": "eko-atlantic-marina",
+    "price": "$2,800,000.00",
+    "address": "Marina District, Eko Atlantic",
+    "neighbourhood": "Eko Atlantic",
+    "city": "Lagos, Nigeria",
+    "beds": 4,
+    "baths": 5,
+    "status": "For Sale",
+    "type": "Apartment",
+    "priceValue": 2800000,
+    "lat": 6.433,
+    "lng": 3.405,
+    "imagePlaceholder": "property-eko-marina.jpg",
+    "image": null,
+    "photoCount": 17,
+    "description": "A full-floor apartment in the Marina District with panoramic Atlantic views and 24-hour concierge. The building is designed for contemporary waterfront living.",
+    "rooms": [
+      {
+        "heading": "The Residence",
+        "body": "Four bedroom suites, a private lift lobby, and a media room."
+      },
+      {
+        "heading": "Principal Rooms",
+        "body": "Open-plan reception, a chef's kitchen, and a wraparound terrace facing the ocean."
+      }
+    ],
+    "principal": {
+      "name": "Michael Eugene",
+      "title": "Key Principal",
+      "phone": "+234 806 994 9948"
+    }
+  },
+  {
+    "id": "lekki-phase-one-penthouse",
+    "price": "$980,000.00",
+    "address": "38A Admiralty Way, Lekki Phase 1",
+    "neighbourhood": "Lekki",
+    "city": "Lagos, Nigeria",
+    "beds": 3,
+    "baths": 4,
+    "status": "For Sale",
+    "type": "Penthouse",
+    "priceValue": 980000,
+    "lat": 6.447,
+    "lng": 3.475,
+    "imagePlaceholder": "property-lekki-penthouse.jpg",
+    "image": null,
+    "photoCount": 11,
+    "description": "A high-floor penthouse on Admiralty Way with skyline views and private rooftop access. The finish is contemporary and move-in ready.",
+    "rooms": [
+      {
+        "heading": "The Residence",
+        "body": "Three bedroom suites, a private study, and an open-plan living area."
+      },
+      {
+        "heading": "Principal Rooms",
+        "body": "Living room, dining room, and a designer kitchen with a private rooftop terrace."
+      }
+    ],
+    "principal": {
+      "name": "Michael Eugene",
+      "title": "Key Principal",
+      "phone": "+234 806 994 9948"
+    }
+  },
+  {
+    "id": "vi-kofo-abayomi-lease",
+    "price": "₦620,000,000",
+    "address": "12 Kofo Abayomi Street, Victoria Island",
+    "neighbourhood": "Victoria Island",
+    "city": "Lagos, Nigeria",
+    "beds": 4,
+    "baths": 4,
+    "status": "For Lease",
+    "type": "House",
+    "priceValue": 413333,
+    "lat": 6.429,
+    "lng": 3.419,
+    "imagePlaceholder": "property-kofo.jpg",
+    "image": null,
+    "photoCount": 15,
+    "description": "A turnkey lease home in the commercial heart of Victoria Island. The property is suitable for a diplomatic residence or corporate executive let.",
+    "rooms": [
+      {
+        "heading": "The Residence",
+        "body": "Four bedroom suites, a family lounge, and a home office with a separate entrance."
+      },
+      {
+        "heading": "Principal Rooms",
+        "body": "Reception room, dining room, and a kitchen opening to a courtyard with a pool."
+      }
+    ],
+    "principal": {
+      "name": "Michael Eugene",
+      "title": "Key Principal",
+      "phone": "+234 806 994 9948"
+    }
+  },
+  {
+    "id": "lekki-family-villa",
+    "price": "$1,250,000.00",
+    "address": "71B Prince Ade Odedina Street, Lekki",
+    "neighbourhood": "Lekki",
+    "city": "Lagos, Nigeria",
+    "beds": 5,
+    "baths": 6,
+    "status": "For Sale",
+    "type": "House",
+    "priceValue": 1250000,
+    "lat": 6.449,
+    "lng": 3.482,
+    "imagePlaceholder": "property-lekki-family.jpg",
+    "image": null,
+    "photoCount": 13,
+    "description": "A spacious family villa with a generous garden, a swimming pool, and off-street parking for several cars. The layout is practical and designed for entertaining.",
+    "rooms": [
+      {
+        "heading": "The Residence",
+        "body": "Five bedroom suites, a family lounge, and a separate boys' quarters."
+      },
+      {
+        "heading": "Principal Rooms",
+        "body": "Formal living room, dining room, kitchen, and a covered terrace by the pool."
+      }
+    ],
+    "principal": {
+      "name": "Michael Eugene",
+      "title": "Key Principal",
+      "phone": "+234 806 994 9948"
+    }
+  }
+]

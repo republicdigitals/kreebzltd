@@ -11,7 +11,7 @@ const faqs = [
   },
   {
     question: "What is your typical response time for property inquiries?",
-    answer: "We guarantee a response within 2 hours during business hours. A dedicated principal is assigned to ensure your requirements are handled with utmost urgency."
+    answer: "We guarantee a response within one business day. A dedicated principal is assigned to ensure your requirements are handled with utmost urgency."
   },
   {
     question: "Do you offer property management services?",

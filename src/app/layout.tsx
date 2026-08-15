@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://kreebzltd.com"),
   title: "Kreebz Ltd | Official Marketing & Facility Management",
   description:
-    "Kreebz Ltd is the official marketing and facility management company for Folio Properties and IBJ Property Development Company. We market premium properties, manage estates, provide concierge and private aviation services, and connect residents to trusted contractors in Lagos, Nigeria.",
+    "Kreebz Ltd is a premium marketing and facility management company. We market premium properties, manage estates, provide concierge and private aviation services, and connect residents to trusted contractors in Lagos, Nigeria.",
   icons: {
     icon: "/kreebz-logo.png",
     shortcut: "/kreebz-logo.png",
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Kreebz Ltd | Official Marketing & Facility Management",
     description:
-      "Kreebz Ltd is the official marketing and facility management company for Folio Properties and IBJ Property Development Company.",
+      "Kreebz Ltd is a premium marketing and facility management company.",
     url: "/",
     siteName: "Kreebz Ltd",
     images: ["/opengraph-image.png"],
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Kreebz Ltd | Official Marketing & Facility Management",
     description:
-      "Kreebz Ltd is the official marketing and facility management company for Folio Properties and IBJ Property Development Company.",
+      "Kreebz Ltd is a premium marketing and facility management company.",
     images: ["/twitter-image.png"],
   },
   alternates: {

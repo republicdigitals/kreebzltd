@@ -55,7 +55,7 @@ export default function Image() {
             letterSpacing: 0.5,
           }}
         >
-          Official marketing & facility management for Folio Properties and IBJ Property Development Company
+          Premium marketing & facility management
         </div>
       </div>
     ),

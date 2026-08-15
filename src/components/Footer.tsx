@@ -44,9 +44,9 @@ const footerColumns = [
 
 const legalLinks = [
   { label: "SITE MAP", href: "/" },
-  { label: "TERMS", href: "/contact" },
-  { label: "PRIVACY", href: "/contact" },
-  { label: "COOKIE PREFERENCES", href: "/contact" },
+  { label: "TERMS", href: "/terms" },
+  { label: "PRIVACY", href: "/privacy" },
+  { label: "COOKIE PREFERENCES", href: "/cookie-preferences" },
 ];
 
 export default function Footer() {

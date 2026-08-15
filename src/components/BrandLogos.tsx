@@ -7,22 +7,22 @@ import { useGSAP } from "@gsap/react";
 
 const brandRows = [
   [
-    { name: "Folio Properties", style: "serif" },
-    { name: "IBJ Property Development Company", style: "serif" },
-    { name: "Folio Properties", style: "serif" },
-    { name: "IBJ Property Development Company", style: "serif" },
-    { name: "Folio Properties", style: "serif" },
-    { name: "IBJ Property Development Company", style: "serif" },
-    { name: "Folio Properties", style: "serif" },
+    { name: "[Partner Placeholder]", style: "serif" },
+    { name: "[Developer Placeholder]", style: "serif" },
+    { name: "[Partner Placeholder]", style: "serif" },
+    { name: "[Developer Placeholder]", style: "serif" },
+    { name: "[Partner Placeholder]", style: "serif" },
+    { name: "[Developer Placeholder]", style: "serif" },
+    { name: "[Partner Placeholder]", style: "serif" },
   ],
   [
-    { name: "IBJ Property Development Company", style: "serif" },
-    { name: "Folio Properties", style: "serif" },
-    { name: "IBJ Property Development Company", style: "serif" },
-    { name: "Folio Properties", style: "serif" },
-    { name: "IBJ Property Development Company", style: "serif" },
-    { name: "Folio Properties", style: "serif" },
-    { name: "IBJ Property Development Company", style: "serif" },
+    { name: "[Developer Placeholder]", style: "serif" },
+    { name: "[Partner Placeholder]", style: "serif" },
+    { name: "[Developer Placeholder]", style: "serif" },
+    { name: "[Partner Placeholder]", style: "serif" },
+    { name: "[Developer Placeholder]", style: "serif" },
+    { name: "[Partner Placeholder]", style: "serif" },
+    { name: "[Developer Placeholder]", style: "serif" },
   ],
 ];
 
@@ -73,7 +73,7 @@ export default function BrandLogos() {
           Official Marketing & Facility<br/>Management Partners
         </h2>
         <p className="brand-reveal font-sans text-muted tracking-wide text-[15px] max-w-2xl mx-auto">
-          We represent Folio Properties and IBJ Property Development Company exclusively, setting the standard for luxury real estate.
+          We represent the most exclusive developments in Lagos, setting the standard for luxury real estate.
         </p>
       </div>
 

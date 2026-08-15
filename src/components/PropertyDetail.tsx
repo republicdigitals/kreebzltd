@@ -11,6 +11,7 @@ import type { Property } from "@/data/properties";
 import Button from "./ui/Button";
 import FloorPlanViewer from "./FloorPlanViewer";
 import Breadcrumbs from "./Breadcrumbs";
+import ViewingModal from "./ViewingModal";
 
 /*
  * ASSET SWAP: When `property.image` is supplied, the hero gallery renders the
@@ -22,6 +23,7 @@ export default function PropertyDetail({ property }: { property: Property }) {
   const [activeTab, setActiveTab] = useState<"photos" | "floor" | "map">("photos");
   const [activeFloorPlan, setActiveFloorPlan] = useState(0);
   const [currentPhoto, setCurrentPhoto] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
   gsap.registerPlugin(ScrollTrigger, useGSAP);
@@ -205,22 +207,15 @@ export default function PropertyDetail({ property }: { property: Property }) {
         )}
 
         {activeTab === "map" && (
-          <div className="absolute inset-0">
-            <iframe
-              title={`Map of ${property.address}`}
-              width="100%"
-              height="100%"
-              style={{ border: 0 }}
-              loading="lazy"
-              allowFullScreen
-              referrerPolicy="no-referrer-when-downgrade"
-              src={`https://maps.google.com/maps?q=${encodeURIComponent(property.address)}&t=&z=13&ie=UTF8&iwloc=&output=embed`}
-            />
-            {/* Subtle overlay to match dark brand aesthetic */}
-            <div className="absolute top-4 left-4 z-10 px-4 py-2 bg-black/70 backdrop-blur-md border border-white/10">
-              <p className="uppercase text-[9px] tracking-[0.25em] text-gold">{property.neighbourhood}</p>
-              <p className="text-[11px] text-off-white/80 mt-0.5">{property.city}</p>
+          <div className="absolute inset-0 bg-obsidian border-y border-border/20 flex flex-col items-center justify-center">
+            <p className="uppercase text-[11px] tracking-[0.25em] text-gold">{property.neighbourhood}</p>
+            <p className="text-[13px] text-off-white/80 mt-1">{property.city}</p>
+            <div className="mt-6 px-6 py-3 border border-gold/20 bg-gold/5 text-[11px] text-gold uppercase tracking-[0.2em]">
+              Map View Unavailable
             </div>
+            <p className="mt-4 font-sans text-xs tracking-wide text-muted max-w-xs text-center">
+              Detailed location information is provided exclusively to verified clients to ensure the privacy of our residents.
+            </p>
           </div>
         )}
       </div>
@@ -375,13 +370,19 @@ export default function PropertyDetail({ property }: { property: Property }) {
                 {property.principal.phone}
               </a>
               
-              <Button className="w-full mt-8">
-                Connect
+              <Button className="w-full mt-8" onClick={() => setIsModalOpen(true)}>
+                Request Private Viewing
               </Button>
             </div>
           </aside>
         </div>
       </div>
+
+      <ViewingModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+        propertyTitle={property.address} 
+      />
     </div>
   );
 }

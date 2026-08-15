@@ -124,7 +124,7 @@ export default function Contact() {
             <div className="mt-8 px-4 py-2 border border-gold/20 bg-gold/5 rounded-full">
               <p className="text-gold text-xs uppercase tracking-widest font-medium flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-gold animate-pulse"></span>
-                Response guaranteed within 2 hours
+                Response guaranteed within one business day
               </p>
             </div>
           </motion.div>

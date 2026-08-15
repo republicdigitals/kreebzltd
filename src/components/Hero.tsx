@@ -135,7 +135,7 @@ export default function Hero({ properties = [] }: HeroProps) {
             ref={subtitleRef}
             className="eyebrow text-gold-light/80 mb-6"
           >
-            Exclusive Properties By Folio & IBJ
+            Exclusive Properties
           </p>
 
           <h1

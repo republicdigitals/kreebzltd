@@ -4,9 +4,10 @@ import { useRef, useEffect } from "react";
 import gsap from "gsap";
 import { usePropertyFilters } from "./PropertyFilterProvider";
 import PropertyCard from "./PropertyCard";
+import RentalRequestForm from "./RentalRequestForm";
 
 export default function PropertyListings() {
-  const { filtered, activePropertyId, setActivePropertyId } = usePropertyFilters();
+  const { filtered, activePropertyId, setActivePropertyId, filters } = usePropertyFilters();
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -29,13 +30,21 @@ export default function PropertyListings() {
   return (
     <section className="bg-obsidian px-6 py-6 lg:px-8" ref={containerRef}>
       {filtered.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-32 text-center">
-          <p className="font-serif text-off-white font-light" style={{ fontSize: "28px" }}>
-            No properties match your filters
-          </p>
-          <p className="mt-4 font-sans text-[15px] tracking-wide text-muted">
-            Try adjusting the price, bedroom, or neighbourhood filters.
-          </p>
+        <div className="flex flex-col items-center justify-center py-20 text-center w-full">
+          {filters.status === "For Lease" ? (
+            <div className="w-full">
+              <RentalRequestForm />
+            </div>
+          ) : (
+            <>
+              <p className="font-serif text-off-white font-light" style={{ fontSize: "28px" }}>
+                No properties match your filters
+              </p>
+              <p className="mt-4 font-sans text-[15px] tracking-wide text-muted">
+                Try adjusting the price, bedroom, or neighbourhood filters.
+              </p>
+            </>
+          )}
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 lg:gap-10">

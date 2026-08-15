@@ -36,13 +36,17 @@ function mapPrismaProperty(p: PrismaProperty): Property {
 }
 
 export async function getProperties(): Promise<Property[]> {
+  let allProperties: Property[] = [];
   try {
     const properties = await prisma.property.findMany();
-    return properties.map(mapPrismaProperty);
+    allProperties = properties.map(mapPrismaProperty);
   } catch (error) {
     console.warn("Prisma connection failed (database might be paused). Falling back to local JSON.", error);
-    return propertiesJson as unknown as Property[];
+    allProperties = propertiesJson as unknown as Property[];
   }
+  
+  // Safeguard: Remove any properties without complete valid data (e.g., missing public images) from public inventory
+  return allProperties.filter(p => p.image !== null && p.image !== undefined && p.image.trim() !== "");
 }
 
 export async function getProperty(id: string): Promise<Property | null> {

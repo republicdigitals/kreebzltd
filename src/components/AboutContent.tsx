@@ -10,7 +10,7 @@ import { useGSAP } from "@gsap/react";
 const pillars = [
   {
     title: "Official marketing partner",
-    body: "As the appointed marketing arm for Folio Properties and IBJ Property Development Company, we position every project with the precision it deserves.",
+    body: "We position every project with the precision it deserves.",
   },
   {
     title: "Facility management, held to your standard",
@@ -85,7 +85,7 @@ export default function AboutContent() {
         <div className="max-w-[900px] mx-auto px-6 lg:px-12 text-center">
           <p className="philosophy-text font-serif text-off-white font-light leading-[1.6]" style={{ fontSize: "clamp(24px, 3vw, 36px)" }}>
             Kreebz Ltd is the official marketing and facility management company for
-            Folio Properties and IBJ Property Development Company. Beyond marketing and
+            the most prestigious developers in the region. Beyond marketing and
             estate oversight, we deliver <span className="italic text-gold-light">private jet services, concierge care, and a trusted network of contractors</span> — so owners and residents are fully looked after.
           </p>
         </div>
