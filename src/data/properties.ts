@@ -62,7 +62,7 @@ export async function getPublishedProperties(): Promise<Property[]> {
 
 export async function getPublishedPropertyById(id: string): Promise<Property | null> {
   try {
-    const property = await prisma.property.findUnique({
+    const property = await prisma.property.findFirst({
       where: { id, publicationStatus: "PUBLISHED" },
       include: { media: true }
     });
