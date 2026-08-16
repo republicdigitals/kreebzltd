@@ -95,23 +95,31 @@ export default function PropertyEditor() {
       const method = isNew ? "POST" : "PUT";
       const url = isNew ? "/api/properties" : `/api/properties/${params.id}`;
       
+      const activeMedia = media.filter(m => !m.isDeleted);
+      const coverImage = activeMedia.find(m => m.isCover)?.url || activeMedia[0]?.url || null;
+
       const payload = isNew ? {
         ...data,
         lat: 6.45,
         lng: 3.42,
         imagePlaceholder: "property-placeholder.jpg",
-        image: null,
-        photoCount: media.length,
+        image: coverImage,
+        photoCount: activeMedia.length,
         rooms: [],
         gallery: [],
         floorPlans: [],
-        media,
+        media: activeMedia,
         principal: {
           name: "Admin User",
           title: "Kreebz Principal",
           phone: "+234 800 000 0000"
         }
-      } : { ...data, media };
+      } : { 
+        ...data, 
+        media: activeMedia,
+        image: coverImage,
+        photoCount: activeMedia.length
+      };
 
       const res = await fetch(url, {
         method,
