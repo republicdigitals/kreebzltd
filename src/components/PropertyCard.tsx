@@ -19,14 +19,15 @@ export default function PropertyCard({
       <article
         className="h-full flex flex-col overflow-hidden transition-all duration-700 bg-transparent hover:bg-obsidian-light"
       >
-        {/* Cinematic Aspect Ratio Image (4:5) */}
-        <div className="relative w-full aspect-[4/5] overflow-hidden">
+        {/* Standard Photography Aspect Ratio (4:3) - better for real estate */}
+        <div className="relative w-full aspect-[4/3] overflow-hidden">
           {property.image ? (
             <Image
               src={property.image}
               alt={`${property.type} in ${property.neighbourhood} — ${property.address}`}
               fill
-              className="object-cover transition-transform duration-[1.5s] ease-[cubic-bezier(0.25,0.1,0.25,1)] md:group-hover:scale-105"
+              quality={90}
+              className="object-cover object-center transition-transform duration-[1.5s] ease-[cubic-bezier(0.25,0.1,0.25,1)] md:group-hover:scale-105"
               sizes="(max-width: 768px) 100vw, 33vw"
             />
           ) : (

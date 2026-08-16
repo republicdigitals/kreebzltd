@@ -127,7 +127,7 @@ export default function PropertyDetail({ property }: { property: Property }) {
   return (
     <div ref={containerRef} className="bg-obsidian">
       {/* Gallery */}
-      <div className="gallery-container relative w-full aspect-[4/3] md:aspect-[21/9] overflow-hidden bg-obsidian-light border-y border-border/20">
+      <div className="gallery-container relative w-full aspect-[4/3] md:aspect-video overflow-hidden bg-black border-y border-border/20">
         {/* Back button */}
         <button
           onClick={() => router.back()}
@@ -146,7 +146,8 @@ export default function PropertyDetail({ property }: { property: Property }) {
                 alt={`${property.address} — photo ${currentPhoto + 1} of ${photoCount}`}
                 fill
                 priority
-                className="object-cover"
+                quality={100}
+                className="object-contain"
                 sizes="100vw"
               />
             ) : (
