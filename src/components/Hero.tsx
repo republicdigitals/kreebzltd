@@ -1,10 +1,9 @@
 "use client";
-
-import { useState, useRef, useMemo } from "react";
+import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import Image from "next/image";
-import { ChevronDown } from "lucide-react";
-import SearchModal, { Neighbourhood } from "./SearchModal";
+import { ChevronDown, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -16,40 +15,25 @@ interface HeroProps {
   properties?: Property[];
 }
 
-export default function Hero({ properties = [] }: HeroProps) {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const router = useRouter();
-  
+export default function Hero({}: HeroProps) {
   const containerRef = useRef<HTMLElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const buttonRef = useRef<HTMLDivElement>(null);
   const scrollIndicatorRef = useRef<HTMLButtonElement>(null);
-  
-  gsap.registerPlugin(ScrollTrigger, useGSAP);
+  const [searchQuery, setSearchQuery] = useState("");
+  const router = useRouter();
 
-  const handleSelect = (location: string) => {
-    const params = new URLSearchParams({ location });
-    router.push(`/properties?${params.toString()}`);
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      router.push(`/properties?q=${encodeURIComponent(searchQuery.trim())}`);
+    } else {
+      router.push("/properties");
+    }
   };
 
-  const neighbourhoods = useMemo(() => {
-    const uniqueNeighbourhoods: Neighbourhood[] = [];
-    const seen = new Set<string>();
-
-    for (const p of properties) {
-      if (p.neighbourhood && !seen.has(p.neighbourhood)) {
-        seen.add(p.neighbourhood);
-        uniqueNeighbourhoods.push({
-          id: p.neighbourhood.toLowerCase().replace(/\s+/g, '-'),
-          name: p.neighbourhood,
-          image: p.image || p.gallery?.[0] || "/images/hero-placeholder.jpg"
-        });
-      }
-    }
-    
-    return uniqueNeighbourhoods;
-  }, [properties]);
+  gsap.registerPlugin(ScrollTrigger, useGSAP);
 
   const scrollDown = () => {
     window.scrollTo({ top: window.innerHeight, behavior: "smooth" });
@@ -145,28 +129,40 @@ export default function Hero({ properties = [] }: HeroProps) {
             <RevealText text="Elevating the standard of luxury living." delay={0.5} />
           </h1>
 
-          <div ref={buttonRef} className="mt-14">
-            <button
-              onClick={() => setIsModalOpen(true)}
-              className={cn(
-                "group relative inline-flex items-center justify-center px-10 py-5",
-                "bg-black/40 border border-gold/30 rounded-sm uppercase tracking-[0.2em] text-[10px] font-semibold text-gold-light backdrop-blur-md shadow-2xl",
-                "transition-all duration-700 hover:bg-black/60 hover:border-gold/60 hover:text-gold",
-                "focus:outline-none focus:ring-1 focus:ring-gold"
-              )}
-              aria-expanded={isModalOpen}
-              aria-haspopup="dialog"
+          <div ref={buttonRef} className="mt-14 flex flex-col items-center justify-center gap-6 w-full max-w-2xl mx-auto">
+            <form 
+              onSubmit={handleSearch}
+              className="flex w-full items-center bg-black/40 border border-gold/30 rounded-sm backdrop-blur-md shadow-2xl focus-within:border-gold/80 focus-within:bg-black/60 transition-all duration-500 overflow-hidden"
             >
-              Explore The Portfolio
-            </button>
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Type 'Ikoyi', '4 Beds', or an address..."
+                className="flex-1 bg-transparent border-none outline-none text-off-white placeholder:text-off-white/40 px-6 py-5 text-sm font-light min-w-0"
+              />
+              <button
+                type="submit"
+                className="px-8 py-5 bg-gold/10 hover:bg-gold/20 text-gold-light hover:text-gold uppercase tracking-[0.2em] text-[10px] font-semibold transition-colors duration-300 flex items-center justify-center border-l border-gold/30"
+                aria-label="Search properties"
+              >
+                <Search size={18} strokeWidth={1.5} />
+                <span className="ml-3 hidden sm:inline">Search</span>
+              </button>
+            </form>
+            
+            <Link
+              href="/sell"
+              className={cn(
+                "group relative inline-flex items-center justify-center px-8 py-3",
+                "bg-transparent border border-transparent rounded-sm uppercase tracking-[0.2em] text-[10px] font-semibold text-white/60 hover:text-white",
+                "transition-all duration-300 hover:bg-white/5",
+                "focus:outline-none focus:ring-1 focus:ring-white/50"
+              )}
+            >
+              List Your Property
+            </Link>
           </div>
-
-          <SearchModal
-            isOpen={isModalOpen}
-            onClose={() => setIsModalOpen(false)}
-            onSelect={handleSelect}
-            neighbourhoods={neighbourhoods}
-          />
         </div>
       </div>
 

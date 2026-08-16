@@ -1,4 +1,4 @@
-import { NextAuthOptions, DefaultSession } from "next-auth";
+import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
@@ -93,7 +93,7 @@ export const authOptions: NextAuthOptions = {
     }
   },
   pages: {
-    signIn: "/admin/login",
+    signIn: "/login",
   },
   secret: process.env.NEXTAUTH_SECRET,
 };

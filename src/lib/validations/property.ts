@@ -4,8 +4,8 @@ import { PublicationStatus } from "@prisma/client";
 export const mediaMutationSchema = z.object({
   id: z.string().optional(),
   isNew: z.boolean().optional(),
-  storageKey: z.string().optional(),
-  url: z.string().url(),
+  storageKey: z.string().nullable().optional(),
+  url: z.string().min(1, "URL is required"),
   isCover: z.boolean().default(false),
   order: z.number().default(0),
 });

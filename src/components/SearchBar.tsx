@@ -1,60 +1,19 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Search, X, ChevronDown, RotateCcw, Map, List } from "lucide-react";
-import {
-  usePropertyFilters,
-  pricePresets,
-  type PropertyFilters,
-} from "./PropertyFilterProvider";
+import { Search, X, ChevronDown, RotateCcw, Map, List, SlidersHorizontal } from "lucide-react";
+import { usePropertyFilters, type PropertyFilters } from "./PropertyFilterProvider";
 
 type ViewMode = "list" | "split";
-
-function FilterPill({
-  label,
-  active,
-  children,
-  open,
-  onClick,
-}: {
-  label: string;
-  active?: boolean;
-  children: React.ReactNode;
-  open: boolean;
-  onClick: () => void;
-}) {
-  return (
-    <div className="relative">
-      <button
-        onClick={onClick}
-        className={`eyebrow inline-flex items-center gap-1.5 transition-colors duration-300 ${
-          active ? "text-off-white" : "text-muted hover:text-off-white"
-        }`}
-      >
-        {label}
-        <ChevronDown
-          size={13}
-          className={`transition-transform duration-200 ${open ? "rotate-180" : ""}`}
-        />
-      </button>
-      {open && (
-        <>
-          <div className="fixed inset-0 z-10" onClick={onClick} aria-hidden="true" />
-          <div className="absolute top-full left-0 mt-3 z-20 min-w-[220px] bg-obsidian-light border border-white/20 shadow-2xl shadow-black rounded-none p-4">
-            {children}
-          </div>
-        </>
-      )}
-    </div>
-  );
-}
 
 export default function SearchBar({
   viewMode,
   onToggleView,
+  onOpenFilters,
 }: {
   viewMode: ViewMode;
   onToggleView: () => void;
+  onOpenFilters: () => void;
 }) {
   const {
     filters,
@@ -62,8 +21,6 @@ export default function SearchBar({
     clearFilters,
     total,
     activeFilterCount,
-    uniqueNeighbourhoods,
-    uniqueTypes,
   } = usePropertyFilters();
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [showChip, setShowChip] = useState(true);
@@ -76,8 +33,6 @@ export default function SearchBar({
   const toggle = (name: string) => {
     setOpenDropdown((current) => (current === name ? null : name));
   };
-
-  const activePriceLabel = useActivePriceLabel(filters);
 
   return (
     <section className="w-full bg-obsidian border-b border-border/20 relative z-20">
@@ -129,7 +84,16 @@ export default function SearchBar({
                   Clear {activeFilterCount}
                 </button>
               )}
-              <div className="relative">
+              <div className="flex items-center gap-4">
+                <button
+                  onClick={onOpenFilters}
+                  className="lg:hidden eyebrow inline-flex items-center gap-1.5 text-muted hover:text-off-white transition-colors"
+                >
+                  <SlidersHorizontal size={13} />
+                  Filters
+                </button>
+
+                <div className="relative">
                 <button
                   onClick={() => toggle("sort")}
                   className="eyebrow inline-flex items-center gap-1.5 text-muted hover:text-off-white transition-colors"
@@ -168,170 +132,9 @@ export default function SearchBar({
               </div>
             </div>
           </div>
+        </div>
 
-          {/* Filter row */}
-          <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
-            <FilterPill
-              label={filters.status === "all" ? "Status" : filters.status}
-              active={filters.status !== "all"}
-              open={openDropdown === "status"}
-              onClick={() => toggle("status")}
-            >
-              {["all", "For Sale", "For Lease", "Off-Plan"].map((value) => (
-                <button
-                  key={value}
-                  onClick={() => {
-                    setFilter("status", value as PropertyFilters["status"]);
-                    setOpenDropdown(null);
-                  }}
-                  className={`w-full text-left px-4 py-3 text-[11px] tracking-[0.1em] uppercase transition-colors mb-1 last:mb-0 ${
-                    filters.status === value
-                      ? "bg-gold text-obsidian"
-                      : "text-muted hover:text-off-white hover:bg-white/5"
-                  }`}
-                >
-                  {value === "all" ? "All" : value}
-                </button>
-              ))}
-            </FilterPill>
 
-            <FilterPill
-              label={activePriceLabel}
-              active={filters.priceMin !== null || filters.priceMax !== null}
-              open={openDropdown === "price"}
-              onClick={() => toggle("price")}
-            >
-              <div className="space-y-1">
-                {pricePresets.map((preset) => {
-                  const selected =
-                    filters.priceMin === preset.min && filters.priceMax === preset.max;
-                  return (
-                    <button
-                      key={preset.label}
-                      onClick={() => {
-                        setFilter("priceMin", preset.min);
-                        setFilter("priceMax", preset.max);
-                        setOpenDropdown(null);
-                      }}
-                      className={`w-full text-left px-4 py-3 text-[11px] tracking-[0.1em] uppercase transition-colors ${
-                        selected 
-                          ? "bg-gold text-obsidian" 
-                          : "text-muted hover:text-off-white hover:bg-white/5"
-                      }`}
-                    >
-                      {preset.label}
-                    </button>
-                  );
-                })}
-              </div>
-            </FilterPill>
-
-            <FilterPill
-              label={bedBathLabel(filters.beds, filters.baths)}
-              active={filters.beds !== null || filters.baths !== null}
-              open={openDropdown === "bedbath"}
-              onClick={() => toggle("bedbath")}
-            >
-              <div className="space-y-6">
-                <div>
-                  <p className="text-[10px] uppercase tracking-[0.2em] text-muted mb-3">Min Bedrooms</p>
-                  <div className="flex flex-wrap gap-2">
-                    {[1, 2, 3, 4, 5, 6].map((n) => (
-                      <button
-                        key={n}
-                        onClick={() => setFilter("beds", filters.beds === n ? null : n)}
-                        className={`px-4 py-2 text-[11px] uppercase tracking-[0.1em] border transition-colors ${
-                          filters.beds === n
-                            ? "bg-gold text-obsidian border-gold"
-                            : "border-white/20 text-muted hover:text-off-white hover:bg-white/5"
-                        }`}
-                      >
-                        {n}+
-                      </button>
-                    ))}
-                  </div>
-                </div>
-                <div>
-                  <p className="text-[10px] uppercase tracking-[0.2em] text-muted mb-3">Min Bathrooms</p>
-                  <div className="flex flex-wrap gap-2">
-                    {[1, 2, 3, 4, 5, 6, 7].map((n) => (
-                      <button
-                        key={n}
-                        onClick={() => setFilter("baths", filters.baths === n ? null : n)}
-                        className={`px-4 py-2 text-[11px] uppercase tracking-[0.1em] border transition-colors ${
-                          filters.baths === n
-                            ? "bg-gold text-obsidian border-gold"
-                            : "border-white/20 text-muted hover:text-off-white hover:bg-white/5"
-                        }`}
-                      >
-                        {n}+
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </FilterPill>
-
-            <FilterPill
-              label={filters.type === "all" ? "Property Type" : filters.type}
-              active={filters.type !== "all"}
-              open={openDropdown === "type"}
-              onClick={() => toggle("type")}
-            >
-              <div className="space-y-1">
-                {["all", ...uniqueTypes].map((value) => (
-                  <button
-                    key={value}
-                    onClick={() => {
-                      setFilter("type", value as PropertyFilters["type"]);
-                      setOpenDropdown(null);
-                    }}
-                    className={`w-full text-left px-4 py-3 text-[11px] tracking-[0.1em] uppercase transition-colors ${
-                      filters.type === value
-                        ? "bg-gold text-obsidian"
-                        : "text-muted hover:text-off-white hover:bg-white/5"
-                    }`}
-                  >
-                    {value === "all" ? "All Types" : value}
-                  </button>
-                ))}
-              </div>
-            </FilterPill>
-
-            <FilterPill
-              label={filters.neighbourhood === "all" ? "Neighbourhood" : filters.neighbourhood}
-              active={filters.neighbourhood !== "all"}
-              open={openDropdown === "neighbourhood"}
-              onClick={() => toggle("neighbourhood")}
-            >
-              <div className="space-y-1 max-h-[240px] overflow-y-auto custom-scrollbar">
-                {["all", ...uniqueNeighbourhoods].map((value) => (
-                  <button
-                    key={value}
-                    onClick={() => {
-                      setFilter("neighbourhood", value as PropertyFilters["neighbourhood"]);
-                      setOpenDropdown(null);
-                    }}
-                    className={`w-full text-left px-4 py-3 text-[11px] tracking-[0.1em] uppercase transition-colors ${
-                      filters.neighbourhood === value
-                        ? "bg-gold text-obsidian"
-                        : "text-muted hover:text-off-white hover:bg-white/5"
-                    }`}
-                  >
-                    {value === "all" ? "All Neighbourhoods" : value}
-                  </button>
-                ))}
-              </div>
-            </FilterPill>
-
-            <button
-              onClick={clearFilters}
-              className="inline-flex items-center gap-2 px-5 py-2 eyebrow text-gold-light bg-black/40 border border-gold/30 rounded-sm backdrop-blur-md shadow-xl hover:bg-black/60 hover:border-gold/60 hover:text-gold transition-all duration-300 ml-2"
-            >
-              <RotateCcw size={13} />
-              Reset
-            </button>
-          </div>
 
           {/* Results headline */}
           <div className="flex items-center justify-between border-t border-white/10 pt-6 mt-2">
@@ -365,20 +168,3 @@ const sortLabels: Record<PropertyFilters["sort"], string> = {
   newest: "Newest",
 };
 
-function bedBathLabel(beds: number | null, baths: number | null) {
-  if (beds && baths) return `${beds}+ BD / ${baths}+ BA`;
-  if (beds) return `${beds}+ BD`;
-  if (baths) return `${baths}+ BA`;
-  return "Bed / Bath";
-}
-
-function useActivePriceLabel(filters: PropertyFilters) {
-  if (filters.priceMin === null && filters.priceMax === null) return "Price";
-  const preset = pricePresets.find(
-    (p) => p.min === filters.priceMin && p.max === filters.priceMax
-  );
-  if (preset) return preset.label;
-  if (filters.priceMin !== null && filters.priceMax === null) return `$${(filters.priceMin / 1_000_000).toFixed(0)}M+`;
-  if (filters.priceMin === null && filters.priceMax !== null) return `Under $${(filters.priceMax / 1_000_000).toFixed(0)}M`;
-  return `$${(filters.priceMin! / 1_000_000).toFixed(0)}M – $${(filters.priceMax! / 1_000_000).toFixed(0)}M`;
-}

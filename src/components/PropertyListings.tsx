@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { usePropertyFilters } from "./PropertyFilterProvider";
 import PropertyCard from "./PropertyCard";
 import RentalRequestForm from "./RentalRequestForm";
+import ConciergeCTA from "./ConciergeCTA";
 
 export default function PropertyListings() {
   const { filtered, activePropertyId, setActivePropertyId, filters } = usePropertyFilters();
@@ -66,6 +67,9 @@ export default function PropertyListings() {
           })}
         </div>
       )}
+      
+      {/* Show the Matchmaking CTA at the bottom of the list */}
+      <ConciergeCTA />
     </section>
   );
 }

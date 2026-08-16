@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
 import { Heart } from "lucide-react";
+import { useSavedProperties } from "@/context/SavedPropertiesContext";
 import type { Property } from "@/data/properties";
 import RichTooltip from "./ui/RichTooltip";
 
@@ -12,8 +12,8 @@ export default function PropertyCard({
 }: {
   property: Property;
 }) {
-  const [favourited, setFavourited] = useState(false);
-
+  const { savedIds, toggleSave } = useSavedProperties();
+  const favourited = savedIds.has(property.id);
   return (
     <Link href={`/property/${property.slug}`} className="block group h-full active:scale-[0.98] transition-transform duration-300">
       <article
@@ -26,9 +26,9 @@ export default function PropertyCard({
               src={property.image}
               alt={`${property.type} in ${property.neighbourhood} — ${property.address}`}
               fill
-              quality={90}
+              quality={100}
               className="object-cover object-center transition-transform duration-[1.5s] ease-[cubic-bezier(0.25,0.1,0.25,1)] md:group-hover:scale-105"
-              sizes="(max-width: 768px) 100vw, 33vw"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
           ) : (
             <div
@@ -48,7 +48,7 @@ export default function PropertyCard({
           <button
             onClick={(e) => {
               e.preventDefault();
-              setFavourited((f) => !f);
+              toggleSave(property.id);
             }}
             aria-label="Save to favourites"
             className="absolute top-4 right-4 z-10 text-off-white/80 hover:text-gold transition-colors duration-300"

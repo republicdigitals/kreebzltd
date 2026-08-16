@@ -49,6 +49,7 @@ export async function PUT(
     const parsed = updatePropertySchema.safeParse(body);
     
     if (!parsed.success) {
+      console.error("Validation error:", JSON.stringify(parsed.error.format(), null, 2));
       return NextResponse.json({ error: "Invalid data", details: parsed.error.format() }, { status: 400 });
     }
     

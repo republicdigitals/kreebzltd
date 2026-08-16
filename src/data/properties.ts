@@ -114,5 +114,19 @@ export async function getAdminPropertyById(id: string): Promise<Property | null>
   }
 }
 
+export async function getSavedPropertiesForUser(userId: string): Promise<Property[]> {
+  try {
+    const saved = await prisma.savedProperty.findMany({
+      where: { userId },
+      include: { property: { include: { media: true } } },
+      orderBy: { createdAt: "desc" }
+    });
+    return saved.map(s => mapPrismaProperty(s.property));
+  } catch (error) {
+    console.error("Failed to fetch saved properties for user", error);
+    return [];
+  }
+}
+
 // Keeping this as an empty array to prevent synchronous import errors if any components still use it.
 export const properties: Property[] = [];

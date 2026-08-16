@@ -110,7 +110,7 @@ export default function SearchModal({
                     <p className="text-white/80 uppercase text-[12px] tracking-[0.2em]">Lagos</p>
                   </div>
 
-                  <div className="flex flex-col justify-center gap-4 md:gap-8 mt-auto md:mt-0 max-h-[70vh] overflow-y-auto location-scrollbar pr-4">
+                  <div data-lenis-prevent="true" onWheel={(e) => e.stopPropagation()} className="flex flex-col justify-center gap-4 md:gap-8 mt-auto md:mt-0 max-h-[70vh] overflow-y-auto location-scrollbar pr-4">
                     {safeNeighbourhoods.map((child, i) => (
                       <motion.button
                         key={child.id}

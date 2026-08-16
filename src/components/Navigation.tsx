@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Search, ArrowRight } from "lucide-react";
+import { Search, ArrowRight, Heart, User } from "lucide-react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { AnimatePresence, motion } from "framer-motion";
@@ -74,35 +74,58 @@ export default function Navigation() {
     <>
       <header
         ref={headerRef}
-        className={`fixed top-0 left-0 right-0 z-[60] transition-all duration-700 ${
-          isScrolled && !menuOpen ? "bg-obsidian/90 backdrop-blur-md" : "bg-transparent"
+        className={`fixed top-0 left-0 right-0 z-[60] transition-all duration-700 flex flex-col ${
+          isScrolled && !menuOpen ? "bg-obsidian/95 backdrop-blur-md" : "bg-transparent"
         }`}
       >
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-12 relative z-10">
-          <div className="flex items-center justify-between h-24 md:h-28">
-            {/* Left: Mobile Menu Toggle & Desktop Primary Links */}
-            <div className="flex-1 flex items-center">
+        {/* Top Tier: Desktop Utilities */}
+        <div className="hidden md:flex justify-end items-center px-6 lg:px-12 h-10 border-b border-white/10 gap-8 eyebrow text-[9px] tracking-[0.15em] text-off-white/70">
+          <Link href="/account/saved" className="flex items-center gap-2 hover:text-gold transition-colors">
+            <Heart size={12} strokeWidth={2} /> FAVORITES
+          </Link>
+          <Link href="/login" className="flex items-center gap-2 hover:text-gold transition-colors">
+            <User size={12} strokeWidth={2} /> ACCOUNT
+          </Link>
+        </div>
+
+        {/* Top Tier: Mobile Utilities */}
+        <div className="md:hidden flex justify-between items-center px-6 h-10 border-b border-white/10 eyebrow text-[9px] tracking-[0.15em] text-off-white/70">
+          <Link href="/login" className="flex items-center gap-2 hover:text-gold transition-colors">
+            <User size={12} strokeWidth={2} /> ACCOUNT
+          </Link>
+          <Link href="/account/saved" className="flex items-center hover:text-gold transition-colors">
+            <Heart size={14} strokeWidth={2} />
+          </Link>
+        </div>
+
+        {/* Bottom Tier: Main Nav */}
+        <div className="max-w-[1400px] w-full mx-auto px-6 lg:px-12 relative z-10">
+          <div className="flex items-center justify-between h-[72px] md:h-20">
+            {/* Left: Hamburger (Mobile) / Primary Links (Desktop) */}
+            <div className="flex-1 flex items-center gap-6">
               <button
                 onClick={() => setMenuOpen(!menuOpen)}
                 className="md:hidden group flex items-center gap-4 text-off-white hover:text-gold active:scale-[0.95] transition-all duration-300 eyebrow"
                 aria-label="Toggle menu"
               >
-                <div className="relative w-8 h-2 flex flex-col justify-between">
-                  <span className={`block h-[1px] bg-current transition-all duration-500 absolute w-full ${menuOpen ? "rotate-45 top-1" : "top-0"}`} />
-                  <span className={`block h-[1px] bg-current transition-all duration-500 absolute w-full ${menuOpen ? "-rotate-45 top-1" : "top-2"}`} />
+                <div className="relative w-6 h-3 flex flex-col justify-between">
+                  <span className={`block h-[1px] bg-current transition-all duration-500 absolute w-full ${menuOpen ? "rotate-45 top-1.5" : "top-0"}`} />
+                  <span className={`block h-[1px] bg-current transition-all duration-500 absolute w-full ${menuOpen ? "-rotate-45 top-1.5" : "top-3"}`} />
                 </div>
               </button>
 
               <div className="hidden md:flex items-center gap-8">
-                {primaryLinks.map((link) => (
-                  <Link
-                    key={link.label}
-                    href={link.href}
-                    className="eyebrow text-[10px] tracking-[0.2em] text-off-white/80 hover:text-gold transition-colors duration-300"
-                  >
-                    {link.label}
-                  </Link>
-                ))}
+                <Link
+                  href="/properties"
+                  onClick={() => setMenuOpen(false)}
+                  className="text-off-white hover:text-gold active:scale-[0.95] transition-all duration-300"
+                  aria-label="Search properties"
+                >
+                  <Search size={16} strokeWidth={1.5} />
+                </Link>
+                <Link href="/properties?intent=buy" className="eyebrow text-[10px] tracking-[0.2em] text-off-white hover:text-gold transition-colors duration-300">BUY</Link>
+                <Link href="/properties?intent=rent" className="eyebrow text-[10px] tracking-[0.2em] text-off-white hover:text-gold transition-colors duration-300">RENT</Link>
+                <Link href="/sell" className="eyebrow text-[10px] tracking-[0.2em] text-off-white hover:text-gold transition-colors duration-300">SELL</Link>
               </div>
             </div>
 
@@ -120,36 +143,27 @@ export default function Navigation() {
                   width={96}
                   height={88}
                   priority
-                  className="h-16 w-auto md:h-20 object-contain"
+                  className="h-10 w-auto md:h-12 object-contain"
                 />
               </Link>
             </div>
 
-            {/* Right: Desktop Utility Links & Search */}
+            {/* Right: Search (Mobile) / Utilities (Desktop) */}
             <div className="flex justify-end flex-1 items-center gap-8">
-              <div className="hidden md:flex items-center gap-8">
-                {utilityLinks
-                  .filter((l) => l.label !== "HOME") // Avoid redundancy on navbar
-                  .map((link) => (
-                    <Link
-                      key={link.label}
-                      href={link.href}
-                      className="eyebrow text-[10px] tracking-[0.2em] text-off-white/80 hover:text-gold transition-colors duration-300"
-                    >
-                      {link.label}
-                    </Link>
-                  ))}
-              </div>
-
               <Link
                 href="/properties"
                 onClick={() => setMenuOpen(false)}
-                className="flex items-center gap-3 text-off-white hover:text-gold active:scale-[0.95] transition-all duration-300 eyebrow"
+                className="md:hidden text-off-white hover:text-gold active:scale-[0.95] transition-all duration-300"
                 aria-label="Search properties"
               >
-                <span className="hidden sm:block text-[10px] tracking-[0.2em]">SEARCH</span>
-                <Search size={16} strokeWidth={1.5} />
+                <Search size={18} strokeWidth={1.5} />
               </Link>
+
+              <div className="hidden md:flex items-center gap-8">
+                <Link href="/services" className="eyebrow text-[10px] tracking-[0.2em] text-off-white hover:text-gold transition-colors duration-300">DEVELOP</Link>
+                <Link href="/about" className="eyebrow text-[10px] tracking-[0.2em] text-off-white hover:text-gold transition-colors duration-300">ABOUT</Link>
+                <Link href="/contact" className="eyebrow text-[10px] tracking-[0.2em] text-off-white hover:text-gold transition-colors duration-300">CONTACT</Link>
+              </div>
             </div>
           </div>
         </div>
@@ -182,8 +196,8 @@ export default function Navigation() {
                       onClick={() => setMenuOpen(false)}
                       className="group flex items-center justify-between font-serif font-light text-[clamp(32px,10vw,80px)] text-off-white hover:text-gold active:scale-[0.98] transition-all duration-300 leading-none"
                     >
-                      <span className="italic">{link.label}</span>
-                      <ArrowRight size={clampSize()} className="opacity-0 -translate-x-8 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-700" strokeWidth={1} />
+                      <span className={link.label === "SELL" ? "italic text-gold" : "italic"}>{link.label}</span>
+                      <ArrowRight className={`w-8 h-8 md:w-12 md:h-12 opacity-0 -translate-x-8 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-700 ${link.label === "SELL" ? "text-gold" : ""}`} strokeWidth={1} />
                     </Link>
                   </motion.div>
                 ))}
@@ -232,11 +246,3 @@ export default function Navigation() {
   );
 }
 
-// Helper for responsive arrow size in the huge menu
-function clampSize() {
-  if (typeof window !== "undefined") {
-    if (window.innerWidth < 768) return 32;
-    return 48;
-  }
-  return 32;
-}

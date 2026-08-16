@@ -37,6 +37,15 @@ export default function MediaUploader({ media, onChange }: MediaUploaderProps) {
 
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
+      
+      // Limit to 5MB
+      if (file.size > 5 * 1024 * 1024) {
+        setError(`File ${file.name} is too large. Maximum size is 5MB.`);
+        setIsUploading(false);
+        if (fileInputRef.current) fileInputRef.current.value = "";
+        return;
+      }
+
       const formData = new FormData();
       formData.append("file", file);
 
@@ -47,8 +56,14 @@ export default function MediaUploader({ media, onChange }: MediaUploaderProps) {
         });
 
         if (!response.ok) {
-          const data = await response.json();
-          throw new Error(data.error || "Upload failed");
+          let errorMessage = "Upload failed";
+          try {
+            const data = await response.json();
+            errorMessage = data.error || errorMessage;
+          } catch {
+            errorMessage = `Server error: ${response.status} ${response.statusText}`;
+          }
+          throw new Error(errorMessage);
         }
 
         const data = await response.json();
@@ -63,7 +78,7 @@ export default function MediaUploader({ media, onChange }: MediaUploaderProps) {
         });
       } catch (err) {
         console.error("Error uploading file:", err);
-        setError(err instanceof Error ? err.message : "Failed to upload one or more files.");
+        setError(err instanceof Error ? err.message : "Failed to upload one or more files. Please check your connection.");
       }
     }
 

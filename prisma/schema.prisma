@@ -41,6 +41,7 @@ model Property {
 
   publicationStatus PublicationStatus @default(DRAFT)
   media             PropertyMedia[]
+  savedBy           SavedProperty[]
 }
 
 model PropertyMedia {
@@ -92,4 +93,16 @@ model User {
   role      String   @default("ADMIN")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  savedProperties SavedProperty[]
+}
+
+model SavedProperty {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  propertyId String
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+
+  @@unique([userId, propertyId])
 }

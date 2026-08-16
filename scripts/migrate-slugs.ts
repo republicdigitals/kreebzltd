@@ -15,7 +15,7 @@ async function main() {
 
   for (const property of properties) {
     if (!property.slug) {
-      let baseSlug = generateSlug(property.id);
+      const baseSlug = generateSlug(property.id);
       let slug = baseSlug;
       let counter = 1;
       
