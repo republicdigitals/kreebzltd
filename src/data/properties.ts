@@ -1,7 +1,5 @@
-import type { Property as PrismaProperty } from "@prisma/client";
+import type { Property as PrismaProperty, PropertyMedia } from "@prisma/client";
 import prisma from "@/lib/prisma";
-import propertiesJson from "./properties.json";
-
 export interface PropertyRoom {
   heading: string;
   body: string;
@@ -23,43 +21,56 @@ export interface Property extends Omit<PrismaProperty, 'rooms' | 'floorPlans' | 
   rooms: PropertyRoom[];
   floorPlans: PropertyFloorPlan[] | null;
   principal: PropertyPrincipal;
+  media?: PropertyMedia[];
 }
 
 // Convert from Prisma to our typed object
-function mapPrismaProperty(p: PrismaProperty): Property {
+function mapPrismaProperty(p: PrismaProperty & { media?: PropertyMedia[] }): Property {
+  // Try to use the media relation if available
+  let computedImage = p.image;
+  let computedGallery = Array.isArray(p.gallery) ? p.gallery as string[] : [];
+  
+  if (p.media && p.media.length > 0) {
+    const cover = p.media.find(m => m.isCover) || p.media[0];
+    computedImage = cover.url;
+    computedGallery = p.media.filter(m => !m.isCover).map(m => m.url);
+  }
+
   return {
     ...p,
+    image: computedImage,
+    gallery: computedGallery,
     rooms: p.rooms as unknown as PropertyRoom[],
     floorPlans: p.floorPlans as unknown as PropertyFloorPlan[] | null,
     principal: p.principal as unknown as PropertyPrincipal,
+    media: p.media,
   };
 }
 
-export async function getProperties(): Promise<Property[]> {
-  let allProperties: Property[] = [];
+export async function getProperties(includeArchived = false): Promise<Property[]> {
   try {
-    const properties = await prisma.property.findMany();
-    allProperties = properties.map(mapPrismaProperty);
+    const properties = await prisma.property.findMany({
+      where: includeArchived ? {} : { publicationStatus: "PUBLISHED" },
+      include: { media: true }
+    });
+    return properties.map(mapPrismaProperty);
   } catch (error) {
-    console.warn("Prisma connection failed (database might be paused). Falling back to local JSON.", error);
-    allProperties = propertiesJson as unknown as Property[];
+    console.error("Failed to fetch properties from database", error);
+    return [];
   }
-  
-  // Safeguard: Remove any properties without complete valid data (e.g., missing public images) from public inventory
-  return allProperties.filter(p => p.image !== null && p.image !== undefined && p.image.trim() !== "");
 }
 
 export async function getProperty(id: string): Promise<Property | null> {
   try {
     const property = await prisma.property.findUnique({
-      where: { id }
+      where: { id },
+      include: { media: true }
     });
     if (!property) return null;
     return mapPrismaProperty(property);
   } catch (error) {
-    console.warn("Prisma connection failed (database might be paused). Falling back to local JSON.", error);
-    const p = (propertiesJson as unknown as Property[]).find(p => p.id === id);
-    return p || null;
+    console.error("Failed to fetch property from database", error);
+    return null;
   }
 }
 

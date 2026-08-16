@@ -10,7 +10,7 @@ export default function AdminLayout({
       <AdminSidebar />
       
       {/* Main Content */}
-      <main className="flex-1 overflow-auto bg-obsidian relative md:static pt-[72px] md:pt-0">
+      <main data-lenis-prevent className="flex-1 overflow-auto bg-obsidian relative md:static pt-[72px] md:pt-0">
         {children}
       </main>
     </div>

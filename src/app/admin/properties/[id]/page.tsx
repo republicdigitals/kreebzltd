@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { ArrowLeft, Save, Loader2 } from "lucide-react";
 import Link from "next/link";
+import MediaUploader, { MediaItem } from "@/components/admin/MediaUploader";
 
 const propertySchema = z.object({
   id: z.string().min(3, "ID must be at least 3 characters"),
@@ -24,6 +25,9 @@ const propertySchema = z.object({
   }),
   priceValue: z.coerce.number().min(0, "Must be a valid number"),
   description: z.string().min(10, "Description must be at least 10 characters"),
+  publicationStatus: z.enum(["DRAFT", "PUBLISHED", "ARCHIVED"], {
+    message: "Please select a valid publication status",
+  }),
 });
 
 type PropertyFormValues = z.infer<typeof propertySchema>;
@@ -35,6 +39,7 @@ export default function PropertyEditor() {
   const [loadingData, setLoadingData] = useState(!isNew);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [media, setMedia] = useState<MediaItem[]>([]);
 
   const {
     register,
@@ -55,6 +60,7 @@ export default function PropertyEditor() {
       type: "House",
       priceValue: 0,
       description: "",
+      publicationStatus: "DRAFT",
     }
   });
 
@@ -66,6 +72,9 @@ export default function PropertyEditor() {
           if (res.ok) {
             const data = await res.json();
             reset(data);
+            if (data.media) {
+              setMedia(data.media);
+            }
           } else {
             setError("Property not found");
           }
@@ -92,16 +101,17 @@ export default function PropertyEditor() {
         lng: 3.42,
         imagePlaceholder: "property-placeholder.jpg",
         image: null,
-        photoCount: 0,
+        photoCount: media.length,
         rooms: [],
         gallery: [],
         floorPlans: [],
+        media,
         principal: {
           name: "Admin User",
           title: "Kreebz Principal",
           phone: "+234 800 000 0000"
         }
-      } : data;
+      } : { ...data, media };
 
       const res = await fetch(url, {
         method,
@@ -206,7 +216,7 @@ export default function PropertyEditor() {
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-medium text-neutral-300">Status</label>
+            <label className="text-sm font-medium text-neutral-300">Listing Status</label>
             <select 
               {...register("status")} 
               className={`w-full bg-neutral-950 border ${errors.status ? 'border-red-500' : 'border-neutral-800 focus:border-white'} rounded-lg px-4 py-3 text-white transition-colors`}
@@ -216,6 +226,19 @@ export default function PropertyEditor() {
               <option value="Off-Plan">Off-Plan</option>
             </select>
             {errors.status && <p className="text-sm text-red-500">{errors.status.message}</p>}
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-neutral-300">Publication Status</label>
+            <select 
+              {...register("publicationStatus")} 
+              className={`w-full bg-neutral-950 border ${errors.publicationStatus ? 'border-red-500' : 'border-neutral-800 focus:border-white'} rounded-lg px-4 py-3 text-white transition-colors`}
+            >
+              <option value="DRAFT">Draft (Hidden)</option>
+              <option value="PUBLISHED">Published (Visible)</option>
+              <option value="ARCHIVED">Archived</option>
+            </select>
+            {errors.publicationStatus && <p className="text-sm text-red-500">{errors.publicationStatus.message}</p>}
           </div>
 
           <div className="space-y-2">
@@ -272,6 +295,10 @@ export default function PropertyEditor() {
             />
             {errors.description && <p className="text-sm text-red-500">{errors.description.message}</p>}
           </div>
+        </div>
+
+        <div className="pt-6 border-t border-neutral-800">
+          <MediaUploader media={media} onChange={setMedia} />
         </div>
 
         <div className="flex justify-end pt-4 border-t border-neutral-800">

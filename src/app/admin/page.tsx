@@ -6,11 +6,12 @@ export const dynamic = "force-dynamic";
 
 export default async function AdminDashboard() {
   const [properties, totalLeads] = await Promise.all([
-    getProperties(),
+    getProperties(true),
     prisma.lead.count(),
   ]);
-  const totalProperties = properties.length;
-  const totalValue = properties.reduce((acc, curr) => acc + curr.priceValue, 0);
+  const activeProperties = properties.filter(p => p.publicationStatus !== 'ARCHIVED');
+  const totalProperties = activeProperties.length;
+  const totalValue = activeProperties.reduce((acc, curr) => acc + curr.priceValue, 0);
   const formattedValue = new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",

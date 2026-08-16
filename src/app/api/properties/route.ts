@@ -3,13 +3,16 @@ import prisma from "@/lib/prisma";
 import type { Property } from "@prisma/client";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import { revalidateTag } from "next/cache";
 
 
 export const dynamic = "force-dynamic";
 
 export async function GET() {
   try {
-    const properties = await prisma.property.findMany();
+    const properties = await prisma.property.findMany({
+      include: { media: true }
+    });
     return NextResponse.json(properties);
   } catch (error) {
     console.error("Properties list error:", error instanceof Error ? error.message : "Unknown error");
@@ -39,19 +42,33 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Property ID already exists" }, { status: 409 });
     }
 
+    const { media, ...restData } = newProperty as any;
+    
     // Default Json structures
     const propertyData = {
-      ...newProperty,
-      gallery: newProperty.gallery || [],
-      rooms: newProperty.rooms || [],
-      floorPlans: newProperty.floorPlans || [],
-      principal: newProperty.principal || {}
+      ...restData,
+      gallery: restData.gallery || [],
+      rooms: restData.rooms || [],
+      floorPlans: restData.floorPlans || [],
+      principal: restData.principal || {},
+      media: media && Array.isArray(media) ? {
+        create: media.map((m: any) => ({
+          storageKey: m.storageKey || m.url,
+          url: m.url,
+          mimeType: "image/jpeg",
+          size: 0,
+          isCover: m.isCover,
+          order: m.order,
+        }))
+      } : undefined
     };
 
     const created = await prisma.property.create({
-      data: propertyData
+      data: propertyData,
+      include: { media: true }
     });
 
+    revalidateTag("properties", "default");
     return NextResponse.json(created, { status: 201 });
   } catch (error) {
     console.error("Property create error:", error instanceof Error ? error.message : "Unknown error");

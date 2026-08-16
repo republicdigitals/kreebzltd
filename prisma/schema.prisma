@@ -8,6 +8,12 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
+enum PublicationStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
 model Property {
   id               String   @id
   price            String
@@ -22,13 +28,33 @@ model Property {
   lat              Float
   lng              Float
   imagePlaceholder String
+  /// @deprecated Use PropertyMedia instead
   image            String?
   photoCount       Int
+  /// @deprecated Use PropertyMedia instead
   gallery          String[]
   description      String
   rooms            Json
   floorPlans       Json?
   principal        Json
+
+  publicationStatus PublicationStatus @default(DRAFT)
+  media             PropertyMedia[]
+}
+
+model PropertyMedia {
+  id         String   @id @default(cuid())
+  propertyId String
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  storageKey String
+  url        String
+  altText    String?
+  mimeType   String
+  size       Int
+  isCover    Boolean  @default(false)
+  order      Int      @default(0)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
 
 model Lead {
@@ -36,7 +62,7 @@ model Lead {
   name       String
   email      String
   phone      String?
-  interest   String   // "buying" | "renting" | "management" | "other" | "newsletter" | concierge types
+  interest   String // "buying" | "renting" | "management" | "other" | "newsletter" | concierge types
   message    String?
   propertyId String?
   status     String   @default("New") // "New" | "Contacted" | "Qualified" | "Lost"
@@ -45,16 +71,16 @@ model Lead {
 }
 
 model AgencySettings {
-  id              String  @id @default("singleton")
-  agencyName      String  @default("Kreebz Ltd")
-  agencyEmail     String  @default("hello@kreebzltd.com")
-  agencyPhone     String  @default("+234 806 994 9948")
-  agencyAddress   String  @default("")
-  principalName   String  @default("Michael Eugene")
-  principalTitle  String  @default("Key Principal")
-  notifyNewLeads  Boolean @default(true)
-  notifyEmail     String  @default("")
-  updatedAt       DateTime @updatedAt
+  id             String   @id @default("singleton")
+  agencyName     String   @default("Kreebz Ltd")
+  agencyEmail    String   @default("hello@kreebzltd.com")
+  agencyPhone    String   @default("+234 806 994 9948")
+  agencyAddress  String   @default("")
+  principalName  String   @default("Michael Eugene")
+  principalTitle String   @default("Key Principal")
+  notifyNewLeads Boolean  @default(true)
+  notifyEmail    String   @default("")
+  updatedAt      DateTime @updatedAt
 }
 
 model User {
