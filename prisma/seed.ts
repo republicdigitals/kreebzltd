@@ -15,6 +15,7 @@ async function main() {
       update: {},
       create: {
         id: p.id,
+        slug: p.slug ?? p.id.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, ''),
         price: p.price,
         address: p.address,
         neighbourhood: p.neighbourhood,
