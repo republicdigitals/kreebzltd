@@ -7,6 +7,11 @@ export default function AdminLayout({
 }>) {
   return (
     <div className="flex h-screen bg-obsidian text-off-white font-sans overflow-hidden">
+      <style dangerouslySetInnerHTML={{ __html: `
+        body, * { cursor: auto !important; }
+        a, button, [role="button"], input, select, textarea { cursor: pointer !important; }
+        input[type="text"], input[type="email"], input[type="password"], textarea { cursor: text !important; }
+      `}} />
       <AdminSidebar />
       
       {/* Main Content */}

@@ -19,6 +19,8 @@ export default function CustomCursor() {
   const cursorYSpring = useSpring(cursorY, springConfig);
 
   useEffect(() => {
+    document.body.classList.add("hide-native-cursor");
+
     const moveCursor = (e: MouseEvent) => {
       cursorX.set(e.clientX - 16);
       cursorY.set(e.clientY - 16);
@@ -28,6 +30,7 @@ export default function CustomCursor() {
 
     return () => {
       window.removeEventListener("mousemove", moveCursor);
+      document.body.classList.remove("hide-native-cursor");
     };
   }, [cursorX, cursorY]);
 
