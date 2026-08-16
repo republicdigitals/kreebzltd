@@ -15,7 +15,7 @@ export default function PropertyCard({
   const [favourited, setFavourited] = useState(false);
 
   return (
-    <Link href={`/property/${property.id}`} className="block group h-full active:scale-[0.98] transition-transform duration-300">
+    <Link href={`/property/${property.slug}`} className="block group h-full active:scale-[0.98] transition-transform duration-300">
       <article
         className="h-full flex flex-col overflow-hidden transition-all duration-700 bg-transparent hover:bg-obsidian-light"
       >

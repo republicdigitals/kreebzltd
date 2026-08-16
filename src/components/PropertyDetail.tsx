@@ -364,7 +364,7 @@ export default function PropertyDetail({ property }: { property: Property }) {
               <div className="w-full h-[1px] bg-border/30 my-8" />
               
               <a
-                href={`tel:${property.principal.phone.replace(/\s+/g, "")}`}
+                href={property.principal?.phone ? `tel:${property.principal.phone.replace(/\s+/g, "")}` : "#"}
                 className="block text-off-white hover:text-gold transition-colors font-sans tracking-[0.1em] text-[14px]"
               >
                 {property.principal.phone}

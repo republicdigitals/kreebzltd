@@ -1,6 +1,6 @@
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import PropertyDetail from "@/components/PropertyDetail";
-import { getPublishedPropertyById } from "@/data/properties";
+import { getPublishedPropertyById, getPublishedPropertyBySlug } from "@/data/properties";
 
 import { Metadata } from "next";
 
@@ -9,10 +9,15 @@ export const dynamic = "force-dynamic";
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-  const { id } = await params;
-  const property = await getPublishedPropertyById(id);
+  const { slug } = await params;
+  const decodedSlug = decodeURIComponent(slug);
+  
+  let property = await getPublishedPropertyBySlug(decodedSlug);
+  if (!property) {
+    property = await getPublishedPropertyById(decodedSlug);
+  }
 
   if (!property) {
     return {
@@ -34,12 +39,19 @@ export async function generateMetadata({
 export default async function PropertyPage({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: Promise<{ slug: string }>;
 }) {
-  const { id } = await params;
-  const property = await getPublishedPropertyById(id);
+  const { slug } = await params;
+  const decodedSlug = decodeURIComponent(slug);
+  
+  const property = await getPublishedPropertyBySlug(decodedSlug);
 
   if (!property) {
+    // Try to find by legacy ID and redirect
+    const legacyProperty = await getPublishedPropertyById(decodedSlug);
+    if (legacyProperty) {
+      redirect(`/property/${legacyProperty.slug}`);
+    }
     notFound();
   }
 

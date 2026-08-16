@@ -74,6 +74,20 @@ export async function getPublishedPropertyById(id: string): Promise<Property | n
   }
 }
 
+export async function getPublishedPropertyBySlug(slug: string): Promise<Property | null> {
+  try {
+    const property = await prisma.property.findFirst({
+      where: { slug, publicationStatus: "PUBLISHED" },
+      include: { media: true }
+    });
+    if (!property) return null;
+    return mapPrismaProperty(property);
+  } catch (error) {
+    console.error("Failed to fetch published property by slug", error);
+    return null;
+  }
+}
+
 export async function getAdminProperties(): Promise<Property[]> {
   try {
     const properties = await prisma.property.findMany({

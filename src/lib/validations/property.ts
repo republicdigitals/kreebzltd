@@ -12,6 +12,9 @@ export const mediaMutationSchema = z.object({
 
 export const createPropertySchema = z.object({
   id: z.string().min(1, "ID is required"),
+  slug: z.string()
+    .min(1, "Slug is required")
+    .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Slug must contain only lowercase letters, numbers, and hyphens"),
   price: z.string().min(1, "Price is required"),
   address: z.string().min(1, "Address is required"),
   neighbourhood: z.string().default(""),

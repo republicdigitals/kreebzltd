@@ -33,6 +33,12 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json();
+    
+    // Auto-generate slug from ID if not provided
+    if (!body.slug && body.id) {
+      body.slug = body.id.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+    }
+
     const parsed = createPropertySchema.safeParse(body);
     
     if (!parsed.success) {

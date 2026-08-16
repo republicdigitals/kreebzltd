@@ -16,6 +16,7 @@ enum PublicationStatus {
 
 model Property {
   id               String   @id
+  slug             String   @unique
   price            String
   address          String
   neighbourhood    String

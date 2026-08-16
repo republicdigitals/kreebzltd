@@ -112,7 +112,7 @@ export default function FeaturedProperties({ properties }: { properties: Propert
                   key={property.id}
                   className="relative flex-[0_0_100%] md:flex-[0_0_50%] lg:flex-[0_0_33.333333%] min-w-0 pl-4 md:pl-8"
                 >
-                  <Link href={`/property/${property.id}`} className="block w-full aspect-[4/5] sm:aspect-[3/4] group relative overflow-hidden rounded-sm" draggable={false}>
+                  <Link href={`/property/${property.slug}`} className="block w-full aspect-[4/5] sm:aspect-[3/4] group relative overflow-hidden rounded-sm" draggable={false}>
                     {property.image ? (
                       <Image
                         src={property.image}
