@@ -27,7 +27,8 @@ async function testRoute(url: string, expectedStatus: number, name: string) {
       console.log(`❌ FAIL: ${name} (${url}) -> Expected ${expectedStatus}, got ${res.status}`);
     }
   } catch (err) {
-    console.log(`❌ ERROR: ${name} (${url}) -> ${err.message}`);
+    const message = err instanceof Error ? err.message : String(err);
+    console.log(`❌ ERROR: ${name} (${url}) -> ${message}`);
   }
 }
 
