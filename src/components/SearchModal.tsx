@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { X, ArrowRight } from "lucide-react";
@@ -27,31 +27,40 @@ export default function SearchModal({
   neighbourhoods,
 }: SearchModalProps) {
   // Fallback to prevent crash if array is empty
-  const safeNeighbourhoods = neighbourhoods?.length > 0 ? neighbourhoods : [
-    { id: "ikoyi", name: "Ikoyi", image: "/images/hero-placeholder.jpg" }
-  ];
+  const safeNeighbourhoods = useMemo(() => {
+    return neighbourhoods?.length > 0 ? neighbourhoods : [
+      { id: "ikoyi", name: "Ikoyi", image: "/images/hero-placeholder.jpg" }
+    ];
+  }, [neighbourhoods]);
 
   const [hoveredId, setHoveredId] = useState<string>(safeNeighbourhoods[0].id);
+  const [prevIsOpen, setPrevIsOpen] = useState(isOpen);
 
-  // Reset hover state when opened
-  useEffect(() => {
+  // Reset hover state when opened (update during render to avoid effect cascading)
+  if (isOpen !== prevIsOpen) {
+    setPrevIsOpen(isOpen);
     if (isOpen) {
       setHoveredId(safeNeighbourhoods[0].id);
     }
-  }, [isOpen, safeNeighbourhoods]);
+  }
 
   const displayedImage = safeNeighbourhoods.find(n => n.id === hoveredId)?.image || safeNeighbourhoods[0].image;
 
   // Responsive font size calculation logic for arrow
   const [windowWidth, setWindowWidth] = useState(0);
   useEffect(() => {
-    setWindowWidth(window.innerWidth);
     const handleResize = () => setWindowWidth(window.innerWidth);
+    // Use timeout to avoid synchronous setState inside effect
+    const timer = setTimeout(handleResize, 0);
     window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
   
   const clampSize = () => {
+    if (windowWidth === 0) return 40; // Default SSR
     if (windowWidth < 768) return 24;
     return 40; 
   };

@@ -31,11 +31,24 @@ export default function FloorPlanViewer({
 
   const activePlan = floorPlans[activeIndex];
 
+  const zoom = useCallback((delta: number) => {
+    setScale((s) => {
+      const nextScale = Math.min(MAX_SCALE, Math.max(MIN_SCALE, s + delta));
+      if (nextScale <= MIN_SCALE) {
+        setOffset({ x: 0, y: 0 });
+      }
+      return nextScale;
+    });
+  }, []);
+
   // Reset transform when lightbox opens or plan changes
-  useEffect(() => {
+  const [prevResetTrigger, setPrevResetTrigger] = useState(`${lightboxOpen}-${activeIndex}`);
+  const currentResetTrigger = `${lightboxOpen}-${activeIndex}`;
+  if (currentResetTrigger !== prevResetTrigger) {
+    setPrevResetTrigger(currentResetTrigger);
     setScale(1);
     setOffset({ x: 0, y: 0 });
-  }, [lightboxOpen, activeIndex]);
+  }
 
   // Keyboard shortcuts
   useEffect(() => {
@@ -48,7 +61,7 @@ export default function FloorPlanViewer({
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [lightboxOpen, scale]);
+  }, [lightboxOpen, scale, zoom]);
 
   // Lock body scroll when lightbox is open
   useEffect(() => {
@@ -59,11 +72,6 @@ export default function FloorPlanViewer({
     }
     return () => { document.body.style.overflow = ""; };
   }, [lightboxOpen]);
-
-  const zoom = useCallback((delta: number) => {
-    setScale((s) => Math.min(MAX_SCALE, Math.max(MIN_SCALE, s + delta)));
-    if (scale + delta <= MIN_SCALE) setOffset({ x: 0, y: 0 });
-  }, [scale]);
 
   // ── Mouse drag ───────────────────────────────────────────────
   const onMouseDown = (e: React.MouseEvent) => {

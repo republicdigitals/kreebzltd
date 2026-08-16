@@ -3,6 +3,9 @@ import prisma from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { revalidateTag } from "next/cache";
+import { updatePropertySchema } from "@/lib/validations/property";
+import { syncPropertyMedia, deletePropertyWithMedia } from "@/lib/services/property-media";
+import { getAdminPropertyById } from "@/data/properties";
 
 
 export const dynamic = "force-dynamic";
@@ -12,11 +15,13 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const session = await getServerSession(authOptions);
+    if (!session) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const { id } = await params;
-    const property = await prisma.property.findUnique({
-      where: { id },
-      include: { media: true }
-    });
+    const property = await getAdminPropertyById(id);
     
     if (!property) {
       return NextResponse.json({ error: "Property not found" }, { status: 404 });
@@ -41,23 +46,15 @@ export async function PUT(
 
     const { id } = await params;
     const body = await request.json();
+    const parsed = updatePropertySchema.safeParse(body);
     
-    // Whitelist: only allow these fields to be updated via the API
-    const allowedFields = [
-      "price", "address", "neighbourhood", "city",
-      "beds", "baths", "status", "type", "priceValue",
-      "description", "image", "gallery", "photoCount",
-      "rooms", "floorPlans", "publicationStatus", "media"
-    ] as const;
-
-    const updatedData: Record<string, unknown> = {};
-    for (const key of allowedFields) {
-      if (key in body && key !== 'media') {
-        updatedData[key] = body[key];
-      }
+    if (!parsed.success) {
+      return NextResponse.json({ error: "Invalid data", details: parsed.error.format() }, { status: 400 });
     }
+    
+    const { media, ...updatedData } = parsed.data;
 
-    if (Object.keys(updatedData).length === 0 && !body.media) {
+    if (Object.keys(updatedData).length === 0 && !media) {
       return NextResponse.json({ error: "No valid fields to update" }, { status: 400 });
     }
 
@@ -74,41 +71,8 @@ export async function PUT(
       data: updatedData
     });
 
-    if (body.media && Array.isArray(body.media)) {
-      // Very basic media sync:
-      // Delete missing ones, create/update remaining
-      const currentMediaIds = body.media.map((m: any) => m.id);
-      
-      // Delete ones not in the payload
-      await prisma.propertyMedia.deleteMany({
-        where: {
-          propertyId: id,
-          id: { notIn: currentMediaIds }
-        }
-      });
-      
-      // Update or create ones in payload
-      for (const m of body.media) {
-        const payloadData = {
-          propertyId: id,
-          storageKey: m.storageKey || m.url,
-          url: m.url,
-          mimeType: "image/jpeg",
-          size: 0,
-          isCover: m.isCover,
-          order: m.order,
-        };
-        
-        if (m.isNew) {
-          // New objects are marked with "temp-" id from the UI, so we strip it.
-          await prisma.propertyMedia.create({ data: payloadData });
-        } else {
-          await prisma.propertyMedia.update({
-            where: { id: m.id },
-            data: payloadData
-          });
-        }
-      }
+    if (media && Array.isArray(media)) {
+      await syncPropertyMedia(id, media);
     }
 
     revalidateTag("properties", "default");
@@ -149,9 +113,7 @@ export async function DELETE(
     }
 
     // Hard delete if already archived
-    await prisma.property.delete({
-      where: { id }
-    });
+    await deletePropertyWithMedia(id);
 
     revalidateTag("properties", "default");
     return new NextResponse(null, { status: 204 });

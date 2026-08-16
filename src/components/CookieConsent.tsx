@@ -43,7 +43,7 @@ export default function CookieConsent() {
           
           <h3 className="font-serif text-white text-lg mb-2">We value your privacy</h3>
           <p className="text-white/60 text-sm font-light leading-relaxed mb-6">
-            We use cookies to enhance your browsing experience, serve personalized content, and analyze our traffic. By clicking "Accept", you consent to our use of cookies as described in our <Link href="/privacy" className="text-gold hover:underline">Privacy Policy</Link>.
+            We use cookies to enhance your browsing experience, serve personalized content, and analyze our traffic. By clicking &quot;Accept&quot;, you consent to our use of cookies as described in our <Link href="/privacy" className="text-gold hover:underline">Privacy Policy</Link>.
           </p>
           
           <div className="flex gap-4">

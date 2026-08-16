@@ -90,7 +90,7 @@ export default function PropertyDetail({ property }: { property: Property }) {
 
       // Room reveals
       const rooms = gsap.utils.toArray('.room-section') as HTMLElement[];
-      rooms.forEach((room, i) => {
+      rooms.forEach((room) => {
         gsap.from(room, {
           scrollTrigger: {
             trigger: room,

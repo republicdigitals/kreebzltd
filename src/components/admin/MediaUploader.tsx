@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { Upload, X, Loader2, GripVertical, Star } from "lucide-react";
+import { Upload, X, Loader2, Star } from "lucide-react";
 import Image from "next/image";
 
 export interface MediaItem {

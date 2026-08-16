@@ -5,12 +5,12 @@ import HowItWorks from "@/components/HowItWorks";
 import CaseStudies from "@/components/CaseStudies";
 import Testimonials from "@/components/Testimonials";
 import FAQ from "@/components/FAQ";
-import { getProperties } from "@/data/properties";
+import { getPublishedProperties } from "@/data/properties";
 
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const properties = await getProperties();
+  const properties = await getPublishedProperties();
   
   return (
     <div className="bg-obsidian">

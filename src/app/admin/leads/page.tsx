@@ -34,22 +34,47 @@ export default function LeadsPage() {
   const [search, setSearch] = useState("");
   const [updatingId, setUpdatingId] = useState<string | null>(null);
 
-  const fetchLeads = useCallback(async () => {
-    setLoading(true);
-    setError(null);
+  const loadLeads = useCallback(async () => {
     try {
       const res = await fetch("/api/leads", { credentials: "same-origin" });
       if (!res.ok) throw new Error(`${res.status}`);
       const data = await res.json();
+      return data;
+    } catch (err) {
+      throw err;
+    }
+  }, []);
+
+  const fetchLeads = useCallback(async () => {
+    try {
+      const data = await loadLeads();
       setLeads(data);
+      setError(null);
     } catch (err) {
       setError(`Failed to load leads. ${err}`);
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [loadLeads]);
 
-  useEffect(() => { fetchLeads(); }, [fetchLeads]);
+  useEffect(() => {
+    loadLeads()
+      .then(data => {
+        setLeads(data);
+        setError(null);
+        setLoading(false);
+      })
+      .catch(err => {
+        setError(`Failed to load leads. ${err}`);
+        setLoading(false);
+      });
+  }, [loadLeads]);
+
+  const handleRefresh = () => {
+    setLoading(true);
+    setError(null);
+    fetchLeads();
+  };
 
   const updateStatus = async (id: string, status: string) => {
     setUpdatingId(id);
@@ -105,7 +130,7 @@ export default function LeadsPage() {
           </p>
         </div>
         <button
-          onClick={fetchLeads}
+          onClick={handleRefresh}
           disabled={loading}
           className="flex items-center justify-center gap-2 px-4 py-2 text-sm text-muted hover:text-off-white border border-border hover:border-gold rounded-none transition-colors disabled:opacity-40 w-full sm:w-auto"
         >

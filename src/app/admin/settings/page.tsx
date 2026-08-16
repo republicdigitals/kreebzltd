@@ -38,32 +38,38 @@ export default function SettingsPage() {
     notifyEmail: "",
   });
 
-  const fetchSettings = useCallback(async () => {
-    setLoading(true);
-    setError(null);
+  const loadSettings = useCallback(async () => {
     try {
       const res = await fetch("/api/settings", { credentials: "same-origin" });
       if (!res.ok) throw new Error(`${res.status}`);
       const data: AgencySettings = await res.json();
-      setSettings(data);
-      setForm({
-        agencyName: data.agencyName,
-        agencyEmail: data.agencyEmail,
-        agencyPhone: data.agencyPhone,
-        agencyAddress: data.agencyAddress,
-        principalName: data.principalName,
-        principalTitle: data.principalTitle,
-        notifyNewLeads: data.notifyNewLeads,
-        notifyEmail: data.notifyEmail,
-      });
+      return data;
     } catch (err) {
-      setError(`Failed to load settings. ${err}`);
-    } finally {
-      setLoading(false);
+      throw err;
     }
   }, []);
 
-  useEffect(() => { fetchSettings(); }, [fetchSettings]);
+  useEffect(() => {
+    loadSettings()
+      .then(data => {
+        setSettings(data);
+        setForm({
+          agencyName: data.agencyName,
+          agencyEmail: data.agencyEmail,
+          agencyPhone: data.agencyPhone,
+          agencyAddress: data.agencyAddress,
+          principalName: data.principalName,
+          principalTitle: data.principalTitle,
+          notifyNewLeads: data.notifyNewLeads,
+          notifyEmail: data.notifyEmail,
+        });
+        setLoading(false);
+      })
+      .catch(err => {
+        setError(`Failed to load settings. ${err}`);
+        setLoading(false);
+      });
+  }, [loadSettings]);
 
   const handleSave = async () => {
     setSaveState("saving");

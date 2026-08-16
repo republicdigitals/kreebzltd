@@ -2,7 +2,7 @@ import { Suspense } from "react";
 import type { Metadata } from "next";
 import { PropertyFilterProvider } from "@/components/PropertyFilterProvider";
 import PropertiesClient from "@/components/PropertiesClient";
-import { getProperties } from "@/data/properties";
+import { getPublishedProperties } from "@/data/properties";
 
 export const metadata: Metadata = {
   title: "Properties | Kreebz Limited",
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 export const dynamic = "force-dynamic";
 
 export default async function PropertiesPage() {
-  const properties = await getProperties();
+  const properties = await getPublishedProperties();
   
   return (
     <Suspense>

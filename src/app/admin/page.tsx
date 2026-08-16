@@ -1,4 +1,4 @@
-import { getProperties } from "@/data/properties";
+import { getAdminProperties, Property } from "@/data/properties";
 import { ArrowUpRight, Building2, TrendingUp, Users } from "lucide-react";
 import prisma from "@/lib/prisma";
 
@@ -6,12 +6,12 @@ export const dynamic = "force-dynamic";
 
 export default async function AdminDashboard() {
   const [properties, totalLeads] = await Promise.all([
-    getProperties(true),
+    getAdminProperties(),
     prisma.lead.count(),
   ]);
-  const activeProperties = properties.filter(p => p.publicationStatus !== 'ARCHIVED');
+  const activeProperties = properties.filter((p: Property) => p.publicationStatus !== 'ARCHIVED');
   const totalProperties = activeProperties.length;
-  const totalValue = activeProperties.reduce((acc, curr) => acc + curr.priceValue, 0);
+  const totalValue = activeProperties.reduce((acc: number, curr: Property) => acc + curr.priceValue, 0);
   const formattedValue = new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",

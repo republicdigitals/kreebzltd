@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import PropertyDetail from "@/components/PropertyDetail";
-import { getProperties, getProperty } from "@/data/properties";
+import { getPublishedPropertyById } from "@/data/properties";
 
 import { Metadata } from "next";
 
@@ -12,7 +12,7 @@ export async function generateMetadata({
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
   const { id } = await params;
-  const property = await getProperty(id);
+  const property = await getPublishedPropertyById(id);
 
   if (!property) {
     return {
@@ -37,7 +37,7 @@ export default async function PropertyPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const property = await getProperty(id);
+  const property = await getPublishedPropertyById(id);
 
   if (!property) {
     notFound();

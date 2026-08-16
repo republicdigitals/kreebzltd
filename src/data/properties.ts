@@ -47,20 +47,46 @@ function mapPrismaProperty(p: PrismaProperty & { media?: PropertyMedia[] }): Pro
   };
 }
 
-export async function getProperties(includeArchived = false): Promise<Property[]> {
+export async function getPublishedProperties(): Promise<Property[]> {
   try {
     const properties = await prisma.property.findMany({
-      where: includeArchived ? {} : { publicationStatus: "PUBLISHED" },
+      where: { publicationStatus: "PUBLISHED" },
       include: { media: true }
     });
     return properties.map(mapPrismaProperty);
   } catch (error) {
-    console.error("Failed to fetch properties from database", error);
+    console.error("Failed to fetch published properties from database", error);
     return [];
   }
 }
 
-export async function getProperty(id: string): Promise<Property | null> {
+export async function getPublishedPropertyById(id: string): Promise<Property | null> {
+  try {
+    const property = await prisma.property.findUnique({
+      where: { id, publicationStatus: "PUBLISHED" },
+      include: { media: true }
+    });
+    if (!property) return null;
+    return mapPrismaProperty(property);
+  } catch (error) {
+    console.error("Failed to fetch published property from database", error);
+    return null;
+  }
+}
+
+export async function getAdminProperties(): Promise<Property[]> {
+  try {
+    const properties = await prisma.property.findMany({
+      include: { media: true }
+    });
+    return properties.map(mapPrismaProperty);
+  } catch (error) {
+    console.error("Failed to fetch admin properties from database", error);
+    return [];
+  }
+}
+
+export async function getAdminPropertyById(id: string): Promise<Property | null> {
   try {
     const property = await prisma.property.findUnique({
       where: { id },
@@ -69,7 +95,7 @@ export async function getProperty(id: string): Promise<Property | null> {
     if (!property) return null;
     return mapPrismaProperty(property);
   } catch (error) {
-    console.error("Failed to fetch property from database", error);
+    console.error("Failed to fetch admin property from database", error);
     return null;
   }
 }

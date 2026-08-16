@@ -34,12 +34,6 @@ export const metadata: Metadata = {
   },
 };
 
-import { LenisProvider } from "@/components/LenisProvider";
-import FilmGrain from "@/components/FilmGrain";
-import CustomCursor from "@/components/CustomCursor";
-import ConciergeUX from "@/components/ConciergeUX";
-import CookieConsent from "@/components/CookieConsent";
-import StickyMobileCTA from "@/components/StickyMobileCTA";
 import Script from "next/script";
 
 export default function RootLayout({
@@ -91,14 +85,7 @@ export default function RootLayout({
           }}
         />
 
-        <LenisProvider>
-          {children}
-        </LenisProvider>
-        <FilmGrain />
-        <CustomCursor />
-        <ConciergeUX />
-        <CookieConsent />
-        <StickyMobileCTA />
+        {children}
       </body>
     </html>
   );
