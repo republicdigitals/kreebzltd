@@ -82,7 +82,7 @@ export default function ConciergePage() {
                 A principal from Kreebz Limited will review your requirements and contact you shortly with curated options.
               </p>
               <Button 
-                variant="outline" 
+                variant="secondary" 
                 onClick={() => router.push("/properties")}
                 className="mt-8"
               >
