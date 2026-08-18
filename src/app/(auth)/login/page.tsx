@@ -31,8 +31,8 @@ export default function LoginPage() {
     } else {
       // Refresh the router to let Next.js re-fetch the session
       router.refresh();
-      // Role-based redirection is usually handled by middleware, but we can do a fallback
-      router.push("/properties");
+      // Route directly to the user's account dashboard
+      router.push("/account");
     }
   };
 

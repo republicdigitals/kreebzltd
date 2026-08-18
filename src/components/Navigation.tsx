@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { Search, ArrowRight, Heart, User } from "lucide-react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
@@ -61,6 +62,9 @@ export default function Navigation() {
 
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const { data: session } = useSession();
+
+  const accountLink = session ? "/account" : "/login";
 
   const isLinkActive = (href: string) => {
     if (!pathname) return false;
@@ -114,14 +118,14 @@ export default function Navigation() {
           <Link href="/account/saved" className="flex items-center gap-2 hover:text-gold transition-colors">
             <Heart size={12} strokeWidth={2} /> FAVORITES
           </Link>
-          <Link href="/login" className="flex items-center gap-2 hover:text-gold transition-colors">
+          <Link href={accountLink} className="flex items-center gap-2 hover:text-gold transition-colors">
             <User size={12} strokeWidth={2} /> ACCOUNT
           </Link>
         </div>
 
         {/* Top Tier: Mobile Utilities */}
         <div className="md:hidden flex justify-between items-center px-6 h-10 border-b border-white/10 eyebrow text-[9px] tracking-[0.15em] text-off-white/70">
-          <Link href="/login" className="flex items-center gap-2 hover:text-gold transition-colors">
+          <Link href={accountLink} className="flex items-center gap-2 hover:text-gold transition-colors">
             <User size={12} strokeWidth={2} /> ACCOUNT
           </Link>
           <Link href="/account/saved" className="flex items-center hover:text-gold transition-colors">

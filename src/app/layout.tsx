@@ -35,6 +35,7 @@ export const metadata: Metadata = {
 };
 
 import Script from "next/script";
+import AppProviders from "@/components/AppProviders";
 
 export default function RootLayout({
   children,
@@ -84,8 +85,9 @@ export default function RootLayout({
             `,
           }}
         />
-
-        {children}
+        <AppProviders>
+          {children}
+        </AppProviders>
       </body>
     </html>
   );

@@ -38,6 +38,7 @@ const basePropertySchema = z.object({
   media: z.array(mediaMutationSchema).optional()
 });
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const publicationRefinement = (data: any, ctx: z.RefinementCtx) => {
   if (data.publicationStatus === "PUBLISHED") {
     if (!data.price || data.price.trim() === "") {

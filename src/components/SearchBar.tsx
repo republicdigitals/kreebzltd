@@ -37,10 +37,11 @@ export default function SearchBar({
   }, [localQuery, filters.query, setFilter]);
 
   useEffect(() => {
-    if (filters.query !== localQuery && filters.query === "") {
+    if (filters.query === "" && localQuery !== "") {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setLocalQuery("");
     }
-  }, [filters.query]);
+  }, [filters.query, localQuery]);
 
   useEffect(() => {
     if (!showChip) searchRef.current?.focus();

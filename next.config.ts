@@ -16,6 +16,7 @@ const nextConfig: NextConfig = {
         hostname: "images.unsplash.com",
       },
     ],
+    qualities: [25, 50, 75, 90, 100],
   },
   turbopack: {
     root: process.cwd(),

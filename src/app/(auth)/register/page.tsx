@@ -45,7 +45,7 @@ export default function RegisterPage() {
         setLoading(false);
       } else {
         router.refresh();
-        router.push("/properties");
+        router.push("/account");
       }
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "An unexpected error occurred");

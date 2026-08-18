@@ -1,5 +1,3 @@
-import { Search, Map, List, ChevronDown } from "lucide-react";
-
 export default function PropertiesLoading() {
   return (
     <div className="bg-obsidian pt-28 md:pt-[120px] flex flex-col min-h-screen">

@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import Navigation from "@/components/Navigation";
-import AppProviders from "@/components/AppProviders";
+
 import Footer from "@/components/Footer";
 import PageTransition from "@/components/PageTransition";
 import { LenisProvider } from "@/components/LenisProvider";
@@ -15,20 +15,18 @@ export default function MainLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <AppProviders>
-      <LenisProvider>
-        <Suspense fallback={null}>
-          <Navigation />
-        </Suspense>
-        <main className="flex-1">
-          <PageTransition>{children}</PageTransition>
-        </main>
-        <Footer />
-        <FilmGrain />
-        <CustomCursor />
-        <ConciergeUX />
-        <CookieConsent />
-      </LenisProvider>
-    </AppProviders>
+    <LenisProvider>
+      <Suspense fallback={null}>
+        <Navigation />
+      </Suspense>
+      <main className="flex-1">
+        <PageTransition>{children}</PageTransition>
+      </main>
+      <Footer />
+      <FilmGrain />
+      <CustomCursor />
+      <ConciergeUX />
+      <CookieConsent />
+    </LenisProvider>
   );
 }

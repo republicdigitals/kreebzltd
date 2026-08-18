@@ -13,10 +13,10 @@ export default function SavedClient({ initialProperties }: { initialProperties: 
   const displayProperties = initialProperties.filter(p => savedIds.has(p.id));
 
   return (
-    <div className="pt-32 pb-24 px-6 md:px-12 max-w-[1600px] mx-auto min-h-screen">
-      <div className="mb-12">
-        <h1 className="text-4xl md:text-5xl font-serif font-light text-off-white mb-4">Saved Properties</h1>
-        <p className="text-muted text-sm tracking-wide max-w-xl">
+    <div className="space-y-8">
+      <div>
+        <h2 className="font-serif text-3xl text-off-white font-light mb-2">Saved Portfolio</h2>
+        <p className="text-muted text-sm tracking-wide">
           Your curated collection of premium real estate. Return here to review your favorite properties or contact our concierge when you&apos;re ready to arrange a private viewing.
         </p>
       </div>
