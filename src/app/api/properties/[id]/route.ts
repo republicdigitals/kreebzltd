@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-import { revalidateTag } from "next/cache";
+import { revalidateTag, revalidatePath } from "next/cache";
 import { updatePropertySchema } from "@/lib/validations/property";
 import { syncPropertyMedia, deletePropertyWithMedia } from "@/lib/services/property-media";
 import { getAdminPropertyById } from "@/data/properties";
@@ -77,6 +77,10 @@ export async function PUT(
     }
 
     revalidateTag("properties", "default");
+    if (existing?.slug) {
+      revalidatePath(`/property/${existing.slug}`);
+    }
+    revalidatePath("/properties");
     return NextResponse.json(updated);
   } catch (error) {
     console.error("Property update error:", error instanceof Error ? error.message : "Unknown error");
@@ -117,6 +121,10 @@ export async function DELETE(
     await deletePropertyWithMedia(id);
 
     revalidateTag("properties", "default");
+    if (existing?.slug) {
+      revalidatePath(`/property/${existing.slug}`);
+    }
+    revalidatePath("/properties");
     return new NextResponse(null, { status: 204 });
   } catch (error) {
     console.error("Property delete error:", error instanceof Error ? error.message : "Unknown error");

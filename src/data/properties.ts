@@ -26,14 +26,20 @@ export interface Property extends Omit<PrismaProperty, 'rooms' | 'floorPlans' | 
 
 // Convert from Prisma to our typed object
 function mapPrismaProperty(p: PrismaProperty & { media?: PropertyMedia[] }): Property {
-  // Try to use the media relation if available
-  let computedImage = p.image;
-  let computedGallery = Array.isArray(p.gallery) ? p.gallery as string[] : [];
+  let computedImage = "";
+  let computedGallery: string[] = [];
   
   if (p.media && p.media.length > 0) {
     const cover = p.media.find(m => m.isCover) || p.media[0];
     computedImage = cover.url;
-    computedGallery = p.media.filter(m => !m.isCover).map(m => m.url);
+    computedGallery = p.media.filter(m => !m.isCover).sort((a, b) => a.order - b.order).map(m => m.url);
+  } else {
+    // Graceful fallback for unmigrated data, but warn in console
+    computedImage = p.image || "";
+    computedGallery = Array.isArray(p.gallery) ? p.gallery as string[] : [];
+    if (!computedImage) {
+      console.warn(`[PropertyMapper] Property ${p.id} has no PropertyMedia.`);
+    }
   }
 
   return {

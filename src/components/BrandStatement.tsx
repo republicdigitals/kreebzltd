@@ -44,7 +44,7 @@ export default function BrandStatement() {
         <p className="statement-reveal eyebrow text-gold-light/70 tracking-[0.3em] mb-12">
           The Kreebz Philosophy
         </p>
-        <h2 className="statement-reveal font-serif text-off-white text-[clamp(42px,6vw,96px)] leading-[1.05] font-light mx-auto" style={{ maxWidth: "18ch" }}>
+        <h2 className="statement-reveal text-off-white display-lg mx-auto" style={{ maxWidth: "18ch" }}>
           Curating the world&apos;s most extraordinary properties for a discerning few.
         </h2>
       </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Heart, Share2, Printer, ArrowLeft, ChevronLeft, ChevronRight, X, MapPin } from "lucide-react";
@@ -38,8 +38,8 @@ export default function PropertyDetail({ property }: { property: Property }) {
       : [];
   const photoCount = photoGallery.length;
 
-  const nextPhoto = () => setCurrentPhoto((i) => (i + 1) % photoCount);
-  const prevPhoto = () => setCurrentPhoto((i) => (i - 1 + photoCount) % photoCount);
+  const nextPhoto = useCallback(() => setCurrentPhoto((i) => (i + 1) % photoCount), [photoCount]);
+  const prevPhoto = useCallback(() => setCurrentPhoto((i) => (i - 1 + photoCount) % photoCount), [photoCount]);
 
   // Handle keyboard navigation for lightbox
   useEffect(() => {
@@ -51,7 +51,7 @@ export default function PropertyDetail({ property }: { property: Property }) {
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isLightboxOpen, photoCount]);
+  }, [isLightboxOpen, nextPhoto, prevPhoto]);
 
   useGSAP(() => {
     const mm = gsap.matchMedia();
@@ -135,7 +135,7 @@ export default function PropertyDetail({ property }: { property: Property }) {
           />
         </div>
         
-        <h1 className="reveal-title font-serif text-off-white font-light leading-[1.1]" style={{ fontSize: "clamp(36px, 5vw, 64px)" }}>
+        <h1 className="reveal-title display-xl text-off-white">
           {property.address}
         </h1>
         <p className="reveal-title uppercase mt-6 tracking-[0.3em] text-[11px] text-gold-light/70">
@@ -354,7 +354,7 @@ export default function PropertyDetail({ property }: { property: Property }) {
                   Photo
                 </span>
               </div>
-              <p className="font-serif text-off-white text-[26px] font-light">
+              <p className="font-serif text-off-white text-[28px] font-light">
                 {property.principal.name}
               </p>
               <p className="uppercase mt-3 tracking-[0.25em] text-[10px] text-muted">

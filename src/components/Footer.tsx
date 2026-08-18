@@ -141,7 +141,7 @@ export default function Footer() {
                     <li key={link.label}>
                       <Link
                         href={link.href}
-                        className="inline-flex min-h-[44px] items-center uppercase transition-colors duration-300 hover:text-gold text-[10px] tracking-[0.2em] text-muted relative group whitespace-nowrap"
+                        className="inline-flex min-h-[44px] items-center uppercase transition-colors duration-300 hover:text-gold text-[10px] tracking-[0.2em] text-off-white/60 relative group whitespace-nowrap"
                       >
                         {link.label}
                         <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-gold transition-all duration-300 group-hover:w-full" />
@@ -168,14 +168,14 @@ export default function Footer() {
               <Link
                 key={link.label}
                 href={link.href}
-                className="inline-flex min-h-[44px] items-center px-2 uppercase transition-colors duration-300 hover:text-off-white text-[10px] tracking-[0.15em] text-muted/60"
+                className="inline-flex min-h-[44px] items-center px-2 uppercase transition-colors duration-300 hover:text-off-white text-[10px] tracking-[0.15em] text-off-white/40"
               >
                 {link.label}
               </Link>
             ))}
           </div>
           
-          <div className="flex items-center gap-8 text-muted/60 text-[10px] tracking-[0.1em] uppercase">
+          <div className="flex items-center gap-8 text-off-white/40 text-[10px] tracking-[0.1em] uppercase">
             <span>© {new Date().getFullYear()} Kreebz Limited</span>
             <a href="https://instagram.com/kreebzltd" className="hover:text-gold transition-colors duration-300 flex items-center gap-2">
               <InstagramIcon size={14} />

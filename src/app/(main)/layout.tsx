@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import Navigation from "@/components/Navigation";
 import AppProviders from "@/components/AppProviders";
 import Footer from "@/components/Footer";
@@ -7,7 +8,6 @@ import FilmGrain from "@/components/FilmGrain";
 import CustomCursor from "@/components/CustomCursor";
 import ConciergeUX from "@/components/ConciergeUX";
 import CookieConsent from "@/components/CookieConsent";
-import StickyMobileCTA from "@/components/StickyMobileCTA";
 
 export default function MainLayout({
   children,
@@ -17,7 +17,9 @@ export default function MainLayout({
   return (
     <AppProviders>
       <LenisProvider>
-        <Navigation />
+        <Suspense fallback={null}>
+          <Navigation />
+        </Suspense>
         <main className="flex-1">
           <PageTransition>{children}</PageTransition>
         </main>

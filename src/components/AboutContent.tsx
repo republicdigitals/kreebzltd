@@ -124,19 +124,19 @@ export default function AboutContent() {
           <div className="flex flex-col md:flex-row gap-12 items-center md:items-start">
             <div className="w-full md:w-1/3">
               <div className="aspect-[3/4] bg-obsidian-light border border-border/50 flex items-center justify-center">
-                <span className="text-muted text-[10px] uppercase tracking-widest">Michael Eugene</span>
+                <span className="text-muted text-[10px] uppercase tracking-widest">The Principals</span>
               </div>
             </div>
             <div className="w-full md:w-2/3 md:pt-8 text-center md:text-left">
-              <h3 className="font-serif text-off-white text-2xl md:text-3xl mb-2">Michael Eugene</h3>
-              <p className="text-gold-light uppercase tracking-[0.2em] text-[10px] mb-8">Key Principal</p>
+              <h3 className="font-serif text-off-white text-2xl md:text-3xl mb-2">The Principals</h3>
+              <p className="text-gold-light uppercase tracking-[0.2em] text-[10px] mb-8">Executive Board</p>
               
               <div className="space-y-6 text-muted font-sans leading-relaxed text-sm md:text-base">
                 <p>
-                  As the key principal for Kreebz Limited, Michael oversees portfolio properties, strategic acquisitions, and client relationships across our network on behalf of the board.
+                  As the key principals for Kreebz Limited, our board oversees portfolio properties, strategic acquisitions, and client relationships across our network.
                 </p>
                 <p>
-                  With an uncompromising standard for architectural excellence and facility management, Michael ensures that every property represented by Kreebz receives the dedicated attention and bespoke service our clients expect.
+                  With an uncompromising standard for architectural excellence and facility management, the principals ensure that every property represented by Kreebz receives the dedicated attention and bespoke service our clients expect.
                 </p>
               </div>
             </div>

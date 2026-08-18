@@ -99,7 +99,7 @@ export default function ConciergePage() {
                     id="name"
                     name="name"
                     type="text"
-                    className="w-full bg-obsidian border border-border/30 rounded-none px-4 py-3 text-sm text-off-white focus:outline-none focus:border-gold/50 transition-colors"
+                    className="w-full input-pill px-6 py-4 text-[15px] focus:ring-1 focus:ring-gold/50"
                   />
                 </div>
                 <div className="space-y-2">
@@ -109,7 +109,7 @@ export default function ConciergePage() {
                     id="email"
                     name="email"
                     type="email"
-                    className="w-full bg-obsidian border border-border/30 rounded-none px-4 py-3 text-sm text-off-white focus:outline-none focus:border-gold/50 transition-colors"
+                    className="w-full input-pill px-6 py-4 text-[15px] focus:ring-1 focus:ring-gold/50"
                   />
                 </div>
               </div>
@@ -120,7 +120,7 @@ export default function ConciergePage() {
                   id="phone"
                   name="phone"
                   type="tel"
-                  className="w-full bg-obsidian border border-border/30 rounded-none px-4 py-3 text-sm text-off-white focus:outline-none focus:border-gold/50 transition-colors"
+                  className="w-full input-pill px-6 py-4 text-[15px] focus:ring-1 focus:ring-gold/50"
                 />
               </div>
 
@@ -132,7 +132,7 @@ export default function ConciergePage() {
                     name="budget"
                     type="text"
                     placeholder="e.g. ₦500M - ₦800M"
-                    className="w-full bg-obsidian border border-border/30 rounded-none px-4 py-3 text-sm text-off-white focus:outline-none focus:border-gold/50 transition-colors"
+                    className="w-full input-pill px-6 py-4 text-[15px] focus:ring-1 focus:ring-gold/50"
                   />
                 </div>
                 <div className="space-y-2">
@@ -140,7 +140,7 @@ export default function ConciergePage() {
                   <select
                     id="bedrooms"
                     name="bedrooms"
-                    className="w-full bg-obsidian border border-border/30 rounded-none px-4 py-3 text-sm text-off-white focus:outline-none focus:border-gold/50 transition-colors appearance-none"
+                    className="w-full input-pill px-6 py-4 text-[15px] focus:ring-1 focus:ring-gold/50 appearance-none bg-obsidian"
                   >
                     <option value="">Any</option>
                     <option value="1-2">1-2 Bedrooms</option>
@@ -156,7 +156,7 @@ export default function ConciergePage() {
                   <select
                     id="propertyType"
                     name="propertyType"
-                    className="w-full bg-obsidian border border-border/30 rounded-none px-4 py-3 text-sm text-off-white focus:outline-none focus:border-gold/50 transition-colors appearance-none"
+                    className="w-full input-pill px-6 py-4 text-[15px] focus:ring-1 focus:ring-gold/50 appearance-none bg-obsidian"
                   >
                     <option value="">Any</option>
                     <option value="Apartment">Apartment / Flat</option>
@@ -173,7 +173,7 @@ export default function ConciergePage() {
                     name="neighbourhoods"
                     type="text"
                     placeholder="e.g. Ikoyi, Victoria Island"
-                    className="w-full bg-obsidian border border-border/30 rounded-none px-4 py-3 text-sm text-off-white focus:outline-none focus:border-gold/50 transition-colors"
+                    className="w-full input-pill px-6 py-4 text-[15px] focus:ring-1 focus:ring-gold/50"
                   />
                 </div>
               </div>
@@ -185,7 +185,7 @@ export default function ConciergePage() {
                   name="additionalInfo"
                   rows={4}
                   placeholder="Tell us about specific features you need (e.g. Pool, Elevator, Smart Home features...)"
-                  className="w-full bg-obsidian border border-border/30 rounded-none px-4 py-3 text-sm text-off-white focus:outline-none focus:border-gold/50 transition-colors resize-none"
+                  className="w-full bg-surface border border-border-strong rounded-2xl px-6 py-4 text-off-white font-sans text-[15px] focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold/50 transition-colors resize-none placeholder:text-muted"
                 />
               </div>
 

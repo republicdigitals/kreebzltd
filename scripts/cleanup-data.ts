@@ -5,7 +5,7 @@ async function clean() {
   const properties = await prisma.property.findMany();
   for (const p of properties) {
     let changed = false;
-    const data: Record<string, any> = {};
+    const data: Record<string, string | number> = {};
 
     // 1. Numeric price: string "price" into numeric "priceValue"
     if (!p.priceValue || p.priceValue === 0) {

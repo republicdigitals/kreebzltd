@@ -33,18 +33,13 @@ export default function PropertyListings() {
       {filtered.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-20 text-center w-full">
           {filters.status === "For Lease" ? (
-            <div className="w-full">
+            <div className="w-full max-w-2xl mx-auto">
               <RentalRequestForm />
             </div>
           ) : (
-            <>
-              <p className="font-serif text-off-white font-light" style={{ fontSize: "28px" }}>
-                No properties match your filters
-              </p>
-              <p className="mt-4 font-sans text-[15px] tracking-wide text-muted">
-                Try adjusting the price, bedroom, or neighbourhood filters.
-              </p>
-            </>
+            <div className="w-full">
+              <ConciergeCTA />
+            </div>
           )}
         </div>
       ) : (
@@ -68,8 +63,8 @@ export default function PropertyListings() {
         </div>
       )}
       
-      {/* Show the Matchmaking CTA at the bottom of the list */}
-      <ConciergeCTA />
+      {/* Show the Matchmaking CTA at the bottom of the list only if there are results */}
+      {filtered.length > 0 && <ConciergeCTA />}
     </section>
   );
 }

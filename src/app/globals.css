@@ -223,7 +223,12 @@ body {
 }
 
 /* Focus-visible ring — gold highlight for keyboard accessibility */
-.focus-gold:focus-visible {
+.focus-gold:focus-visible,
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
   outline: 2px solid var(--gold);
   outline-offset: 2px;
 }

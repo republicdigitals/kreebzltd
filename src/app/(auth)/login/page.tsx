@@ -5,6 +5,7 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Navigation from "@/components/Navigation";
+import { Suspense } from "react";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -37,7 +38,9 @@ export default function LoginPage() {
 
   return (
     <main className="min-h-screen bg-obsidian flex flex-col font-sans">
-      <Navigation />
+      <Suspense fallback={null}>
+        <Navigation />
+      </Suspense>
       <div className="flex-1 flex items-center justify-center px-4 pt-24 pb-12">
         <div className="w-full max-w-md bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-8 shadow-2xl">
           <div className="text-center mb-8">

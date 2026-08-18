@@ -20,6 +20,16 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: process.cwd(),
   },
+  async redirects() {
+    return [
+      // TODO: Add confirmed legacy URLs requiring 301 redirects to canonical slugs here
+      // {
+      //   source: '/legacy-path/:id',
+      //   destination: '/property/:slug',
+      //   permanent: true,
+      // },
+    ];
+  },
   async headers() {
     return [
       {

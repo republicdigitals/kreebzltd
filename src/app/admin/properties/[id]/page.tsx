@@ -9,10 +9,10 @@ import { ArrowLeft, Save, Loader2 } from "lucide-react";
 import Link from "next/link";
 import MediaUploader, { MediaItem } from "@/components/admin/MediaUploader";
 
-const propertySchema = z.object({
+const basePropertySchema = z.object({
   id: z.string().min(3, "ID must be at least 3 characters"),
-  price: z.string().min(1, "Price is required"),
-  address: z.string().min(5, "Address is required"),
+  price: z.string(),
+  address: z.string(),
   neighbourhood: z.string().min(1, "Neighbourhood is required"),
   city: z.string().min(1, "City is required"),
   beds: z.coerce.number().min(0, "Must be at least 0"),
@@ -24,11 +24,38 @@ const propertySchema = z.object({
     message: "Please select a valid type",
   }),
   priceValue: z.coerce.number().min(0, "Must be a valid number"),
-  description: z.string().min(10, "Description must be at least 10 characters"),
+  description: z.string(),
   publicationStatus: z.enum(["DRAFT", "PUBLISHED", "ARCHIVED"], {
     message: "Please select a valid publication status",
   }),
 });
+
+const propertySchema = basePropertySchema.superRefine((data, ctx) => {
+  if (data.publicationStatus === "PUBLISHED") {
+    if (!data.price || data.price.trim() === "") {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Price is required to publish",
+        path: ["price"],
+      });
+    }
+    if (!data.address || data.address.trim() === "") {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Address is required to publish",
+        path: ["address"],
+      });
+    }
+    if (!data.description || data.description.trim().length < 10) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Description (min 10 chars) is required to publish",
+        path: ["description"],
+      });
+    }
+  }
+});
+
 
 type PropertyFormValues = z.infer<typeof propertySchema>;
 
@@ -92,10 +119,17 @@ export default function PropertyEditor() {
     setIsSubmitting(true);
     setError(null);
     try {
+      const activeMedia = media.filter(m => !m.isDeleted);
+
+      if (data.publicationStatus === "PUBLISHED" && activeMedia.length === 0) {
+        setError("At least one image is required to publish a property.");
+        setIsSubmitting(false);
+        return;
+      }
+
       const method = isNew ? "POST" : "PUT";
       const url = isNew ? "/api/properties" : `/api/properties/${params.id}`;
       
-      const activeMedia = media.filter(m => !m.isDeleted);
       const coverImage = activeMedia.find(m => m.isCover)?.url || activeMedia[0]?.url || null;
 
       const payload = isNew ? {

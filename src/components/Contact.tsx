@@ -104,8 +104,8 @@ export default function Contact() {
             transition={{ duration: 0.8, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
             className="flex flex-col items-center"
           >
-            <p className="font-serif text-off-white text-2xl tracking-wide mb-2">Michael Eugene</p>
-            <p className="font-sans text-gold uppercase tracking-[0.2em] text-[10px] mb-6">Key Principal</p>
+            <p className="font-serif text-off-white text-2xl tracking-wide mb-2">The Principals</p>
+            <p className="font-sans text-gold uppercase tracking-[0.2em] text-[10px] mb-6">Executive Board</p>
             <div className="flex flex-col gap-2 items-center">
               <a
                 href="mailto:hello@kreebzltd.com"

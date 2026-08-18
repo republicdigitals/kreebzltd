@@ -1,9 +1,8 @@
 "use client";
-import { useRef, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ChevronDown, Search } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -21,17 +20,6 @@ export default function Hero({}: HeroProps) {
   const titleRef = useRef<HTMLHeadingElement>(null);
   const buttonRef = useRef<HTMLDivElement>(null);
   const scrollIndicatorRef = useRef<HTMLButtonElement>(null);
-  const [searchQuery, setSearchQuery] = useState("");
-  const router = useRouter();
-
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      router.push(`/properties?q=${encodeURIComponent(searchQuery.trim())}`);
-    } else {
-      router.push("/properties");
-    }
-  };
 
   gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -102,6 +90,7 @@ export default function Hero({}: HeroProps) {
             alt="Luxury property at night"
             fill
             priority
+            quality={90}
             className="object-cover object-center"
             sizes="100vw"
           />
@@ -124,43 +113,22 @@ export default function Hero({}: HeroProps) {
 
           <h1
             ref={titleRef}
-            className="text-off-white font-serif font-light leading-[1.1] tracking-normal text-[clamp(42px,7vw,100px)]"
+            className="text-off-white display-xl"
           >
             <RevealText text="Elevating the standard of luxury living." delay={0.5} />
           </h1>
 
           <div ref={buttonRef} className="mt-14 flex flex-col items-center justify-center gap-6 w-full max-w-2xl mx-auto">
-            <form 
-              onSubmit={handleSearch}
-              className="flex w-full items-center bg-black/40 border border-gold/30 rounded-sm backdrop-blur-md shadow-2xl focus-within:border-gold/80 focus-within:bg-black/60 transition-all duration-500 overflow-hidden"
-            >
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Type 'Ikoyi', '4 Beds', or an address..."
-                className="flex-1 bg-transparent border-none outline-none text-off-white placeholder:text-off-white/40 px-6 py-5 text-sm font-light min-w-0"
-              />
-              <button
-                type="submit"
-                className="px-8 py-5 bg-gold/10 hover:bg-gold/20 text-gold-light hover:text-gold uppercase tracking-[0.2em] text-[10px] font-semibold transition-colors duration-300 flex items-center justify-center border-l border-gold/30"
-                aria-label="Search properties"
-              >
-                <Search size={18} strokeWidth={1.5} />
-                <span className="ml-3 hidden sm:inline">Search</span>
-              </button>
-            </form>
-            
             <Link
-              href="/sell"
+              href="/properties"
               className={cn(
-                "group relative inline-flex items-center justify-center px-8 py-3",
-                "bg-transparent border border-transparent rounded-sm uppercase tracking-[0.2em] text-[10px] font-semibold text-white/60 hover:text-white",
-                "transition-all duration-300 hover:bg-white/5",
-                "focus:outline-none focus:ring-1 focus:ring-white/50"
+                "group relative flex items-center justify-center px-12 py-5",
+                "bg-gold text-obsidian uppercase tracking-[0.2em] text-[11px] font-bold",
+                "transition-all duration-500 hover:bg-gold-light hover:scale-105",
+                "focus:outline-none focus:ring-2 focus:ring-gold focus:ring-offset-2 focus:ring-offset-obsidian"
               )}
             >
-              List Your Property
+              Enter The Portfolio
             </Link>
           </div>
         </div>

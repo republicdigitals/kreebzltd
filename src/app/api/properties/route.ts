@@ -3,7 +3,7 @@ import prisma from "@/lib/prisma";
 import type { Prisma } from "@prisma/client";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-import { revalidateTag } from "next/cache";
+import { revalidateTag, revalidatePath } from "next/cache";
 import { createPropertySchema } from "@/lib/validations/property";
 import { getAdminProperties } from "@/data/properties";
 
@@ -78,6 +78,7 @@ export async function POST(request: Request) {
     });
 
     revalidateTag("properties", "default");
+    revalidatePath("/properties");
     return NextResponse.json(created, { status: 201 });
   } catch (error) {
     console.error("Property create error:", error instanceof Error ? error.message : "Unknown error");

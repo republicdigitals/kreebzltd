@@ -95,7 +95,7 @@ export default function FeaturedProperties({ properties }: { properties: Propert
           <p className="reveal-up eyebrow text-gold-light/70 tracking-[0.3em] mb-4">
             The Portfolio
           </p>
-          <h2 className="reveal-up font-serif text-off-white font-light text-[clamp(36px,5vw,72px)] leading-tight">
+          <h2 className="reveal-up text-off-white display-lg">
             <RevealText text="Curated Excellence" delay={0.2} />
           </h2>
         </div>

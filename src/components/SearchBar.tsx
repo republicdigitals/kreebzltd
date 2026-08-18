@@ -25,6 +25,22 @@ export default function SearchBar({
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [showChip, setShowChip] = useState(true);
   const searchRef = useRef<HTMLInputElement>(null);
+  const [localQuery, setLocalQuery] = useState(filters.query);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      if (localQuery !== filters.query) {
+        setFilter("query", localQuery);
+      }
+    }, 400);
+    return () => clearTimeout(handler);
+  }, [localQuery, filters.query, setFilter]);
+
+  useEffect(() => {
+    if (filters.query !== localQuery && filters.query === "") {
+      setLocalQuery("");
+    }
+  }, [filters.query]);
 
   useEffect(() => {
     if (!showChip) searchRef.current?.focus();
@@ -58,8 +74,8 @@ export default function SearchBar({
               <input
                 ref={searchRef}
                 type="text"
-                value={filters.query}
-                onChange={(e) => setFilter("query", e.target.value)}
+                value={localQuery}
+                onChange={(e) => setLocalQuery(e.target.value)}
                 placeholder="Enter address, neighbourhood, or property ID"
                 className="flex-1 bg-transparent border-none outline-none text-off-white placeholder:text-muted text-sm min-w-0"
               />

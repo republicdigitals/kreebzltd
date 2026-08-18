@@ -77,7 +77,7 @@ export default function HowItWorks() {
           <p className="journey-reveal eyebrow text-gold-light/70 tracking-[0.3em] mb-6">
             Choose Your Journey
           </p>
-          <h2 className="journey-reveal font-serif text-off-white text-[clamp(36px,4vw,64px)] leading-[1.1] font-light mx-auto max-w-[20ch]">
+          <h2 className="journey-reveal text-off-white display-lg mx-auto max-w-[20ch]">
             How can we assist you today?
           </h2>
         </div>

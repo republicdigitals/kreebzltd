@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname, useSearchParams } from "next/navigation";
 import { Search, ArrowRight, Heart, User } from "lucide-react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
@@ -58,15 +59,45 @@ export default function Navigation() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const isLinkActive = (href: string) => {
+    if (!pathname) return false;
+    if (href === '/') return pathname === '/';
+    
+    if (href.includes('?')) {
+      const [basePath, query] = href.split('?');
+      if (pathname !== basePath) return false;
+      const intentMatch = query.match(/intent=([^&]+)/);
+      if (intentMatch) {
+        return searchParams?.get('intent') === intentMatch[1];
+      }
+    }
+    return pathname.startsWith(href);
+  };
+
   // Lock scroll when menu is open
   useEffect(() => {
     if (menuOpen) {
-      document.body.style.overflow = "hidden";
+      // Robust iOS scroll lock
+      const scrollY = window.scrollY;
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = '100%';
     } else {
-      document.body.style.overflow = "unset";
+      const scrollY = document.body.style.top;
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      if (scrollY) {
+        window.scrollTo(0, parseInt(scrollY || '0') * -1);
+      }
     }
     return () => {
-      document.body.style.overflow = "unset";
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
     };
   }, [menuOpen]);
 
@@ -123,9 +154,9 @@ export default function Navigation() {
                 >
                   <Search size={16} strokeWidth={1.5} />
                 </Link>
-                <Link href="/properties?intent=buy" className="eyebrow text-[10px] tracking-[0.2em] text-off-white hover:text-gold transition-colors duration-300">BUY</Link>
-                <Link href="/properties?intent=rent" className="eyebrow text-[10px] tracking-[0.2em] text-off-white hover:text-gold transition-colors duration-300">RENT</Link>
-                <Link href="/sell" className="eyebrow text-[10px] tracking-[0.2em] text-off-white hover:text-gold transition-colors duration-300">SELL</Link>
+                <Link href="/properties?intent=buy" className={`eyebrow text-[10px] tracking-[0.2em] transition-colors duration-300 ${isLinkActive('/properties?intent=buy') ? 'text-gold' : 'text-off-white hover:text-gold'}`}>BUY</Link>
+                <Link href="/properties?intent=rent" className={`eyebrow text-[10px] tracking-[0.2em] transition-colors duration-300 ${isLinkActive('/properties?intent=rent') ? 'text-gold' : 'text-off-white hover:text-gold'}`}>RENT</Link>
+                <Link href="/sell" className={`eyebrow text-[10px] tracking-[0.2em] transition-colors duration-300 ${isLinkActive('/sell') ? 'text-gold' : 'text-off-white hover:text-gold'}`}>SELL</Link>
               </div>
             </div>
 
@@ -160,9 +191,9 @@ export default function Navigation() {
               </Link>
 
               <div className="hidden md:flex items-center gap-8">
-                <Link href="/services" className="eyebrow text-[10px] tracking-[0.2em] text-off-white hover:text-gold transition-colors duration-300">DEVELOP</Link>
-                <Link href="/about" className="eyebrow text-[10px] tracking-[0.2em] text-off-white hover:text-gold transition-colors duration-300">ABOUT</Link>
-                <Link href="/contact" className="eyebrow text-[10px] tracking-[0.2em] text-off-white hover:text-gold transition-colors duration-300">CONTACT</Link>
+                <Link href="/services" className={`eyebrow text-[10px] tracking-[0.2em] transition-colors duration-300 ${isLinkActive('/services') ? 'text-gold' : 'text-off-white hover:text-gold'}`}>DEVELOP</Link>
+                <Link href="/about" className={`eyebrow text-[10px] tracking-[0.2em] transition-colors duration-300 ${isLinkActive('/about') ? 'text-gold' : 'text-off-white hover:text-gold'}`}>ABOUT</Link>
+                <Link href="/contact" className={`eyebrow text-[10px] tracking-[0.2em] transition-colors duration-300 ${isLinkActive('/contact') ? 'text-gold' : 'text-off-white hover:text-gold'}`}>CONTACT</Link>
               </div>
             </div>
           </div>
@@ -194,10 +225,10 @@ export default function Navigation() {
                     <Link
                       href={link.href}
                       onClick={() => setMenuOpen(false)}
-                      className="group flex items-center justify-between font-serif font-light text-[clamp(32px,10vw,80px)] text-off-white hover:text-gold active:scale-[0.98] transition-all duration-300 leading-none"
+                      className={`group flex items-center justify-between font-serif font-light text-[clamp(32px,10vw,80px)] active:scale-[0.98] transition-all duration-300 leading-none ${isLinkActive(link.href) ? 'text-gold' : 'text-off-white hover:text-gold'}`}
                     >
-                      <span className={link.label === "SELL" ? "italic text-gold" : "italic"}>{link.label}</span>
-                      <ArrowRight className={`w-8 h-8 md:w-12 md:h-12 opacity-0 -translate-x-8 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-700 ${link.label === "SELL" ? "text-gold" : ""}`} strokeWidth={1} />
+                      <span className={link.label === "SELL" || isLinkActive(link.href) ? "italic" : "italic"}>{link.label}</span>
+                      <ArrowRight className={`w-8 h-8 md:w-12 md:h-12 opacity-0 -translate-x-8 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-700 ${link.label === "SELL" || isLinkActive(link.href) ? "text-gold" : ""}`} strokeWidth={1} />
                     </Link>
                   </motion.div>
                 ))}
@@ -217,9 +248,9 @@ export default function Navigation() {
                       <Link
                         href={link.href}
                         onClick={() => setMenuOpen(false)}
-                        className="eyebrow text-off-white/70 hover:text-gold active:scale-[0.95] transition-all duration-300 flex items-center gap-4"
+                        className={`eyebrow active:scale-[0.95] transition-all duration-300 flex items-center gap-4 ${isLinkActive(link.href) ? 'text-gold' : 'text-off-white/70 hover:text-gold'}`}
                       >
-                        <span className="w-8 h-[1px] bg-gold opacity-0 transition-opacity duration-300" />
+                        <span className={`w-8 h-[1px] bg-gold transition-opacity duration-300 ${isLinkActive(link.href) ? 'opacity-100' : 'opacity-0'}`} />
                         {link.label}
                       </Link>
                     </motion.div>
