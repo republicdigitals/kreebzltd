@@ -15,6 +15,7 @@ const primaryLinks = [
   { label: "RENT", href: "/properties?intent=rent" },
   { label: "SELL", href: "/sell" },
   { label: "DEVELOP", href: "/services" },
+  { label: "PRIVATE JETS", href: "/services/private-jet" },
 ];
 
 const utilityLinks = [
@@ -196,6 +197,7 @@ export default function Navigation() {
 
               <div className="hidden md:flex items-center gap-8">
                 <Link href="/services" className={`eyebrow text-[10px] tracking-[0.2em] transition-colors duration-300 ${isLinkActive('/services') ? 'text-gold' : 'text-off-white hover:text-gold'}`}>DEVELOP</Link>
+                <Link href="/services/private-jet" className={`eyebrow text-[10px] tracking-[0.2em] transition-colors duration-300 ${isLinkActive('/services/private-jet') ? 'text-gold' : 'text-off-white hover:text-gold'}`}>JETS</Link>
                 <Link href="/about" className={`eyebrow text-[10px] tracking-[0.2em] transition-colors duration-300 ${isLinkActive('/about') ? 'text-gold' : 'text-off-white hover:text-gold'}`}>ABOUT</Link>
                 <Link href="/contact" className={`eyebrow text-[10px] tracking-[0.2em] transition-colors duration-300 ${isLinkActive('/contact') ? 'text-gold' : 'text-off-white hover:text-gold'}`}>CONTACT</Link>
               </div>

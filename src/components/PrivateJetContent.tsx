@@ -7,40 +7,54 @@ import { useGSAP } from "@gsap/react";
 import { ArrowRight } from "lucide-react";
 import Button from "./ui/Button";
 
-const fleet = [
-  {
-    name: "Light Jet",
-    passengers: "4–7",
-    range: "2,000 km",
-    ideal: "Short hops across West Africa",
-    description: "Efficient and discreet — perfect for regional business trips or quick getaways.",
-  },
-  {
-    name: "Midsize Jet",
-    passengers: "7–9",
-    range: "4,000 km",
-    ideal: "Coast-to-coast Africa & Europe",
-    description: "More cabin space, extended range, and the comfort for longer flights.",
-  },
-  {
-    name: "Heavy Jet",
-    passengers: "10–14",
-    range: "6,000+ km",
-    ideal: "Intercontinental travel",
-    description: "Stand-up cabins, lie-flat beds, and the space to travel with staff or family.",
-  },
-];
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+
+interface Jet {
+  id: string;
+  name: string;
+  class: string;
+  passengers: number;
+  range: string;
+  baseHourlyRate: number;
+  description?: string;
+}
 
 export default function PrivateJetContent() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const { data: session } = useSession();
+  const router = useRouter();
+  const [fleet, setFleet] = useState<Jet[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
+
   const [form, setForm] = useState({
-    name: "",
-    email: "",
-    phone: "",
+    jetId: "",
     route: "",
-    date: "",
+    startDate: "",
+    endDate: "",
     passengers: "",
     message: "",
+  });
+
+  // Fetch jets on mount
+  useState(() => {
+    fetch("/api/jets")
+      .then(res => res.json())
+      .then(data => {
+        if (data.jets) {
+          setFleet(data.jets);
+          if (data.jets.length > 0) {
+            setForm(prev => ({ ...prev, jetId: data.jets[0].id }));
+          }
+        }
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error(err);
+        setLoading(false);
+      });
   });
 
   gsap.registerPlugin(ScrollTrigger, useGSAP);
@@ -96,15 +110,40 @@ export default function PrivateJetContent() {
     });
   }, { scope: containerRef });
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    if (!session) {
+      router.push("/login?callbackUrl=/services/private-jet");
+      return;
+    }
 
-    const subject = encodeURIComponent("Private Jet Charter Inquiry");
-    const body = encodeURIComponent(
-      `Name: ${form.name}\nEmail: ${form.email}\nPhone: ${form.phone}\nRoute: ${form.route}\nDate: ${form.date}\nPassengers: ${form.passengers}\n\nMessage:\n${form.message}`
-    );
+    setSubmitting(true);
+    setError("");
 
-    window.location.href = `mailto:hello@kreebzltd.com?subject=${subject}&body=${body}`;
+    try {
+      const res = await fetch("/api/jets/bookings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form)
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || "Failed to create booking");
+      }
+
+      // Redirect to checkout URL
+      if (data.checkoutUrl) {
+        window.location.href = data.checkoutUrl;
+      } else {
+        router.push("/account/bookings");
+      }
+    } catch (err: unknown) {
+      const error = err as Error;
+      setError(error.message);
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -132,35 +171,39 @@ export default function PrivateJetContent() {
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {fleet.map((jet) => (
-              <div
-                key={jet.name}
-                className="fleet-card p-10 lg:p-12 bg-obsidian border border-border/30 hover:border-gold/50 transition-colors duration-700"
-              >
-                <h3 className="font-serif text-off-white text-[28px] mb-4 font-light">
-                  {jet.name}
-                </h3>
-                <p className="font-sans text-[15px] leading-[1.7] text-muted tracking-wide mb-8">
-                  {jet.description}
-                </p>
-                <ul className="font-sans space-y-4 text-[13px] text-muted/80 tracking-wide">
-                  <li className="flex justify-between border-b border-white/10 pb-2">
-                    <span className="text-gold-light/70 uppercase text-[10px] tracking-[0.2em]">Passengers</span> 
-                    <span className="text-off-white">{jet.passengers}</span>
-                  </li>
-                  <li className="flex justify-between border-b border-white/10 pb-2">
-                    <span className="text-gold-light/70 uppercase text-[10px] tracking-[0.2em]">Range</span> 
-                    <span className="text-off-white">{jet.range}</span>
-                  </li>
-                  <li className="flex justify-between border-b border-white/10 pb-2">
-                    <span className="text-gold-light/70 uppercase text-[10px] tracking-[0.2em]">Ideal for</span> 
-                    <span className="text-off-white text-right max-w-[150px]">{jet.ideal}</span>
-                  </li>
-                </ul>
-              </div>
-            ))}
-          </div>
+          {loading ? (
+            <div className="text-center text-muted">Loading aircraft inventory...</div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {fleet.map((jet) => (
+                <div
+                  key={jet.id}
+                  className="fleet-card p-10 lg:p-12 bg-obsidian border border-border/30 hover:border-gold/50 transition-colors duration-700"
+                >
+                  <h3 className="font-serif text-off-white text-[28px] mb-4 font-light">
+                    {jet.name}
+                  </h3>
+                  <p className="font-sans text-[15px] leading-[1.7] text-muted tracking-wide mb-8">
+                    {jet.class} Class Aircraft
+                  </p>
+                  <ul className="font-sans space-y-4 text-[13px] text-muted/80 tracking-wide">
+                    <li className="flex justify-between border-b border-white/10 pb-2">
+                      <span className="text-gold-light/70 uppercase text-[10px] tracking-[0.2em]">Capacity</span> 
+                      <span className="text-off-white">Up to {jet.passengers}</span>
+                    </li>
+                    <li className="flex justify-between border-b border-white/10 pb-2">
+                      <span className="text-gold-light/70 uppercase text-[10px] tracking-[0.2em]">Range</span> 
+                      <span className="text-off-white">{jet.range}</span>
+                    </li>
+                    <li className="flex justify-between border-b border-white/10 pb-2">
+                      <span className="text-gold-light/70 uppercase text-[10px] tracking-[0.2em]">Hourly Rate</span> 
+                      <span className="text-off-white">₦{(jet.baseHourlyRate / 100).toLocaleString()}</span>
+                    </li>
+                  </ul>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
@@ -180,33 +223,37 @@ export default function PrivateJetContent() {
             </p>
           </div>
 
+          {error && (
+            <div className="bg-red-500/10 border border-red-500/20 text-red-400 p-4 rounded mb-8 text-center text-sm font-sans">
+              {error}
+            </div>
+          )}
+
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <input
-                type="text"
+              <select
                 required
-                placeholder="FULL NAME"
-                value={form.name}
-                onChange={(e) => setForm({ ...form, name: e.target.value })}
-                className="form-element w-full bg-obsidian-light border border-border/30 px-6 py-5 text-sm text-off-white placeholder:text-muted/50 focus:outline-none focus:border-gold/60 transition-colors uppercase tracking-[0.1em]"
-              />
+                value={form.jetId}
+                onChange={(e) => setForm({ ...form, jetId: e.target.value })}
+                className="form-element w-full bg-obsidian-light border border-border/30 px-6 py-5 text-sm text-off-white placeholder:text-muted/50 focus:outline-none focus:border-gold/60 transition-colors uppercase tracking-[0.1em] appearance-none"
+              >
+                {fleet.map((jet) => (
+                  <option key={jet.id} value={jet.id}>
+                    {jet.name} (₦{(jet.baseHourlyRate / 100).toLocaleString()}/hr)
+                  </option>
+                ))}
+              </select>
               <input
-                type="email"
+                type="number"
+                min={1}
                 required
-                placeholder="EMAIL ADDRESS"
-                value={form.email}
-                onChange={(e) => setForm({ ...form, email: e.target.value })}
+                placeholder="NUMBER OF PASSENGERS"
+                value={form.passengers}
+                onChange={(e) => setForm({ ...form, passengers: e.target.value })}
                 className="form-element w-full bg-obsidian-light border border-border/30 px-6 py-5 text-sm text-off-white placeholder:text-muted/50 focus:outline-none focus:border-gold/60 transition-colors uppercase tracking-[0.1em]"
               />
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <input
-                type="tel"
-                placeholder="PHONE NUMBER"
-                value={form.phone}
-                onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                className="form-element w-full bg-obsidian-light border border-border/30 px-6 py-5 text-sm text-off-white placeholder:text-muted/50 focus:outline-none focus:border-gold/60 transition-colors uppercase tracking-[0.1em]"
-              />
+            <div className="grid grid-cols-1 gap-6">
               <input
                 type="text"
                 required
@@ -217,33 +264,38 @@ export default function PrivateJetContent() {
               />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <input
-                type="date"
-                placeholder="PREFERRED DATE"
-                value={form.date}
-                onChange={(e) => setForm({ ...form, date: e.target.value })}
-                className="form-element w-full bg-obsidian-light border border-border/30 px-6 py-5 text-sm text-off-white placeholder:text-muted/50 focus:outline-none focus:border-gold/60 transition-colors uppercase tracking-[0.1em] [color-scheme:dark]"
-              />
-              <input
-                type="number"
-                min={1}
-                placeholder="NUMBER OF PASSENGERS"
-                value={form.passengers}
-                onChange={(e) => setForm({ ...form, passengers: e.target.value })}
-                className="form-element w-full bg-obsidian-light border border-border/30 px-6 py-5 text-sm text-off-white placeholder:text-muted/50 focus:outline-none focus:border-gold/60 transition-colors uppercase tracking-[0.1em]"
-              />
+              <div className="space-y-2">
+                <label className="text-[10px] text-muted tracking-[0.2em] uppercase px-2">Departure Date & Time</label>
+                <input
+                  type="datetime-local"
+                  required
+                  value={form.startDate}
+                  onChange={(e) => setForm({ ...form, startDate: e.target.value })}
+                  className="form-element w-full bg-obsidian-light border border-border/30 px-6 py-5 text-sm text-off-white placeholder:text-muted/50 focus:outline-none focus:border-gold/60 transition-colors uppercase tracking-[0.1em] [color-scheme:dark]"
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-[10px] text-muted tracking-[0.2em] uppercase px-2">Return Date & Time</label>
+                <input
+                  type="datetime-local"
+                  required
+                  value={form.endDate}
+                  onChange={(e) => setForm({ ...form, endDate: e.target.value })}
+                  className="form-element w-full bg-obsidian-light border border-border/30 px-6 py-5 text-sm text-off-white placeholder:text-muted/50 focus:outline-none focus:border-gold/60 transition-colors uppercase tracking-[0.1em] [color-scheme:dark]"
+                />
+              </div>
             </div>
             <textarea
-              rows={5}
-              placeholder="ADDITIONAL REQUIREMENTS (CATERING, GROUND TRANSPORT, RETURN DATE, ETC.)"
+              rows={3}
+              placeholder="ADDITIONAL REQUIREMENTS (CATERING, GROUND TRANSPORT, ETC.)"
               value={form.message}
               onChange={(e) => setForm({ ...form, message: e.target.value })}
               className="form-element w-full bg-obsidian-light border border-border/30 px-6 py-5 text-sm text-off-white placeholder:text-muted/50 focus:outline-none focus:border-gold/60 transition-colors resize-none uppercase tracking-[0.1em] leading-relaxed"
             />
             <div className="form-element text-center pt-8">
-              <Button type="submit" className="group">
-                Request Charter Quote
-                <ArrowRight size={16} strokeWidth={1.5} className="transition-transform duration-500 group-hover:translate-x-2" />
+              <Button type="submit" disabled={submitting} className="group disabled:opacity-50">
+                {submitting ? "Processing..." : session ? "Continue to Payment" : "Sign in to Book"}
+                {!submitting && <ArrowRight size={16} strokeWidth={1.5} className="transition-transform duration-500 group-hover:translate-x-2" />}
               </Button>
             </div>
           </form>

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
-import { User, Heart, LogOut } from "lucide-react";
+import { User, Heart, LogOut, Plane } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
@@ -11,6 +11,11 @@ const navLinks = [
     name: "Profile",
     href: "/account",
     icon: User,
+  },
+  {
+    name: "Jet Bookings",
+    href: "/account/bookings",
+    icon: Plane,
   },
   {
     name: "Saved Portfolio",

@@ -85,6 +85,8 @@ model AgencySettings {
   updatedAt      DateTime @updatedAt
 }
 
+
+
 model User {
   id        String   @id @default(cuid())
   email     String   @unique
@@ -94,6 +96,7 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   savedProperties SavedProperty[]
+  jetBookings     JetBooking[]
 }
 
 model SavedProperty {
@@ -105,4 +108,41 @@ model SavedProperty {
   createdAt  DateTime @default(now())
 
   @@unique([userId, propertyId])
+}
+
+model Jet {
+  id             String   @id @default(cuid())
+  tailNumber     String   @unique
+  name           String
+  class          String   // "Light Jet" | "Midsize Jet" | "Heavy Jet"
+  passengers     Int
+  range          String
+  baseHourlyRate Int      // Stored in smallest currency unit (e.g. kobo or cents)
+  image          String?
+  status         String   @default("Active") // "Active" | "Maintenance"
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  
+  bookings       JetBooking[]
+}
+
+model JetBooking {
+  id               String   @id @default(cuid())
+  userId           String
+  user             User     @relation(fields: [userId], references: [id])
+  jetId            String
+  jet              Jet      @relation(fields: [jetId], references: [id])
+  
+  startDate        DateTime
+  endDate          DateTime
+  route            String
+  passengers       Int
+  
+  status           String   @default("Pending") // "Pending" | "Confirmed" | "Completed" | "Cancelled"
+  paymentStatus    String   @default("Unpaid")  // "Unpaid" | "Paid" | "Refunded"
+  totalAmount      Int      // In smallest currency unit
+  paymentReference String?  @unique
+  
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 }

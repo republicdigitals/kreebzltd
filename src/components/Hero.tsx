@@ -1,7 +1,6 @@
 "use client";
 import { useRef } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import gsap from "gsap";
@@ -20,11 +19,25 @@ export default function Hero({}: HeroProps) {
   const titleRef = useRef<HTMLHeadingElement>(null);
   const buttonRef = useRef<HTMLDivElement>(null);
   const scrollIndicatorRef = useRef<HTMLButtonElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   gsap.registerPlugin(ScrollTrigger, useGSAP);
 
   const scrollDown = () => {
     window.scrollTo({ top: window.innerHeight, behavior: "smooth" });
+  };
+
+  const handleTimeUpdate = () => {
+    if (!videoRef.current) return;
+    const video = videoRef.current;
+    
+    // The "transition" part of a seamless loop is typically the very end blending into the very beginning.
+    // We slow down the playback during the last 1.5 seconds and the first 1.5 seconds.
+    const isTransitioning = 
+      video.currentTime < 1.5 || 
+      (video.duration && video.duration - video.currentTime < 1.5);
+      
+    video.playbackRate = isTransitioning ? 0.4 : 1.0;
   };
 
   useGSAP(() => {
@@ -83,16 +96,17 @@ export default function Hero({}: HeroProps) {
     <section ref={containerRef} id="hero" className="relative h-screen w-full overflow-hidden bg-obsidian">
       {/* Background Setup */}
       <div className="absolute inset-0 overflow-hidden">
-        {/* Background Image with slow cinematic scale */}
+        {/* Background Video with slow cinematic scale */}
         <div className="hero-bg-img absolute inset-0 w-full h-[130%] -top-[15%]">
-          <Image
-            src="/images/hero-placeholder.jpg"
-            alt="Luxury property at night"
-            fill
-            priority
-            quality={90}
-            className="object-cover object-center"
-            sizes="100vw"
+          <video
+            ref={videoRef}
+            src="/videos/hero-video.mp4"
+            autoPlay
+            loop
+            muted
+            playsInline
+            onTimeUpdate={handleTimeUpdate}
+            className="w-full h-full object-cover object-center transition-all duration-700"
           />
         </div>
         
