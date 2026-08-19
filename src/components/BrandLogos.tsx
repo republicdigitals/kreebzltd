@@ -4,25 +4,22 @@ import { useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import Image from "next/image";
 
 const brandRows = [
   [
-    { name: "[Partner Placeholder]", style: "serif" },
-    { name: "[Developer Placeholder]", style: "serif" },
-    { name: "[Partner Placeholder]", style: "serif" },
-    { name: "[Developer Placeholder]", style: "serif" },
-    { name: "[Partner Placeholder]", style: "serif" },
-    { name: "[Developer Placeholder]", style: "serif" },
-    { name: "[Partner Placeholder]", style: "serif" },
+    { name: "Folio Properties", image: "/images/clients/folio-properties.png" },
+    { name: "IBJ Thompson", style: "serif" },
+    { name: "Folio Properties", image: "/images/clients/folio-properties.png" },
+    { name: "IBJ Thompson", style: "serif" },
+    { name: "Folio Properties", image: "/images/clients/folio-properties.png" },
   ],
   [
-    { name: "[Developer Placeholder]", style: "serif" },
-    { name: "[Partner Placeholder]", style: "serif" },
-    { name: "[Developer Placeholder]", style: "serif" },
-    { name: "[Partner Placeholder]", style: "serif" },
-    { name: "[Developer Placeholder]", style: "serif" },
-    { name: "[Partner Placeholder]", style: "serif" },
-    { name: "[Developer Placeholder]", style: "serif" },
+    { name: "IBJ Thompson", style: "serif" },
+    { name: "Folio Properties", image: "/images/clients/folio-properties.png" },
+    { name: "IBJ Thompson", style: "serif" },
+    { name: "Folio Properties", image: "/images/clients/folio-properties.png" },
+    { name: "IBJ Thompson", style: "serif" },
   ],
 ];
 
@@ -92,16 +89,22 @@ export default function BrandLogos() {
               {[...Array(4)].map((_, setIndex) => (
                 <div key={setIndex} className="flex items-center gap-x-16 lg:gap-x-24 shrink-0">
                   {row.map((brand, index) => (
-                    <span
-                      key={index}
-                      className="inline-block text-off-white/20 hover:text-gold transition-colors duration-500 cursor-default font-serif uppercase tracking-[0.1em]"
-                      style={{
-                        fontSize: "clamp(16px, 2vw, 22px)",
-                        whiteSpace: "nowrap",
-                      }}
-                    >
-                      {brand.name}
-                    </span>
+                    brand.image ? (
+                      <div key={index} className="relative h-8 w-40 md:h-12 md:w-56 opacity-40 hover:opacity-100 transition-opacity duration-500 flex items-center justify-center grayscale hover:grayscale-0">
+                        <Image src={brand.image} alt={brand.name} fill className="object-contain" />
+                      </div>
+                    ) : (
+                      <span
+                        key={index}
+                        className="inline-block text-off-white/20 hover:text-gold transition-colors duration-500 cursor-default font-serif uppercase tracking-[0.1em]"
+                        style={{
+                          fontSize: "clamp(16px, 2vw, 22px)",
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        {brand.name}
+                      </span>
+                    )
                   ))}
                 </div>
               ))}
