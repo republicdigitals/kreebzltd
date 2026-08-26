@@ -60,6 +60,13 @@ export default function Hero() {
       ease: "none"
     });
 
+    // Fade in video
+    gsap.from(".hero-bg-img", {
+      opacity: 0,
+      duration: 2.5,
+      ease: "power2.inOut"
+    });
+
     // Staggered cinematic text reveals
     tl.from(subtitleRef.current, {
       y: 30,
@@ -101,14 +108,13 @@ export default function Hero() {
             muted
             playsInline
             preload="metadata"
-            poster="/images/hero-placeholder.jpg"
             className="w-full h-full object-cover object-center"
           />
         </div>
         
         {/* Dark overlay ensuring perfect contrast for the white text */}
-        <div className="absolute inset-0 z-10 bg-obsidian/30" />
-        <div className="absolute inset-0 z-10 bg-gradient-to-b from-obsidian/60 via-transparent to-obsidian" />
+        <div className="absolute inset-0 z-10 bg-obsidian/10" />
+        <div className="absolute inset-0 z-10 bg-gradient-to-b from-obsidian/40 via-transparent to-obsidian" />
       </div>
 
       {/* Content — High-end editorial prompt */}
