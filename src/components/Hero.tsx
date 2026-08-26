@@ -1,5 +1,5 @@
 "use client";
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import Link from "next/link";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -7,13 +7,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import RevealText from "./RevealText";
-import type { Property } from "@/data/properties";
-
-interface HeroProps {
-  properties?: Property[];
-}
-
-export default function Hero({}: HeroProps) {
+export default function Hero() {
   const containerRef = useRef<HTMLElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
@@ -27,30 +21,31 @@ export default function Hero({}: HeroProps) {
     window.scrollTo({ top: window.innerHeight, behavior: "smooth" });
   };
 
-  const handleTimeUpdate = () => {
-    if (!videoRef.current) return;
-    const video = videoRef.current;
+  const [shouldPlay, setShouldPlay] = useState(true);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setShouldPlay(!mediaQuery.matches);
     
-    // The "transition" part of a seamless loop is typically the very end blending into the very beginning.
-    // We slow down the playback during the last 1.5 seconds and the first 1.5 seconds.
-    const isTransitioning = 
-      video.currentTime < 1.5 || 
-      (video.duration && video.duration - video.currentTime < 1.5);
-      
-    video.playbackRate = isTransitioning ? 0.4 : 1.0;
-  };
+    if (mediaQuery.matches && videoRef.current) {
+      videoRef.current.pause();
+    }
+    
+    const listener = (e: MediaQueryListEvent) => {
+      setShouldPlay(!e.matches);
+      if (e.matches && videoRef.current) {
+        videoRef.current.pause();
+      } else if (!e.matches && videoRef.current) {
+        videoRef.current.play().catch(() => {});
+      }
+    };
+    
+    mediaQuery.addEventListener('change', listener);
+    return () => mediaQuery.removeEventListener('change', listener);
+  }, []);
 
   useGSAP(() => {
     const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-
-    // Slow cinematic pan for the background image
-    gsap.to(".hero-bg-img", {
-      scale: 1.05,
-      duration: 15,
-      ease: "none",
-      repeat: -1,
-      yoyo: true
-    });
 
     // Deep parallax scrolling effect
     gsap.to(".hero-bg-img", {
@@ -100,13 +95,13 @@ export default function Hero({}: HeroProps) {
         <div className="hero-bg-img absolute inset-0 w-full h-[130%] -top-[15%]">
           <video
             ref={videoRef}
-            src="/videos/hero-video.mp4"
-            autoPlay
-            loop
+            src="/videos/kreebz_hero_video_one_way_premium.mp4"
+            autoPlay={shouldPlay}
             muted
             playsInline
-            onTimeUpdate={handleTimeUpdate}
-            className="w-full h-full object-cover object-center transition-all duration-700"
+            preload="metadata"
+            poster="/images/hero-placeholder.jpg"
+            className="w-full h-full object-cover object-center"
           />
         </div>
         
