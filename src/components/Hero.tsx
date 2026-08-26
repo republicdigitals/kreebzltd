@@ -25,6 +25,7 @@ export default function Hero() {
 
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setShouldPlay(!mediaQuery.matches);
     
     if (mediaQuery.matches && videoRef.current) {
