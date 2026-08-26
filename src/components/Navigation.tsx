@@ -14,14 +14,15 @@ const primaryLinks = [
   { label: "BUY", href: "/properties?intent=buy" },
   { label: "RENT", href: "/properties?intent=rent" },
   { label: "SELL", href: "/sell" },
-  { label: "DEVELOP", href: "/services" },
-  { label: "PRIVATE JETS", href: "/services/private-jet" },
+  { label: "MANAGEMENT", href: "/management" },
+  { label: "CONCIERGE", href: "/concierge" },
+  { label: "PARTNERSHIPS", href: "/partnerships" },
 ];
 
 const utilityLinks = [
   { label: "HOME", href: "/" },
   { label: "PORTFOLIO", href: "/properties" },
-  { label: "SERVICES", href: "/services" },
+  { label: "CONCIERGE", href: "/concierge" },
   { label: "ABOUT", href: "/about" },
   { label: "CONTACT", href: "/contact" },
 ];
@@ -162,6 +163,7 @@ export default function Navigation() {
                 <Link href="/properties?intent=buy" className={`eyebrow text-[10px] tracking-[0.2em] transition-colors duration-300 ${isLinkActive('/properties?intent=buy') ? 'text-gold' : 'text-off-white hover:text-gold'}`}>BUY</Link>
                 <Link href="/properties?intent=rent" className={`eyebrow text-[10px] tracking-[0.2em] transition-colors duration-300 ${isLinkActive('/properties?intent=rent') ? 'text-gold' : 'text-off-white hover:text-gold'}`}>RENT</Link>
                 <Link href="/sell" className={`eyebrow text-[10px] tracking-[0.2em] transition-colors duration-300 ${isLinkActive('/sell') ? 'text-gold' : 'text-off-white hover:text-gold'}`}>SELL</Link>
+                <Link href="/management" className={`eyebrow text-[10px] tracking-[0.2em] transition-colors duration-300 ${isLinkActive('/management') ? 'text-gold' : 'text-off-white hover:text-gold'}`}>MANAGEMENT</Link>
               </div>
             </div>
 
@@ -196,8 +198,8 @@ export default function Navigation() {
               </Link>
 
               <div className="hidden md:flex items-center gap-8">
-                <Link href="/services" className={`eyebrow text-[10px] tracking-[0.2em] transition-colors duration-300 ${isLinkActive('/services') ? 'text-gold' : 'text-off-white hover:text-gold'}`}>DEVELOP</Link>
-                <Link href="/services/private-jet" className={`eyebrow text-[10px] tracking-[0.2em] transition-colors duration-300 ${isLinkActive('/services/private-jet') ? 'text-gold' : 'text-off-white hover:text-gold'}`}>JETS</Link>
+                <Link href="/partnerships" className={`eyebrow text-[10px] tracking-[0.2em] transition-colors duration-300 ${isLinkActive('/partnerships') ? 'text-gold' : 'text-off-white hover:text-gold'}`}>PARTNERSHIPS</Link>
+                <Link href="/concierge" className={`eyebrow text-[10px] tracking-[0.2em] transition-colors duration-300 ${isLinkActive('/concierge') ? 'text-gold' : 'text-off-white hover:text-gold'}`}>CONCIERGE</Link>
                 <Link href="/about" className={`eyebrow text-[10px] tracking-[0.2em] transition-colors duration-300 ${isLinkActive('/about') ? 'text-gold' : 'text-off-white hover:text-gold'}`}>ABOUT</Link>
                 <Link href="/contact" className={`eyebrow text-[10px] tracking-[0.2em] transition-colors duration-300 ${isLinkActive('/contact') ? 'text-gold' : 'text-off-white hover:text-gold'}`}>CONTACT</Link>
               </div>

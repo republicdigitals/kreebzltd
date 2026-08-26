@@ -118,14 +118,14 @@ export default function Hero() {
             ref={subtitleRef}
             className="eyebrow text-gold-light/80 mb-6"
           >
-            Exclusive Properties
+            Exclusive Properties & Lifestyle Management
           </p>
 
           <h1
             ref={titleRef}
             className="text-off-white display-xl"
           >
-            <RevealText text="Elevating the standard of luxury living." delay={0.5} />
+            <RevealText text="Own Prestige. We Manage the Rest." delay={0.5} />
           </h1>
 
           <div ref={buttonRef} className="mt-14 flex flex-col items-center justify-center gap-6 w-full max-w-2xl mx-auto">
