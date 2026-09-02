@@ -112,26 +112,29 @@ export default function Hero() {
           />
         </div>
         
-        {/* Dark overlay ensuring perfect contrast for the white text */}
-        <div className="absolute inset-0 z-10 bg-obsidian/10" />
-        <div className="absolute inset-0 z-10 bg-gradient-to-b from-obsidian/40 via-transparent to-obsidian" />
+        {/* Localized gradients for perfect contrast without muddying the whole video */}
+        {/* Top gradient for Navbar, Bottom gradient for section transition */}
+        <div className="absolute inset-0 z-10 bg-gradient-to-b from-obsidian/95 via-transparent to-obsidian/95" />
+        {/* Radial vignette behind the center text */}
+        <div className="absolute inset-0 z-10 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-obsidian/80 via-obsidian/40 to-transparent" />
       </div>
 
       {/* Content — High-end editorial prompt */}
       <div className="relative z-10 h-full flex flex-col justify-center items-center px-[5vw]">
-        <div className="text-center w-full max-w-[1000px] mx-auto">
+        <div className="text-center w-full max-w-[1000px] mx-auto drop-shadow-[0_4px_24px_rgba(0,0,0,0.8)]">
           <p
             ref={subtitleRef}
-            className="eyebrow text-gold-light/80 mb-6"
+            className="eyebrow text-gold-light mb-6 drop-shadow-lg"
           >
             Exclusive Properties & Lifestyle Management
           </p>
 
           <h1
             ref={titleRef}
-            className="text-off-white display-xl"
+            className="text-off-white display-xl flex flex-col items-center gap-2 md:gap-4 drop-shadow-2xl"
           >
-            <RevealText text="Own Prestige. We Manage the Rest." delay={0.5} />
+            <span className="block"><RevealText text="Own Prestige." delay={0.5} /></span>
+            <span className="block"><RevealText text="We Manage the Rest." delay={0.8} /></span>
           </h1>
 
           <div ref={buttonRef} className="mt-14 flex flex-col items-center justify-center gap-6 w-full max-w-2xl mx-auto">

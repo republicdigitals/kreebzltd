@@ -91,7 +91,7 @@ export default function BrandLogos() {
                   {row.map((brand, index) => (
                     brand.image ? (
                       <div key={index} className="relative h-8 w-40 md:h-12 md:w-56 opacity-40 hover:opacity-100 transition-opacity duration-500 flex items-center justify-center grayscale hover:grayscale-0">
-                        <Image src={brand.image} alt={brand.name} fill className="object-contain" />
+                        <Image src={brand.image} alt={brand.name} fill sizes="(max-width: 768px) 160px, 224px" className="object-contain" />
                       </div>
                     ) : (
                       <span
