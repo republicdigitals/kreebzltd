@@ -3,23 +3,48 @@ import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import prisma from "@/lib/prisma";
 import Link from "next/link";
-import { ArrowLeft, ExternalLink } from "lucide-react";
+import { ArrowLeft, ExternalLink, CheckCircle, XCircle } from "lucide-react";
 
-export default async function AccountBookingsPage() {
+export const metadata = { title: "My Jet Bookings | Kreebz" };
+
+interface PageProps {
+  searchParams: Promise<{ status?: string; error?: string }>;
+}
+
+export default async function AccountBookingsPage({ searchParams }: PageProps) {
   const session = await getServerSession(authOptions);
 
   if (!session || !session.user) {
     redirect("/login?callbackUrl=/account/bookings");
   }
 
+  const { status, error } = await searchParams;
+
   const bookings = await prisma.jetBooking.findMany({
     where: { userId: session.user.id },
     include: { jet: true },
-    orderBy: { createdAt: 'desc' }
+    orderBy: { createdAt: "desc" },
   });
 
   return (
     <div className="container mx-auto px-6 py-24 md:py-32">
+
+      {/* Payment status banners */}
+      {status === "success" && (
+        <div className="mb-8 flex items-center gap-3 bg-green-500/10 border border-green-500/30 text-green-400 px-6 py-4 font-sans text-[14px]">
+          <CheckCircle size={18} className="flex-shrink-0" />
+          Payment confirmed! Your booking is now active.
+        </div>
+      )}
+      {error && (
+        <div className="mb-8 flex items-center gap-3 bg-red-500/10 border border-red-500/30 text-red-400 px-6 py-4 font-sans text-[14px]">
+          <XCircle size={18} className="flex-shrink-0" />
+          {error === "payment_failed" && "Payment was not completed. Please try again."}
+          {error === "missing_reference" && "Could not verify your payment reference. Please contact support."}
+          {error === "server_error" && "A server error occurred. Please contact support."}
+        </div>
+      )}
+
       <div className="mb-12">
         <Link href="/account" className="inline-flex items-center text-sm text-gold hover:text-gold-light transition-colors mb-6 uppercase tracking-[0.1em]">
           <ArrowLeft size={16} className="mr-2" />
