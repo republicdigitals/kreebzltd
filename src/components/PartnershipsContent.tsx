@@ -1,11 +1,11 @@
 "use client";
 
 import { useRef } from "react";
-import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { Building2, TrendingUp, ShieldCheck, ArrowRight, CheckCircle2 } from "lucide-react";
+import Button from "./ui/Button";
 
 const models = [
   {
@@ -83,9 +83,9 @@ export default function PartnershipsContent() {
       {/* The Market Gap Section */}
       <section className="py-24 px-6 lg:px-12 max-w-[1400px] mx-auto">
         <div className="text-center mb-16 fade-up">
-          <h2 className="text-off-white font-serif text-[clamp(28px,4vw,48px)] mb-6">The Market Gap We Fill</h2>
-          <p className="text-muted max-w-2xl mx-auto font-sans text-lg">
-            Developers who only build and sell are becoming commoditised. Those who build and create ecosystems command premium pricing and generate loyal repeat clients.
+          <h2 className="text-h2 text-off-white mb-6">Why developments stall</h2>
+          <p className="text-muted max-w-2xl mx-auto text-lead">
+            Build-and-sell leaves money and reputation on the table. The developers who win keep a relationship with buyers after handover — we run that for you.
           </p>
         </div>
 
@@ -93,7 +93,7 @@ export default function PartnershipsContent() {
           {models.map((model, idx) => (
             <div 
               key={idx} 
-              className={`model-card p-10 rounded-2xl border ${model.highlight ? 'border-gold bg-gold/5' : 'border-border/50 bg-obsidian-light/30'}`}
+              className={`model-card p-10 rounded-[var(--radius-lg)] border ${model.highlight ? 'border-gold bg-gold/5' : 'border-border/50 bg-obsidian-light/30'}`}
             >
               <h3 className={`text-2xl font-serif mb-8 ${model.highlight ? 'text-gold' : 'text-off-white/80'}`}>
                 {model.title}
@@ -133,9 +133,9 @@ export default function PartnershipsContent() {
       <section className="py-24 bg-obsidian-light/20 border-y border-border/10">
         <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
           <div className="text-center mb-16 fade-up">
-            <h2 className="text-off-white font-serif text-[clamp(28px,4vw,48px)] mb-6">Three Integrated Pillars</h2>
-            <p className="text-muted max-w-2xl mx-auto font-sans text-lg">
-              We own the entire client journey from acquisition to management, creating a defensible competitive advantage for your development.
+            <h2 className="text-h2 text-off-white mb-6">One team, three jobs</h2>
+            <p className="text-muted max-w-2xl mx-auto text-lead">
+              We run the whole client journey from first viewing to long-term management — so nothing falls between vendors.
             </p>
           </div>
 
@@ -153,16 +153,13 @@ export default function PartnershipsContent() {
 
       {/* CTA Section */}
       <section className="py-32 px-6 lg:px-12 max-w-[1400px] mx-auto text-center fade-up">
-        <h2 className="text-off-white font-serif text-[clamp(32px,5vw,64px)] mb-8">Ready to Elevate Your Asset?</h2>
-        <p className="text-muted max-w-2xl mx-auto mb-12 text-lg">
-          Partner with Kreebz to transform your architectural innovation into a highly sought-after lifestyle ecosystem.
+        <h2 className="text-h2 text-off-white mb-8">Let&apos;s talk about your project</h2>
+        <p className="text-muted max-w-2xl mx-auto mb-12 text-lead">
+          Tell us what you&apos;re building and we&apos;ll show you how we&apos;d sell and manage it.
         </p>
-        <Link 
-          href="/contact"
-          className="inline-flex items-center gap-4 px-12 py-5 bg-gold text-obsidian uppercase tracking-[0.2em] text-[11px] font-bold transition-all duration-500 hover:bg-gold-light hover:scale-105"
-        >
-          Discuss a Partnership <ArrowRight size={16} />
-        </Link>
+        <Button href="/contact" className="inline-flex items-center gap-4 px-12">
+          Start the conversation <ArrowRight size={16} />
+        </Button>
       </section>
     </div>
   );

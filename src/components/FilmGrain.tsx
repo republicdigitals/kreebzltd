@@ -1,9 +1,11 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
 export default function FilmGrain() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const reduced = usePrefersReducedMotion();
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -14,7 +16,7 @@ export default function FilmGrain() {
 
     let w = 0;
     let h = 0;
-    
+
     // Create a smaller offscreen canvas for better performance
     // We'll scale it up via CSS
     const patternSize = 128;
@@ -24,18 +26,17 @@ export default function FilmGrain() {
     const patternCtx = patternCanvas.getContext("2d");
     if (!patternCtx) return;
 
-    let animationId: number;
-
     const resize = () => {
       w = window.innerWidth;
       h = window.innerHeight;
       canvas.width = w;
       canvas.height = h;
+      noise();
     };
 
     const noise = () => {
       if (!patternCtx || !ctx) return;
-      
+
       const idata = patternCtx.createImageData(patternSize, patternSize);
       const buffer32 = new Uint32Array(idata.data.buffer);
       const len = buffer32.length;
@@ -57,23 +58,17 @@ export default function FilmGrain() {
       }
     };
 
-    const loop = () => {
-      noise();
-      // Run noise generation at ~30fps for that film look
-      window.setTimeout(() => {
-        animationId = requestAnimationFrame(loop);
-      }, 1000 / 30);
-    };
-
     window.addEventListener("resize", resize);
     resize();
-    loop();
+
+    // Static grain: one frame on mount + per resize — same filmic texture
+    // without a perpetual canvas loop burning CPU on every frame.
+    noise();
 
     return () => {
       window.removeEventListener("resize", resize);
-      cancelAnimationFrame(animationId);
     };
-  }, []);
+  }, [reduced]);
 
   return (
     <canvas

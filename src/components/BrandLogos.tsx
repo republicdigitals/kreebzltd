@@ -64,13 +64,13 @@ export default function BrandLogos() {
     <section ref={containerRef} className="py-24 lg:py-32 overflow-hidden">
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12 text-center">
         <p className="brand-reveal eyebrow text-gold-light/70 tracking-[0.3em]">
-          Trusted Partnerships
+          Who we work with
         </p>
         <h2 className="brand-reveal font-serif text-off-white text-[clamp(32px,4vw,56px)] leading-[1.1] font-light mt-6 mb-6">
-          Official Marketing & Facility<br/>Management Partners
+          Official partner to<br/>these developments
         </h2>
         <p className="brand-reveal font-sans text-muted tracking-wide text-[15px] max-w-2xl mx-auto">
-          We represent the most exclusive developments in Lagos, setting the standard for luxury real estate.
+          The names behind some of Lagos&apos; most considered addresses trust us to market and manage them.
         </p>
       </div>
 
@@ -96,7 +96,7 @@ export default function BrandLogos() {
                     ) : (
                       <span
                         key={index}
-                        className="inline-block text-off-white/20 hover:text-gold transition-colors duration-500 cursor-default font-serif uppercase tracking-[0.1em]"
+                        className="inline-block text-off-white/40 hover:text-gold transition-colors duration-500 cursor-default font-serif uppercase tracking-[0.1em]"
                         style={{
                           fontSize: "clamp(16px, 2vw, 22px)",
                           whiteSpace: "nowrap",

@@ -10,25 +10,25 @@ import { ArrowRight } from "lucide-react";
 const journeys = [
   {
     title: "Buy",
-    description: "Acquire exceptional properties off-market or from our curated portfolio.",
+    description: "Find a vetted home or investment — on-market or off-.",
     href: "/properties?intent=buy",
     number: "01",
   },
   {
     title: "Rent",
-    description: "Lease premium residences with white-glove concierge support.",
+    description: "Rent a home that comes with a team behind it.",
     href: "/properties?intent=rent",
     number: "02",
   },
   {
     title: "Sell",
-    description: "Discreetly market your asset to a qualified network of high-net-worth buyers.",
+    description: "Sell to qualified buyers without the public circus.",
     href: "/sell",
     number: "03",
   },
   {
     title: "Develop",
-    description: "End-to-end advisory and management for ambitious luxury projects.",
+    description: "Build with a partner who markets, sells, and manages.",
     href: "/services",
     number: "04",
   },
@@ -75,10 +75,10 @@ export default function HowItWorks() {
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
         <div className="text-center mb-20 lg:mb-32">
           <p className="journey-reveal eyebrow text-gold-light/70 tracking-[0.3em] mb-6">
-            Choose Your Journey
+            Start here
           </p>
           <h2 className="journey-reveal text-off-white display-lg mx-auto max-w-[20ch]">
-            How can we assist you today?
+            What do you need today?
           </h2>
         </div>
 
@@ -102,7 +102,7 @@ export default function HowItWorks() {
               </div>
               
               <div className="relative z-10 flex items-center justify-between mt-auto">
-                <span className="text-[10px] uppercase tracking-[0.2em] text-gold font-semibold">Explore</span>
+                <span className="text-[10px] uppercase tracking-[0.2em] text-gold font-semibold">Start</span>
                 <div className="w-10 h-10 rounded-full border border-white/20 group-hover:border-gold group-hover:bg-gold flex items-center justify-center transition-all duration-500">
                   <ArrowRight size={16} className="text-white group-hover:text-obsidian transition-colors duration-500" strokeWidth={1.5} />
                 </div>

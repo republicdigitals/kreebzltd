@@ -13,18 +13,49 @@ type Lead = {
   propertyId: string | null;
   status: string;
   createdAt: string;
+  project: string | null;
+  nextStep: string | null;
+  timeframe: string | null;
+  preferredContact: string | null;
+  utmSource: string | null;
+  utmMedium: string | null;
+  utmCampaign: string | null;
+  referrer: string | null;
+  landingPage: string | null;
+  assignedTo: string | null;
+  firstResponseAt: string | null;
 };
 
-const STATUS_OPTIONS = ["New", "Contacted", "Qualified", "Lost"] as const;
+const STATUS_OPTIONS = [
+  "New",
+  "Contacted",
+  "Qualified",
+  "Consultation booked",
+  "Viewing booked",
+  "Nurture",
+  "Closed",
+  "Not suitable",
+  "Lost",
+] as const;
 
 function statusClass(status: string) {
   switch (status) {
-    case "New":         return "bg-cyan-900/30 text-cyan-500";
-    case "Contacted":   return "bg-gold/10 text-gold";
-    case "Qualified":   return "bg-emerald-900/30 text-emerald-500";
-    case "Lost":        return "bg-red-900/30 text-red-500";
-    default:            return "bg-obsidian-light text-muted";
+    case "New":                 return "bg-cyan-900/30 text-cyan-500";
+    case "Contacted":           return "bg-gold/10 text-gold";
+    case "Qualified":           return "bg-emerald-900/30 text-emerald-500";
+    case "Consultation booked": return "bg-emerald-900/30 text-emerald-400";
+    case "Viewing booked":      return "bg-emerald-900/30 text-emerald-400";
+    case "Nurture":             return "bg-violet-900/30 text-violet-400";
+    case "Closed":              return "bg-neutral-800 text-neutral-400";
+    case "Not suitable":        return "bg-red-900/30 text-red-400";
+    case "Lost":                return "bg-red-900/30 text-red-500";
+    default:                    return "bg-obsidian-light text-muted";
   }
+}
+
+function sourceLabel(lead: Lead): string | null {
+  const parts = [lead.utmSource, lead.utmMedium, lead.utmCampaign].filter(Boolean);
+  return parts.length > 0 ? parts.join(" / ") : null;
 }
 
 export default function LeadsPage() {
@@ -222,9 +253,24 @@ export default function LeadsPage() {
                             <span className="capitalize text-off-white font-medium">
                               {lead.interest.replace(/-/g, " ")}
                             </span>
+                            {lead.project && (
+                              <div className="text-[10px] text-gold mt-0.5 capitalize">
+                                {lead.project.replace(/-/g, " ")}
+                              </div>
+                            )}
+                            {lead.nextStep && (
+                              <div className="text-[10px] text-muted mt-0.5 capitalize">
+                                Next: {lead.nextStep.replace(/-/g, " ")}
+                              </div>
+                            )}
                             {lead.propertyId && (
                               <div className="text-[10px] text-muted mt-0.5">
                                 Property: {lead.propertyId}
+                              </div>
+                            )}
+                            {sourceLabel(lead) && (
+                              <div className="text-[10px] text-muted mt-0.5">
+                                Source: {sourceLabel(lead)}
                               </div>
                             )}
                           </td>
@@ -323,9 +369,24 @@ export default function LeadsPage() {
                       <span className="capitalize text-off-white font-medium">
                         {lead.interest.replace(/-/g, " ")}
                       </span>
+                      {lead.project && (
+                        <div className="text-xs text-gold mt-0.5 capitalize">
+                          {lead.project.replace(/-/g, " ")}
+                        </div>
+                      )}
+                      {lead.nextStep && (
+                        <div className="text-xs text-muted mt-0.5 capitalize">
+                          Next: {lead.nextStep.replace(/-/g, " ")}
+                        </div>
+                      )}
                       {lead.propertyId && (
                         <div className="text-xs text-muted mt-0.5">
                           {lead.propertyId}
+                        </div>
+                      )}
+                      {sourceLabel(lead) && (
+                        <div className="text-xs text-muted mt-0.5">
+                          Source: {sourceLabel(lead)}
                         </div>
                       )}
                     </div>

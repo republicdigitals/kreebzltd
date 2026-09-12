@@ -3,7 +3,8 @@ import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import prisma from "@/lib/prisma";
 import Link from "next/link";
-import { ArrowLeft, ExternalLink, CheckCircle, XCircle } from "lucide-react";
+import { ArrowLeft, CheckCircle, XCircle } from "lucide-react";
+import PayNowButton from "@/components/PayNowButton";
 
 export const metadata = { title: "My Jet Bookings | Kreebz" };
 
@@ -41,6 +42,8 @@ export default async function AccountBookingsPage({ searchParams }: PageProps) {
           <XCircle size={18} className="flex-shrink-0" />
           {error === "payment_failed" && "Payment was not completed. Please try again."}
           {error === "missing_reference" && "Could not verify your payment reference. Please contact support."}
+          {error === "invalid_reference" && "Could not verify your payment reference. Please contact support."}
+          {error === "payment_mismatch" && "Payment verification failed — the amount did not match your booking. Please contact support."}
           {error === "server_error" && "A server error occurred. Please contact support."}
         </div>
       )}
@@ -106,12 +109,7 @@ export default async function AccountBookingsPage({ searchParams }: PageProps) {
               </div>
 
               {booking.paymentStatus === 'Unpaid' && booking.status === 'Pending' && (
-                <Link
-                  href={`/services/private-jet/mock-checkout?bookingId=${booking.id}`}
-                  className="bg-gold text-obsidian px-6 py-3 uppercase tracking-wider text-xs font-semibold hover:bg-gold-light transition-colors whitespace-nowrap flex items-center gap-2"
-                >
-                  Pay Now <ExternalLink size={14} />
-                </Link>
+                <PayNowButton bookingId={booking.id} />
               )}
             </div>
           ))

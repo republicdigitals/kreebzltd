@@ -26,7 +26,8 @@ const footerColumns = [
     title: "RESOURCES",
     links: [
       { label: "THE PORTFOLIO", href: "/properties" },
-      { label: "ADMIN PORTAL", href: "/admin" },
+      { label: "PRIVATE JET", href: "/services/private-jet" },
+      { label: "HOW WE WORK", href: "/how-it-works" },
     ],
   },
   {
@@ -90,7 +91,7 @@ export default function Footer() {
               <Image src="/kreebz-logo.png" alt="Kreebz" width={60} height={55} className="w-12 h-auto" />
             </Link>
             <h2 className="font-serif italic text-off-white/90 text-3xl md:text-5xl leading-tight mb-10">
-              Stay informed on new developments, curated listings, and the services behind the standard.
+              New listings, project updates, and the occasional insight — straight to your inbox.
             </h2>
             {/* Newsletter Form */}
             {newsState === "success" ? (
@@ -100,18 +101,20 @@ export default function Footer() {
                     <path d="M20 6L9 17l-5-5" />
                   </svg>
                 </div>
-                <p className="text-sm text-off-white/70 tracking-wide">You&apos;re on the list. Thank you.</p>
+                <p className="text-sm text-off-white/70 tracking-wide">You&apos;re on the list — talk soon.</p>
               </div>
             ) : (
               <form className="flex items-center w-full max-w-md relative" onSubmit={handleNewsletterSubmit}>
+                <label htmlFor="footer-email" className="sr-only">Email address</label>
                 <input
+                  id="footer-email"
                   type="email"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="ENTER YOUR EMAIL"
                   disabled={newsState === "loading"}
-                  className="w-full bg-transparent border-b border-white/20 pb-4 text-sm text-off-white placeholder:text-white/30 focus:outline-none focus:border-gold transition-colors tracking-widest uppercase disabled:opacity-50"
+                  className="w-full bg-transparent border-b border-border-strong pb-3 text-[15px] text-off-white placeholder:text-muted/70 placeholder:uppercase placeholder:tracking-[0.15em] placeholder:text-[10px] focus:outline-none focus:border-gold transition-colors disabled:opacity-50"
                 />
                 <button
                   type="submit"
@@ -168,14 +171,14 @@ export default function Footer() {
               <Link
                 key={link.label}
                 href={link.href}
-                className="inline-flex min-h-[44px] items-center px-2 uppercase transition-colors duration-300 hover:text-off-white text-[10px] tracking-[0.15em] text-off-white/40"
+                className="inline-flex min-h-[44px] items-center px-2 uppercase transition-colors duration-300 hover:text-off-white text-[10px] tracking-[0.15em] text-off-white/60"
               >
                 {link.label}
               </Link>
             ))}
           </div>
           
-          <div className="flex items-center gap-8 text-off-white/40 text-[10px] tracking-[0.1em] uppercase">
+          <div className="flex items-center gap-8 text-off-white/60 text-[10px] tracking-[0.1em] uppercase">
             <span>© {new Date().getFullYear()} Kreebz Limited</span>
             <a href="https://instagram.com/kreebzltd" className="hover:text-gold transition-colors duration-300 flex items-center gap-2">
               <InstagramIcon size={14} />

@@ -64,10 +64,30 @@ model Lead {
   name       String
   email      String
   phone      String?
-  interest   String // "buying" | "renting" | "management" | "other" | "newsletter" | concierge types
+  interest   String // "buy" | "rent" | "sell" | "develop" | "facility-management" | "other" | "newsletter" | concierge types
   message    String?
   propertyId String?
-  status     String   @default("New") // "New" | "Contacted" | "Qualified" | "Lost"
+  status     String   @default("New") // "New" | "Contacted" | "Qualified" | "Consultation booked" | "Viewing booked" | "Nurture" | "Closed" | "Not suitable" | "Lost"
+
+  // Contextual enquiry fields
+  project          String? // "bourdillon" | "other" | "not-sure"
+  nextStep         String? // "brochure" | "call" | "consultation" | "viewing" | "info"
+  timeframe        String? // "immediately" | "1-3-months" | "3-6-months" | "6-12-months" | "researching"
+  preferredContact String? // "email" | "phone" | "whatsapp"
+  consent          Boolean @default(false)
+
+  // Attribution
+  utmSource   String?
+  utmMedium   String?
+  utmCampaign String?
+  utmContent  String?
+  referrer    String?
+  landingPage String?
+
+  // Response workflow
+  assignedTo      String?
+  firstResponseAt DateTime?
+
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 }
@@ -92,7 +112,7 @@ model User {
   email     String   @unique
   password  String
   name      String?
-  role      String   @default("ADMIN")
+  role      String   @default("USER")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   savedProperties SavedProperty[]
@@ -117,7 +137,7 @@ model Jet {
   class          String   // "Light Jet" | "Midsize Jet" | "Heavy Jet"
   passengers     Int
   range          String
-  baseHourlyRate Int      // Stored in smallest currency unit (e.g. kobo or cents)
+  baseHourlyRate BigInt   // Stored in smallest currency unit (kobo)
   image          String?
   status         String   @default("Active") // "Active" | "Maintenance"
   createdAt      DateTime @default(now())
@@ -140,7 +160,7 @@ model JetBooking {
   
   status           String   @default("Pending") // "Pending" | "Confirmed" | "Completed" | "Cancelled"
   paymentStatus    String   @default("Unpaid")  // "Unpaid" | "Paid" | "Refunded"
-  totalAmount      Int      // In smallest currency unit
+  totalAmount      BigInt   // In smallest currency unit (kobo)
   paymentReference String?  @unique
   
   createdAt        DateTime @default(now())

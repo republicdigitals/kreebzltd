@@ -60,10 +60,10 @@ export default function MatchmakingPage() {
               Kreebz Matchmaking
             </span>
             <h1 className="font-serif font-light text-4xl md:text-6xl lg:text-7xl text-off-white leading-[1.1] mb-6">
-              Can&apos;t find what you&apos;re looking for?
+              Tell us what you&apos;re after.
             </h1>
             <p className="text-muted text-sm md:text-base tracking-wide leading-relaxed mb-8 max-w-md">
-              Our inventory extends beyond our public portfolio. Share your exact requirements and our principals will curate a selection of off-market properties that match your vision.
+              A lot of our best properties never get listed. Share your requirements and a principal will put together a shortlist.
             </p>
           </div>
         </div>
@@ -77,9 +77,9 @@ export default function MatchmakingPage() {
               <div className="w-16 h-16 mx-auto bg-gold/10 border border-gold/30 rounded-full flex items-center justify-center text-gold">
                 <CheckCircle2 size={32} strokeWidth={1.5} />
               </div>
-              <h2 className="font-serif text-3xl text-off-white font-light">Request Received</h2>
+              <h2 className="font-serif text-3xl text-off-white font-light">Got it — we&apos;re on it.</h2>
               <p className="text-muted tracking-wide text-sm">
-                A principal from Kreebz Limited will review your requirements and contact you shortly with curated options.
+                A principal will be in touch with options.
               </p>
               <Button 
                 variant="secondary" 
@@ -205,7 +205,7 @@ export default function MatchmakingPage() {
                   "Submitting..."
                 ) : (
                   <>
-                    Submit Request
+                    Send my requirements
                     <Send size={16} />
                   </>
                 )}

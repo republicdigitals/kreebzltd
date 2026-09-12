@@ -1,11 +1,11 @@
 "use client";
 
 import { useRef } from "react";
-import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import Button from "./ui/Button";
 
 const pillars = [
   {
@@ -83,10 +83,9 @@ export default function AboutContent() {
       {/* Philosophy */}
       <section className="philosophy-section py-24 lg:py-32">
         <div className="max-w-[900px] mx-auto px-6 lg:px-12 text-center">
-          <p className="philosophy-text font-serif text-off-white font-light leading-[1.6]" style={{ fontSize: "clamp(24px, 3vw, 36px)" }}>
-            Kreebz Ltd is the official marketing and facility management company for
-            the most prestigious developers in the region. Beyond marketing and
-            estate oversight, we deliver <span className="italic text-gold-light">private jet services, concierge care, and a trusted network of contractors</span> — so owners and residents are fully looked after.
+          <p className="philosophy-text text-h3 text-off-white font-light leading-[1.6]">
+            We market developments, manage properties, arrange flights, and look after
+            residents — <span className="italic text-gold-light">one team, one phone number, one standard</span>. Where others manage, we represent.
           </p>
         </div>
       </section>
@@ -101,10 +100,10 @@ export default function AboutContent() {
                 <span className="font-serif text-sm tracking-[0.2em] mb-6 block text-gold">
                   {String(index + 1).padStart(2, "0")}
                 </span>
-                <h3 className="font-serif text-off-white mb-5 font-light" style={{ fontSize: "clamp(24px, 2.5vw, 32px)", lineHeight: 1.2 }}>
+                <h3 className="text-h3 text-off-white mb-5">
                   {pillar.title}
                 </h3>
-                <p className="font-sans leading-relaxed text-muted text-[16px]">
+                <p className="text-body leading-relaxed text-muted">
                   {pillar.body}
                 </p>
               </div>
@@ -117,15 +116,19 @@ export default function AboutContent() {
       <section className="leadership-section py-32 bg-obsidian relative overflow-hidden border-t border-border/20">
         <div className="max-w-[1000px] mx-auto px-6 lg:px-12">
           <div className="mb-16 text-center">
-            <h2 className="font-serif text-off-white font-light text-[clamp(32px,4vw,48px)]">Leadership</h2>
+            <h2 className="text-h2 text-off-white font-light">Leadership</h2>
             <div className="w-12 h-[1px] bg-gold mx-auto mt-6" />
           </div>
           
           <div className="flex flex-col md:flex-row gap-12 items-center md:items-start">
             <div className="w-full md:w-1/3">
-              <div className="aspect-[3/4] bg-obsidian-light border border-border/50 flex items-center justify-center">
-                <span className="text-muted text-[10px] uppercase tracking-widest">The Principals</span>
+              <div className="aspect-[3/4] bg-gradient-to-br from-obsidian-light via-surface to-obsidian-light border border-border/50 rounded-[var(--radius-lg)] flex items-center justify-center relative overflow-hidden">
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-gold/[0.04] to-transparent" />
+                <div className="absolute top-6 left-6 w-12 h-12 border-t border-l border-gold/20" />
+                <div className="absolute bottom-6 right-6 w-12 h-12 border-b border-r border-gold/20" />
+                <span className="relative z-10 font-serif text-gold-light/60 text-4xl italic">K</span>
               </div>
+              <p className="text-center text-[10px] uppercase tracking-[0.2em] text-muted mt-4">Photograph pending</p>
             </div>
             <div className="w-full md:w-2/3 md:pt-8 text-center md:text-left">
               <h3 className="font-serif text-off-white text-2xl md:text-3xl mb-2">The Principals</h3>
@@ -147,17 +150,14 @@ export default function AboutContent() {
       {/* CTA */}
       <section className="cta-section py-32 lg:py-40 text-center">
         <div className="cta-content max-w-[800px] mx-auto px-6 lg:px-12">
-          <h2 className="font-serif text-off-white font-light text-[clamp(40px,5vw,64px)] leading-tight mb-12">
-            Your property deserves a{" "}
-            <span className="italic text-gold-light">principal.</span>
+          <h2 className="text-h2 text-off-white font-light leading-tight mb-12">
+            Want a principal on{" "}
+            <span className="italic text-gold-light">your side?</span>
           </h2>
-          <Link
-            href="/contact"
-            className="group inline-flex items-center gap-4 px-10 py-5 rounded-none border border-border-strong text-off-white uppercase tracking-[0.2em] text-xs font-medium transition-all duration-700 hover:border-gold hover:text-gold hover:bg-black/5"
-          >
-            Begin the Conversation
+          <Button href="/contact" variant="secondary" className="inline-flex items-center gap-4">
+            Talk to us
             <ArrowRight size={16} strokeWidth={1.5} className="transition-transform duration-500 group-hover:translate-x-2" />
-          </Link>
+          </Button>
         </div>
       </section>
     </div>

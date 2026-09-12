@@ -12,29 +12,61 @@
   --obsidian: #000000;
   --obsidian-light: #0A0A0A;
   --surface: #111111;
-  --surface-chip: #1A1A1A;
+  --surface-2: #151515;
   --off-white: #FFFFFF;
-  --muted: rgba(255, 255, 255, 0.5);
-  --border: rgba(255, 255, 255, 0.04);
+  --muted: rgba(255, 255, 255, 0.55);
+  --border: rgba(255, 255, 255, 0.06);
   --border-strong: rgba(255, 255, 255, 0.15);
   --gold: #D4AF37;
   --gold-hover: #C4A030;
   --gold-light: #E8CE7A;
+  --scrollbar: #cbc7bd;
+
+  /* Type scale — shared across all components */
+  --text-display: clamp(38px, 5.5vw, 76px);
+  --text-h2: clamp(32px, 4.5vw, 56px);
+  --text-h3: clamp(24px, 3vw, 36px);
+  --text-body: 16px;
+  --text-lead: 18px;
+  --text-label: 11px;
+  --text-meta: 10px;
+
+  /* Letter-spacing tokens */
+  --tracking-eyebrow: 0.2em;
+  --tracking-wide: 0.15em;
+
+  /* Radius scale — soft-rounded language */
+  --radius-sharp: 0px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-pill: 9999px;
+
+  /* Navigation height — for sticky offsets */
+  --nav-height-mobile: 82px;
+  --nav-height-desktop: 112px;
 }
 
 @theme inline {
   --color-obsidian: var(--obsidian);
   --color-obsidian-light: var(--obsidian-light);
   --color-surface: var(--surface);
-  --color-surface-chip: var(--surface-chip);
+  --color-surface-2: var(--surface-2);
   --color-off-white: var(--off-white);
   --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
   --color-gold: var(--gold);
   --color-gold-hover: var(--gold-hover);
   --color-gold-light: var(--gold-light);
   --font-sans: 'Inter', sans-serif;
   --font-serif: 'Cormorant Garamond', serif;
   --font-accent: 'Playfair Display', serif;
+  --radius-sharp: var(--radius-sharp);
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-pill: var(--radius-pill);
 }
 
 html {
@@ -51,6 +83,17 @@ body {
   -moz-osx-font-smoothing: grayscale;
   overflow-x: clip;
   width: 100%;
+}
+
+/* iOS/Android safe-area bottom padding for fixed bottom bars */
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Hide the concierge FAB while the mobile nav menu is open (it's z-[90], above the menu) */
+body.nav-menu-open .concierge-fab {
+  opacity: 0;
+  pointer-events: none;
 }
 
 @media (pointer: fine) {
@@ -72,8 +115,8 @@ body {
 .eyebrow {
   font-family: 'Inter', sans-serif;
   text-transform: uppercase;
-  letter-spacing: 0.2em;
-  font-size: 11px;
+  letter-spacing: var(--tracking-eyebrow);
+  font-size: var(--text-label);
   line-height: 1;
 }
 
@@ -85,13 +128,13 @@ body {
   letter-spacing: 0;
 }
 
-/* Editorial statement type (restrained, Elliman-style) */
+/* ---------- Type Scale ---------- */
 .display-xl {
   font-family: var(--font-serif);
   font-weight: 400;
   line-height: 1.05;
   letter-spacing: 0.01em;
-  font-size: clamp(38px, 5vw, 72px);
+  font-size: var(--text-display);
 }
 
 .display-lg {
@@ -99,10 +142,40 @@ body {
   font-weight: 400;
   line-height: 1.02;
   letter-spacing: -0.01em;
-  font-size: clamp(36px, 5.5vw, 76px);
+  font-size: var(--text-display);
 }
 
-/* Buttons — sharp corners (no radius) */
+.text-h2 {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  font-size: var(--text-h2);
+}
+
+.text-h3 {
+  font-family: var(--font-serif);
+  font-weight: 300;
+  line-height: 1.2;
+  letter-spacing: 0;
+  font-size: var(--text-h3);
+}
+
+.text-body {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  line-height: 1.6;
+  font-size: var(--text-body);
+}
+
+.text-lead {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  line-height: 1.7;
+  font-size: var(--text-lead);
+}
+
+/* Buttons — soft-rounded (6px) */
 .btn-primary {
   display: inline-flex;
   align-items: center;
@@ -115,7 +188,7 @@ body {
   font-size: 12px;
   font-weight: 500;
   padding: 16px 32px;
-  border-radius: 0;
+  border-radius: var(--radius-sm);
   transition: background-color 0.3s ease;
 }
 .btn-primary:hover {
@@ -134,7 +207,7 @@ body {
   letter-spacing: 0.18em;
   font-size: 12px;
   padding: 15px 32px;
-  border-radius: 0;
+  border-radius: var(--radius-sm);
   transition: border-color 0.3s ease, color 0.3s ease;
 }
 .btn-ghost:hover {
@@ -144,11 +217,34 @@ body {
 
 
 
-/* Pill-shaped dark input */
+/* Underline input — canonical form input style */
+.input-underline {
+  width: 100%;
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid var(--border-strong);
+  padding: 0 0 12px 0;
+  color: var(--off-white);
+  font-family: 'Inter', sans-serif;
+  font-size: var(--text-body);
+  transition: border-color 0.3s ease;
+}
+.input-underline::placeholder {
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  font-size: var(--text-meta);
+}
+.input-underline:focus {
+  outline: none;
+  border-bottom-color: var(--gold);
+}
+
+/* Pill-shaped dark input (legacy — kept for SellForm until migrated) */
 .input-pill {
   background-color: var(--surface);
   border: 1px solid var(--border-strong);
-  border-radius: 9999px;
+  border-radius: var(--radius-pill);
   color: var(--off-white);
   font-family: 'Inter', sans-serif;
 }
@@ -172,7 +268,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #cbc7bd;
+  background: var(--scrollbar);
   border-radius: 4px;
 }
 

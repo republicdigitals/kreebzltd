@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
+import { requireAdmin } from "@/lib/auth-guard";
 import { revalidateTag, revalidatePath } from "next/cache";
 import { updatePropertySchema } from "@/lib/validations/property";
 import { syncPropertyMedia, deletePropertyWithMedia } from "@/lib/services/property-media";
@@ -15,10 +14,8 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const session = await getServerSession(authOptions);
-    if (!session) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
+    const guard = await requireAdmin();
+    if (guard.response) return guard.response;
 
     const { id } = await params;
     const property = await getAdminPropertyById(id);
@@ -39,10 +36,8 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const session = await getServerSession(authOptions);
-    if (!session) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
+    const guard = await requireAdmin();
+    if (guard.response) return guard.response;
 
     const { id } = await params;
     const body = await request.json();
@@ -93,10 +88,8 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const session = await getServerSession(authOptions);
-    if (!session) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
+    const guard = await requireAdmin();
+    if (guard.response) return guard.response;
 
     const { id } = await params;
     

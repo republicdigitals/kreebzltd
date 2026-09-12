@@ -47,9 +47,9 @@ export default function PropertiesClient() {
   const showMap = viewMode === "split";
 
   return (
-    <div className="bg-obsidian pt-28 md:pt-[120px] flex flex-col">
+    <div className="bg-obsidian pt-[var(--nav-height-mobile)] md:pt-[var(--nav-height-desktop)] flex flex-col">
       {/* Search / filter bar */}
-      <div className="border-b border-border/20 bg-obsidian sticky top-28 md:top-[120px] z-40">
+      <div className="border-b border-border/20 bg-obsidian sticky top-[var(--nav-height-mobile)] md:top-[var(--nav-height-desktop)] z-40">
         <SearchBar
           viewMode={viewMode}
           onToggleView={toggleView}
@@ -61,7 +61,7 @@ export default function PropertiesClient() {
       <div className="flex-1 flex max-w-[1600px] mx-auto w-full">
         {/* Desktop Sidebar */}
         <div className="hidden lg:block w-[300px] shrink-0 border-r border-border/20 bg-obsidian z-10">
-          <div data-lenis-prevent="true" onWheel={(e) => e.stopPropagation()} className="sticky top-[200px] h-[calc(100vh-200px)] w-full overflow-y-auto custom-scrollbar">
+          <div data-lenis-prevent="true" onWheel={(e) => e.stopPropagation()} className="sticky top-[calc(var(--nav-height-desktop)+88px)] h-[calc(100vh-var(--nav-height-desktop)-88px)] w-full overflow-y-auto custom-scrollbar">
             <FilterSidebar />
           </div>
         </div>
@@ -75,7 +75,7 @@ export default function PropertiesClient() {
           {/* Map panel (Sticky sidebar) */}
           {showMap && (
             <div className="hidden xl:block w-1/2 border-l border-border/20 bg-obsidian-light">
-              <div className="sticky top-[200px] h-[calc(100vh-200px)]">
+              <div className="sticky top-[calc(var(--nav-height-desktop)+88px)] h-[calc(100vh-var(--nav-height-desktop)-88px)]">
                 <MapPlaceholder
                   properties={filtered}
                   activePropertyId={activePropertyId}

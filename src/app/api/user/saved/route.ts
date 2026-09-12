@@ -40,7 +40,7 @@ export async function POST(request: Request) {
     }
 
     const { propertyId } = await request.json();
-    if (!propertyId) {
+    if (typeof propertyId !== "string" || !propertyId || propertyId.length > 80) {
       return NextResponse.json({ error: "Property ID is required" }, { status: 400 });
     }
 
@@ -71,7 +71,7 @@ export async function DELETE(request: Request) {
     const { searchParams } = new URL(request.url);
     const propertyId = searchParams.get("propertyId");
 
-    if (!propertyId) {
+    if (!propertyId || propertyId.length > 80) {
       return NextResponse.json({ error: "Property ID is required" }, { status: 400 });
     }
 

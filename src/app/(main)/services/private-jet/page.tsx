@@ -31,7 +31,7 @@ export default function PrivateJetPage() {
       <PageHeader
         eyebrow="Lifestyle Services"
         title="Private Jet Charter & Rental"
-        subtitle="Charter light, midsize, and heavy jets for business or leisure. Kreebz arranges every detail through trusted aviation partners."
+        subtitle="Light, midsize, or heavy jets for business or leisure — we arrange every detail through vetted aviation partners."
       />
       <PrivateJetContent />
     </div>

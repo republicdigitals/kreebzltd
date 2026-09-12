@@ -3,7 +3,7 @@ import Contact from "@/components/Contact";
 
 export const metadata: Metadata = {
   title: "Contact | Kreebz Limited",
-  description: "Begin the conversation. Your property deserves a principal.",
+  description: "Say hello — a real person replies within one business day.",
 };
 
 export default function ContactPage() {

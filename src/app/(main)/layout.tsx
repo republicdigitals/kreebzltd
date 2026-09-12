@@ -8,6 +8,7 @@ import FilmGrain from "@/components/FilmGrain";
 import CustomCursor from "@/components/CustomCursor";
 import ConciergeUX from "@/components/ConciergeUX";
 import CookieConsent from "@/components/CookieConsent";
+import StickyMobileCTA from "@/components/StickyMobileCTA";
 
 export default function MainLayout({
   children,
@@ -19,10 +20,12 @@ export default function MainLayout({
       <Suspense fallback={null}>
         <Navigation />
       </Suspense>
-      <main className="flex-1">
+      {/* pb-24 clears the fixed mobile tab bar; desktop unaffected */}
+      <main className="flex-1 pb-24 md:pb-0">
         <PageTransition>{children}</PageTransition>
       </main>
       <Footer />
+      <StickyMobileCTA />
       <FilmGrain />
       <CustomCursor />
       <ConciergeUX />

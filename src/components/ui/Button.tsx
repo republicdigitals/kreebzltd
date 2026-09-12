@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   href?: string;
-  variant?: "primary" | "secondary";
+  variant?: "primary" | "secondary" | "fab";
   className?: string;
   children: React.ReactNode;
 }
@@ -17,13 +17,18 @@ export default function Button({
   ...props
 }: ButtonProps) {
   const baseClasses =
-    "group relative inline-flex items-center justify-center px-10 py-5 rounded-sm uppercase tracking-[0.2em] text-[10px] font-semibold transition-all duration-700";
+    "group relative inline-flex items-center justify-center uppercase tracking-[0.2em] text-[11px] font-semibold transition-all duration-500";
 
   const variantClasses = {
+    // Gold solid — the primary CTA (hero, contact, partnerships)
     primary:
-      "bg-black/40 border border-gold/30 text-gold-light backdrop-blur-md shadow-2xl hover:bg-black/60 hover:border-gold/60 hover:text-gold",
+      "bg-gold text-obsidian px-10 py-5 rounded-[var(--radius-sm)] shadow-2xl hover:bg-gold-hover hover:scale-[1.02]",
+    // Ghost / secondary — frosted glass so it stays legible over imagery
     secondary:
-      "bg-gold text-obsidian shadow-2xl hover:bg-[#D4AF37]/80 hover:text-white",
+      "bg-obsidian/40 backdrop-blur-md border border-white/40 text-white px-10 py-5 rounded-[var(--radius-sm)] hover:border-gold hover:text-gold hover:bg-obsidian/60",
+    // Floating action button — pill shape (concierge FAB)
+    fab:
+      "bg-off-white text-obsidian px-6 py-4 rounded-[var(--radius-pill)] hover:bg-gold hover:text-off-white shadow-2xl",
   };
 
   const combinedClasses = cn(baseClasses, variantClasses[variant], className);

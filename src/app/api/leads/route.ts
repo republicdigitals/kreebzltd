@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import prisma from "@/lib/prisma";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
+import { requireAdmin } from "@/lib/auth-guard";
+import { rateLimit, clientIp } from "@/lib/rate-limit";
+import { createLeadSchema } from "@/lib/validations/lead";
 
 /**
  * GET /api/leads
@@ -10,10 +11,8 @@ import { authOptions } from "@/lib/auth";
  */
 export async function GET() {
   try {
-    const session = await getServerSession(authOptions);
-    if (!session) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
+    const guard = await requireAdmin();
+    if (guard.response) return guard.response;
 
     const leads = await prisma.lead.findMany({
       orderBy: { createdAt: "desc" },
@@ -35,30 +34,51 @@ export async function GET() {
  */
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
-    const { name, email, phone, interest, message, propertyId, website } = body;
+    // Rate limit: 5 submissions per minute per IP
+    const rl = rateLimit(`leads:${clientIp(request)}`, 5, 60_000);
+    if (!rl.ok) {
+      return NextResponse.json(
+        { error: "Too many requests. Please try again later." },
+        { status: 429, headers: { "Retry-After": String(rl.retryAfter) } }
+      );
+    }
 
-    // Honeypot check for bots
-    if (website) {
-      // Return 201 so the bot thinks it succeeded, but don't save anything
+    const body = await request.json();
+
+    // Honeypot check for bots — return 201 so the bot thinks it succeeded
+    if (body?.website) {
       return NextResponse.json({ success: true }, { status: 201 });
     }
 
-    if (!name || !email || !interest) {
+    const parsed = createLeadSchema.safeParse(body);
+    if (!parsed.success) {
       return NextResponse.json(
-        { error: "name, email, and interest are required" },
+        { error: "Invalid submission", details: parsed.error.flatten().fieldErrors },
         { status: 400 }
       );
     }
 
+    const data = parsed.data;
+
     const lead = await prisma.lead.create({
       data: {
-        name: String(name).trim(),
-        email: String(email).trim().toLowerCase(),
-        phone: phone ? String(phone).trim() : null,
-        interest: String(interest).trim(),
-        message: message ? String(message).trim() : null,
-        propertyId: propertyId ? String(propertyId).trim() : null,
+        name: data.name,
+        email: data.email.toLowerCase(),
+        phone: data.phone ?? null,
+        interest: data.interest,
+        message: data.message ?? null,
+        propertyId: data.propertyId ?? null,
+        project: data.project ?? null,
+        nextStep: data.nextStep ?? null,
+        timeframe: data.timeframe ?? null,
+        preferredContact: data.preferredContact ?? null,
+        consent: data.consent === true,
+        utmSource: data.utmSource ?? null,
+        utmMedium: data.utmMedium ?? null,
+        utmCampaign: data.utmCampaign ?? null,
+        utmContent: data.utmContent ?? null,
+        referrer: data.referrer ?? null,
+        landingPage: data.landingPage ?? null,
         status: "New",
       },
     });

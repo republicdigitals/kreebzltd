@@ -11,6 +11,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import RevealText from "./RevealText";
+import Button from "./ui/Button";
 
 const AUTOPLAY_MS = 6000;
 
@@ -96,7 +97,7 @@ export default function FeaturedProperties({ properties }: { properties: Propert
             The Portfolio
           </p>
           <h2 className="reveal-up text-off-white display-lg">
-            <RevealText text="Curated Excellence" delay={0.2} />
+            <RevealText text="Every listing, personally vetted" delay={0.2} />
           </h2>
         </div>
 
@@ -112,7 +113,7 @@ export default function FeaturedProperties({ properties }: { properties: Propert
                   key={property.id}
                   className="relative flex-[0_0_100%] md:flex-[0_0_50%] lg:flex-[0_0_33.333333%] min-w-0 pl-4 md:pl-8"
                 >
-                  <Link href={`/property/${property.slug}`} className="block w-full aspect-[4/5] sm:aspect-[3/4] group relative overflow-hidden rounded-sm" draggable={false}>
+                  <Link href={`/property/${property.slug}`} className="block w-full aspect-[4/3] group relative overflow-hidden rounded-[var(--radius-lg)]" draggable={false}>
                     {property.image ? (
                       <Image
                         src={property.image}
@@ -159,7 +160,7 @@ export default function FeaturedProperties({ properties }: { properties: Propert
                         </div>
                         
                         <span className="inline-flex items-center gap-2 text-white uppercase text-[10px] tracking-[0.2em] group-hover:text-gold transition-colors duration-300 mt-2">
-                          View Residence
+                          View this home
                           <ArrowUpRight
                             size={14}
                             strokeWidth={1.5}
@@ -177,14 +178,14 @@ export default function FeaturedProperties({ properties }: { properties: Propert
             <button
               onClick={scrollPrev}
               aria-label="Previous property"
-              className="hidden sm:flex absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-10 items-center justify-center w-12 h-12 rounded-sm bg-black/40 border border-gold/30 text-gold-light backdrop-blur-md shadow-xl hover:bg-black/60 hover:border-gold/60 hover:text-gold transition-all duration-500"
+              className="hidden sm:flex absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-10 items-center justify-center w-12 h-12 rounded-full bg-black/40 border border-gold/30 text-gold-light backdrop-blur-md shadow-xl hover:bg-black/60 hover:border-gold/60 hover:text-gold transition-all duration-500"
             >
               <ArrowLeft size={18} strokeWidth={1.5} />
             </button>
             <button
               onClick={scrollNext}
               aria-label="Next property"
-              className="hidden sm:flex absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-10 items-center justify-center w-12 h-12 rounded-sm bg-black/40 border border-gold/30 text-gold-light backdrop-blur-md shadow-xl hover:bg-black/60 hover:border-gold/60 hover:text-gold transition-all duration-500"
+              className="hidden sm:flex absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-10 items-center justify-center w-12 h-12 rounded-full bg-black/40 border border-gold/30 text-gold-light backdrop-blur-md shadow-xl hover:bg-black/60 hover:border-gold/60 hover:text-gold transition-all duration-500"
             >
               <ArrowRight size={18} strokeWidth={1.5} />
             </button>
@@ -219,15 +220,10 @@ export default function FeaturedProperties({ properties }: { properties: Propert
 
         {/* View all CTA */}
         <div className="reveal-up flex justify-center mt-20">
-          <Link
-            href="/properties"
-            className="group relative inline-flex items-center justify-center px-10 py-5 bg-black/40 border border-gold/30 rounded-sm uppercase tracking-[0.2em] text-[10px] font-semibold text-gold-light backdrop-blur-md shadow-2xl transition-all duration-700 hover:bg-black/60 hover:border-gold/60 hover:text-gold"
-          >
-            <span className="relative z-10 flex items-center gap-4">
-              View All Properties
-              <ArrowRight size={16} strokeWidth={1.5} className="transition-transform duration-500 group-hover:translate-x-2" />
-            </span>
-          </Link>
+          <Button href="/properties" variant="secondary" className="inline-flex items-center gap-4">
+            See the full portfolio
+            <ArrowRight size={16} strokeWidth={1.5} className="transition-transform duration-500 group-hover:translate-x-2" />
+          </Button>
         </div>
       </div>
     </section>

@@ -19,9 +19,10 @@ export default withAuth(
       authorized: ({ req, token }) => {
         const { pathname } = req.nextUrl;
         
-        // If it's an admin route, require a token
+        // Admin UI requires an authenticated session WITH the ADMIN role —
+        // a self-registered customer account must never reach /admin.
         if (pathname.startsWith("/admin") && !pathname.startsWith("/admin/login")) {
-          return !!token;
+          return token?.role === "ADMIN";
         }
         
         // Otherwise, allow access (so public pages get the headers)

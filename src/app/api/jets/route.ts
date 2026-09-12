@@ -12,7 +12,14 @@ export async function GET() {
       },
     });
 
-    return NextResponse.json({ jets });
+    // BigInt isn't JSON-serializable — convert kobo amounts to Number
+    // (well within Number.MAX_SAFE_INTEGER).
+    const serialized = jets.map((jet) => ({
+      ...jet,
+      baseHourlyRate: Number(jet.baseHourlyRate),
+    }));
+
+    return NextResponse.json({ jets: serialized });
   } catch (error: unknown) {
     console.error("Failed to fetch jets:", error);
     return NextResponse.json({ error: "Failed to fetch aircraft inventory" }, { status: 500 });

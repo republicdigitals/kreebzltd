@@ -77,7 +77,7 @@ export default function SearchBar({
                 type="text"
                 value={localQuery}
                 onChange={(e) => setLocalQuery(e.target.value)}
-                placeholder="Enter address, neighbourhood, or property ID"
+                placeholder="Search by area, address, or property name"
                 className="flex-1 bg-transparent border-none outline-none text-off-white placeholder:text-muted text-sm min-w-0"
               />
               <button
@@ -156,7 +156,7 @@ export default function SearchBar({
           {/* Results headline */}
           <div className="flex items-center justify-between border-t border-white/10 pt-6 mt-2">
             <h1 className="font-serif text-off-white font-light" style={{ fontSize: "28px", lineHeight: 1.2 }}>
-              Luxury listings {filters.status !== "all" ? `for ${filters.status.toLowerCase()}` : ""} in Lagos
+              Homes and investments {filters.status !== "all" ? `for ${filters.status.toLowerCase()}` : ""} in Lagos
             </h1>
             <div className="flex items-center gap-6">
               <p className="eyebrow text-muted hidden lg:block">

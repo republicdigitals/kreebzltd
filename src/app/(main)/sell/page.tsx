@@ -2,7 +2,7 @@ import SellForm from "@/components/SellForm";
 
 export const metadata = {
   title: "Sell Your Property | Kreebz Ltd",
-  description: "Discreetly market your premium asset to a qualified network of high-net-worth buyers.",
+  description: "Your property, shown to qualified buyers — not the whole internet.",
 };
 
 export default function SellPage() {
@@ -11,7 +11,7 @@ export default function SellPage() {
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
         <div className="max-w-3xl mx-auto text-center mb-16 lg:mb-24">
           <h1 className="font-serif text-off-white text-[clamp(40px,5vw,72px)] leading-[1.1] font-light mb-6">
-            List Your Asset
+            Sell without the noise
           </h1>
 
         </div>

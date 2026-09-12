@@ -7,6 +7,21 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
+import { trackEvent } from "@/lib/analytics";
+import Button from "./ui/Button";
+
+function readAttribution() {
+  if (typeof window === "undefined") return {};
+  const params = new URLSearchParams(window.location.search);
+  return {
+    utmSource: params.get("utm_source") ?? undefined,
+    utmMedium: params.get("utm_medium") ?? undefined,
+    utmCampaign: params.get("utm_campaign") ?? undefined,
+    utmContent: params.get("utm_content") ?? undefined,
+    referrer: document.referrer || undefined,
+    landingPage: window.location.pathname + window.location.search,
+  };
+}
 
 // 1. Define the schema
 const contactSchema = z.object({
@@ -58,6 +73,7 @@ export default function Contact() {
           interest: data.interest,
           message: data.message,
           website: data.website,
+          ...readAttribution(),
         }),
       });
 
@@ -65,24 +81,21 @@ export default function Contact() {
         throw new Error(`Submission failed: ${res.status}`);
       }
 
+      trackEvent("submit_enquiry_form", { enquiry_type: data.interest });
       reset();
       router.push("/thank-you");
     } catch (error) {
       console.error("[Contact form]", error);
+      trackEvent("enquiry_form_error", {});
     } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    <section 
-      id="contact" 
-      className="bg-obsidian flex flex-col justify-center"
-      style={{ 
-        minHeight: "60vh",
-        paddingTop: "100px",
-        paddingBottom: "80px"
-      }}
+    <section
+      id="contact"
+      className="bg-obsidian flex flex-col justify-center pt-24 lg:pt-32 pb-20 min-h-[60vh]"
     >
       <div className="max-w-[800px] mx-auto px-6 lg:px-12 w-full">
         <div className="text-center mb-16">
@@ -93,8 +106,8 @@ export default function Contact() {
             transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
             className="display-lg text-off-white mb-6"
           >
-            Your property deserves a{" "}
-            <span className="accent-italic text-gold-light">principal.</span>
+            Say hello —{" "}
+            <span className="accent-italic text-gold-light">we actually reply.</span>
           </motion.h2>
 
           <motion.div
@@ -124,7 +137,7 @@ export default function Contact() {
             <div className="mt-8 px-4 py-2 border border-gold/20 bg-gold/5 rounded-full">
               <p className="text-gold text-xs uppercase tracking-widest font-medium flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-gold animate-pulse"></span>
-                Response guaranteed within one business day
+                A real person replies within one business day
               </p>
             </div>
           </motion.div>
@@ -136,7 +149,7 @@ export default function Contact() {
           whileInView={{ y: 0, opacity: 1 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8, delay: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-          className="bg-[#151515] p-8 md:p-12 rounded-xl border border-white/5 shadow-2xl relative overflow-hidden"
+          className="bg-surface-2 p-8 md:p-12 rounded-[var(--radius-lg)] border border-border shadow-2xl relative overflow-hidden"
         >
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             {/* Honeypot field - visually hidden but available to screen readers/bots */}
@@ -153,13 +166,13 @@ export default function Contact() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <label htmlFor="name" className="text-xs uppercase tracking-widest text-white/50">Name</label>
+                <label htmlFor="name" className="text-xs uppercase tracking-widest text-off-white/60">Name</label>
                 <input
                   id="name"
                   type="text"
                   placeholder="John Doe"
                   className={cn(
-                    "w-full bg-black/30 border border-white/10 rounded-md px-4 py-3 text-white placeholder:text-white/20",
+                    "w-full bg-black/30 border border-white/10 rounded-[var(--radius-sm)] px-4 py-3 text-white placeholder:text-white/40",
                     "focus:outline-none focus:ring-1 focus:ring-gold focus:border-gold transition-colors",
                     errors.name && "border-red-500/50 focus:ring-red-500/50 focus:border-red-500/50"
                   )}
@@ -169,13 +182,13 @@ export default function Contact() {
               </div>
               
               <div className="space-y-2">
-                <label htmlFor="email" className="text-xs uppercase tracking-widest text-white/50">Email</label>
+                <label htmlFor="email" className="text-xs uppercase tracking-widest text-off-white/60">Email</label>
                 <input
                   id="email"
                   type="email"
                   placeholder="john@example.com"
                   className={cn(
-                    "w-full bg-black/30 border border-white/10 rounded-md px-4 py-3 text-white placeholder:text-white/20",
+                    "w-full bg-black/30 border border-white/10 rounded-[var(--radius-sm)] px-4 py-3 text-white placeholder:text-white/40",
                     "focus:outline-none focus:ring-1 focus:ring-gold focus:border-gold transition-colors",
                     errors.email && "border-red-500/50 focus:ring-red-500/50 focus:border-red-500/50"
                   )}
@@ -187,13 +200,13 @@ export default function Contact() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <label htmlFor="phone" className="text-xs uppercase tracking-widest text-white/50">Phone (Optional)</label>
+                <label htmlFor="phone" className="text-xs uppercase tracking-widest text-off-white/60">Phone (Optional)</label>
                 <input
                   id="phone"
                   type="tel"
                   placeholder="+234..."
                   className={cn(
-                    "w-full bg-black/30 border border-white/10 rounded-md px-4 py-3 text-white placeholder:text-white/20",
+                    "w-full bg-black/30 border border-white/10 rounded-[var(--radius-sm)] px-4 py-3 text-white placeholder:text-white/40",
                     "focus:outline-none focus:ring-1 focus:ring-gold focus:border-gold transition-colors"
                   )}
                   {...register("phone")}
@@ -201,11 +214,11 @@ export default function Contact() {
               </div>
 
               <div className="space-y-2">
-                <label htmlFor="interest" className="text-xs uppercase tracking-widest text-white/50">I am interested in</label>
+                <label htmlFor="interest" className="text-xs uppercase tracking-widest text-off-white/60">I am interested in</label>
                 <select
                   id="interest"
                   className={cn(
-                    "w-full bg-black/30 border border-white/10 rounded-md px-4 py-3 text-white appearance-none",
+                    "w-full bg-black/30 border border-white/10 rounded-[var(--radius-sm)] px-4 py-3 text-white appearance-none",
                     "focus:outline-none focus:ring-1 focus:ring-gold focus:border-gold transition-colors",
                     errors.interest && "border-red-500/50 focus:ring-red-500/50 focus:border-red-500/50"
                   )}
@@ -214,6 +227,7 @@ export default function Contact() {
                   <option value="buying">Buying a Property</option>
                   <option value="renting">Renting a Property</option>
                   <option value="management">Facility Management</option>
+                  <option value="aviation">Private Jet Charter</option>
                   <option value="other">Other Inquiry</option>
                 </select>
                 {errors.interest && <p className="text-red-400 text-xs mt-1">{errors.interest.message}</p>}
@@ -221,13 +235,13 @@ export default function Contact() {
             </div>
 
             <div className="space-y-2">
-              <label htmlFor="message" className="text-xs uppercase tracking-widest text-white/50">Message</label>
+              <label htmlFor="message" className="text-xs uppercase tracking-widest text-off-white/60">Message</label>
               <textarea
                 id="message"
                 rows={5}
                 placeholder="How can we assist you?"
                 className={cn(
-                  "w-full bg-black/30 border border-white/10 rounded-md px-4 py-3 text-white placeholder:text-white/20 resize-none",
+                  "w-full bg-black/30 border border-white/10 rounded-[var(--radius-sm)] px-4 py-3 text-white placeholder:text-white/40 resize-none",
                   "focus:outline-none focus:ring-1 focus:ring-gold focus:border-gold transition-colors",
                   errors.message && "border-red-500/50 focus:ring-red-500/50 focus:border-red-500/50"
                 )}
@@ -236,18 +250,18 @@ export default function Contact() {
               {errors.message && <p className="text-red-400 text-xs mt-1">{errors.message.message}</p>}
             </div>
 
-            <button
+            <Button
               type="submit"
               disabled={isSubmitting}
-              className="w-full bg-gold hover:bg-gold-light text-obsidian font-medium uppercase tracking-[0.2em] text-xs py-4 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+              className="w-full py-4 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isSubmitting ? (
                 <svg className="animate-spin -ml-1 mr-3 h-4 w-4 text-obsidian" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
-              ) : "Send Inquiry"}
-            </button>
+              ) : "Send it over"}
+            </Button>
           </form>
         </motion.div>
       </div>

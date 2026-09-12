@@ -3,13 +3,13 @@ import PageHeader from "@/components/PageHeader";
 import Services from "@/components/Services";
 
 export const metadata: Metadata = {
-  title: "What We Do | Kreebz Ltd",
+  title: "Services | Kreebz Ltd",
   description:
-    "Kreebz Ltd offers marketing and sales, facility and estate management, private jet charter, concierge services, and a trusted contractor network for discerning owners and residents in Lagos.",
+    "Property sales and leasing, facility management, private jet charter, and concierge — one team in Lagos.",
   openGraph: {
-    title: "What We Do | Kreebz Ltd",
+    title: "Services | Kreebz Ltd",
     description:
-      "Kreebz Ltd offers marketing and sales, facility and estate management, private jet charter, concierge services, and a trusted contractor network.",
+      "Property sales and leasing, facility management, private jet charter, and concierge — one team in Lagos.",
     url: "/services",
     siteName: "Kreebz Ltd",
     images: ["/opengraph-image.png"],
@@ -18,9 +18,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "What We Do | Kreebz Ltd",
+    title: "Services | Kreebz Ltd",
     description:
-      "Kreebz Ltd offers marketing and sales, facility and estate management, private jet charter, concierge services, and a trusted contractor network.",
+      "Property sales and leasing, facility management, private jet charter, and concierge — one team in Lagos.",
     images: ["/twitter-image.png"],
   },
 };
@@ -30,8 +30,8 @@ export default function ServicesPage() {
     <div className="bg-obsidian">
       <PageHeader
         eyebrow="What We Do"
-        title="Our Services"
-        subtitle="Marketing, facility management, private aviation, concierge care, and trusted contractors — all held to the Kreebz standard."
+        title="Everything handled, end to end"
+        subtitle="Buying, selling, managing, or flying in — you deal with one team that knows your name, not a rotating cast of agents."
       />
       <Services />
     </div>

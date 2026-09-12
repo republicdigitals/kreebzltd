@@ -10,28 +10,28 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const services = [
   {
-    title: "Buyers & Sellers",
-    description: "Access our exclusive off-market properties or list your premium asset with complete discretion.",
+    title: "Buy & Sell",
+    description: "Every listing is inspected and vetted before you see it. Selling? We place your property in front of qualified buyers, quietly.",
     placeholder: "marketing-sales.jpg",
     href: "/properties",
   },
   {
-    title: "Estate Owners",
-    description: "End-to-end facility management, operations, and compliance—preserving the value of your assets.",
+    title: "Property Management",
+    description: "Repairs, staff, compliance, tenants — handled before you have to ask.",
     placeholder: "estate-management.jpg",
-    href: "/contact?subject=Estate%20Management",
+    href: "/management",
   },
   {
     title: "Developers",
-    description: "Comprehensive advisory from feasibility and design procurement to construction management and launch.",
+    description: "From feasibility to launch, we market, sell, and manage what you build.",
     placeholder: "development.jpg",
-    href: "/contact?subject=Development%20Advisory",
+    href: "/partnerships",
   },
   {
-    title: "Residents",
-    description: "Support for current property residents.",
-    placeholder: "residents.jpg",
-    href: "/contact?subject=Resident%20Services",
+    title: "Private Aviation",
+    description: "Charter light to heavy jets on your schedule — booked and confirmed through us.",
+    placeholder: "private-aviation.jpg",
+    href: "/services/private-jet",
   }
 ];
 
@@ -60,11 +60,11 @@ export default function Services() {
     <section ref={containerRef} id="services" className="py-24 lg:py-32 bg-obsidian border-t border-border/20">
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
         <div className="mb-16 lg:mb-24">
-          <h2 className="font-serif text-4xl lg:text-6xl text-off-white font-light tracking-tight mb-6">
-            Our <span className="italic text-gold">Services</span>
+          <h2 className="text-h2 text-off-white font-light tracking-tight mb-6">
+            Everything handled, <span className="italic text-gold">end to end</span>
           </h2>
-          <p className="text-muted font-sans text-lg max-w-2xl leading-relaxed">
-            From pre-development through occupancy, we provide an extensive list of premium services to successfully execute any project and overcome development challenges in Lagos.
+          <p className="text-muted text-lead max-w-2xl leading-relaxed">
+            Buying, selling, managing, or flying in — you deal with one team that knows your name, not a rotating cast of agents.
           </p>
         </div>
 
@@ -72,7 +72,7 @@ export default function Services() {
         <div className="hidden lg:flex gap-16 items-start relative">
           
           {/* Left: Sticky Image Showcase */}
-          <div className="w-5/12 sticky top-32 h-[70vh] rounded-none overflow-hidden bg-obsidian-light border border-border/30">
+          <div className="w-5/12 sticky top-[calc(var(--nav-height-desktop)+32px)] h-[70vh] rounded-[var(--radius-lg)] overflow-hidden bg-obsidian-light border border-border/30">
             <AnimatePresence mode="wait">
               <motion.div
                 key={hoveredIndex}
@@ -84,8 +84,8 @@ export default function Services() {
               >
                 {/* Fallback pattern/text for placeholder */}
                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-white/[0.03] to-transparent" />
-                <span className="uppercase text-xs tracking-[0.4em] text-gold-light/40 z-20">
-                  {services[hoveredIndex].placeholder}
+                <span className="uppercase text-xs tracking-[0.4em] text-gold-light/60 z-20 text-center px-8">
+                  {services[hoveredIndex].title}
                 </span>
                 
                 {/* Decorative border elements */}
@@ -157,7 +157,7 @@ export default function Services() {
             return (
               <div 
                 key={index}
-                className="service-item bg-obsidian-light border border-border/30 overflow-hidden"
+                className="service-item bg-obsidian-light border border-border/30 rounded-[var(--radius-lg)] overflow-hidden"
               >
                 <button 
                   onClick={() => setExpandedIndex(isExpanded ? null : index)}

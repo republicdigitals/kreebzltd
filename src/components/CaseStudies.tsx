@@ -30,11 +30,11 @@ export default function CaseStudies() {
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
           <div>
-            <h2 className="text-3xl md:text-5xl font-serif text-white mb-4">Case Studies</h2>
-            <p className="uppercase tracking-[0.2em] text-[10px] text-gold">Proven Results</p>
+            <h2 className="text-3xl md:text-5xl font-serif text-white mb-4">Recent work</h2>
+            <p className="uppercase tracking-[0.2em] text-[10px] text-gold">What we&apos;ve done</p>
           </div>
           <Link href="/contact" className="inline-flex items-center gap-2 text-gold hover:text-white transition-colors uppercase tracking-widest text-xs font-medium">
-            Discuss Your Needs <ArrowRight className="w-4 h-4" />
+            Talk it through with us <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
 

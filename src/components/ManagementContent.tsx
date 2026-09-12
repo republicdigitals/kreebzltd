@@ -1,11 +1,11 @@
 "use client";
 
 import { useRef } from "react";
-import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { Clock, Shield, BarChart3, Star, ArrowRight } from "lucide-react";
+import Button from "./ui/Button";
 
 const solutions = [
   {
@@ -61,31 +61,31 @@ export default function ManagementContent() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center fade-up">
           <div>
             <p className="eyebrow text-gold-light/80 mb-6">THE KREEBZ STANDARD</p>
-            <h2 className="text-off-white font-serif text-[clamp(32px,4vw,56px)] leading-[1.1] mb-8">
-              Custodians of Your Legacy
+            <h2 className="text-h2 text-off-white leading-[1.1] mb-8">
+              Your property, kept to your standard
             </h2>
-            <p className="text-muted font-sans text-lg leading-relaxed mb-6">
-              We understand that ultra-high-net-worth individuals have abundant wealth but scarce time. Kreebz positions itself as the solution to time poverty. 
+            <p className="text-muted text-lead leading-relaxed mb-6">
+              You didn&apos;t buy a second job. Managing a property shouldn&apos;t eat your week — that&apos;s our job.
             </p>
-            <p className="text-muted font-sans text-lg leading-relaxed">
-              We do not just clean and repair; we orchestrate a seamless luxury experience. Our data-driven, white-glove approach ensures complete visibility and complete peace of mind.
+            <p className="text-muted text-lead leading-relaxed">
+              We don&apos;t just fix things. We keep your property ahead of problems — and report back before you have to ask.
             </p>
           </div>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            <div className="bg-obsidian-light/30 border border-border/20 p-8 rounded-xl">
+            <div className="bg-obsidian-light/30 border border-border/20 p-8 rounded-[var(--radius-lg)]">
               <h3 className="text-4xl font-serif text-gold mb-2">24/7</h3>
               <p className="text-off-white/80 text-sm uppercase tracking-wider">Concierge Access</p>
             </div>
-            <div className="bg-obsidian-light/30 border border-border/20 p-8 rounded-xl sm:translate-y-8">
+            <div className="bg-obsidian-light/30 border border-border/20 p-8 rounded-[var(--radius-lg)] sm:translate-y-8">
               <h3 className="text-4xl font-serif text-gold mb-2">100%</h3>
               <p className="text-off-white/80 text-sm uppercase tracking-wider">Vetted Staff</p>
             </div>
-            <div className="bg-obsidian-light/30 border border-border/20 p-8 rounded-xl">
-              <h3 className="text-4xl font-serif text-gold mb-2">Pro</h3>
-              <p className="text-off-white/80 text-sm uppercase tracking-wider">Predictive Maintenance</p>
+            <div className="bg-obsidian-light/30 border border-border/20 p-8 rounded-[var(--radius-lg)]">
+              <h3 className="text-4xl font-serif text-gold mb-2">&lt;4h</h3>
+              <p className="text-off-white/80 text-sm uppercase tracking-wider">Response Time</p>
             </div>
-            <div className="bg-obsidian-light/30 border border-border/20 p-8 rounded-xl sm:translate-y-8">
+            <div className="bg-obsidian-light/30 border border-border/20 p-8 rounded-[var(--radius-lg)] sm:translate-y-8">
               <h3 className="text-4xl font-serif text-gold mb-2">NDA</h3>
               <p className="text-off-white/80 text-sm uppercase tracking-wider">Strict Confidentiality</p>
             </div>
@@ -96,9 +96,9 @@ export default function ManagementContent() {
       {/* Solutions Grid */}
       <section className="py-24 max-w-[1400px] mx-auto px-6 lg:px-12">
         <div className="text-center mb-20 fade-up">
-          <h2 className="text-off-white font-serif text-[clamp(28px,4vw,48px)] mb-6">Elevating the Experience</h2>
-          <p className="text-muted max-w-2xl mx-auto font-sans text-lg">
-            Luxury that is consistent, never compromised. We solve the core pain points of premium property ownership.
+          <h2 className="text-h2 text-off-white mb-6">What we take off your plate</h2>
+          <p className="text-muted max-w-2xl mx-auto text-lead">
+            The recurring headaches of owning premium property — solved before they reach you.
           </p>
         </div>
 
@@ -120,16 +120,13 @@ export default function ManagementContent() {
 
       {/* CTA Section */}
       <section className="py-24 px-6 lg:px-12 max-w-[1400px] mx-auto text-center fade-up">
-        <h2 className="text-off-white font-serif text-[clamp(32px,5vw,64px)] mb-8">Reclaim Your Time</h2>
-        <p className="text-muted max-w-2xl mx-auto mb-12 text-lg">
-          Let Kreebz handle the complexity. Discuss a tailored management package for your primary residence or property portfolio.
+        <h2 className="text-h2 text-off-white mb-8">Get your week back</h2>
+        <p className="text-muted max-w-2xl mx-auto mb-12 text-lead">
+          Tell us about your property and we&apos;ll put together a management plan that fits.
         </p>
-        <Link 
-          href="/contact"
-          className="inline-flex items-center gap-4 px-12 py-5 bg-gold text-obsidian uppercase tracking-[0.2em] text-[11px] font-bold transition-all duration-500 hover:bg-gold-light hover:scale-105"
-        >
-          Request an Audit <ArrowRight size={16} />
-        </Link>
+        <Button href="/contact" className="inline-flex items-center gap-4 px-12">
+          Get a management plan <ArrowRight size={16} />
+        </Button>
       </section>
     </div>
   );

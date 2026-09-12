@@ -114,12 +114,12 @@ export default function PrivateJetContent() {
             <div className="relative z-10 text-center px-6 max-w-4xl mx-auto">
               <p className="eyebrow text-gold-light mb-8 drop-shadow-lg">Private Air Charter</p>
               <h1 className="display-xl text-off-white mb-6 drop-shadow-2xl leading-tight">
-                Fly Without<br />
-                <span className="italic font-light text-gold-light">Limits.</span>
+                Your schedule.<br />
+                <span className="italic font-light text-gold-light">Your jet.</span>
               </h1>
               <p className="font-sans text-off-white/70 text-[15px] leading-[1.9] max-w-xl mx-auto mb-4">
-                Bespoke private air travel arranged on your terms. One-way charters, recurring routes,
-                or full aircraft rentals — we handle everything.
+                Tell us where and when. We arrange the aircraft, confirm the details,
+                and you&apos;re wheels-up.
               </p>
               {cheapestRate > 0 && (
                 <p className="font-serif text-gold-light/80 text-[18px] italic mb-12">
@@ -145,10 +145,9 @@ export default function PrivateJetContent() {
           <section className="py-24 lg:py-32">
             <div className="max-w-[900px] mx-auto px-6 lg:px-12 text-center">
               <p className="font-serif text-off-white font-light leading-[1.7]" style={{ fontSize: "clamp(22px, 2.5vw, 34px)" }}>
-                Beyond property, Kreebz arranges{" "}
-                <span className="italic text-gold-light">private air travel on your terms</span>.
-                Whether it is a one-way charter, a recurring route, or an aircraft rental through
-                our trusted partners, we handle the details so you do not have to.
+                One-way, return, or a regular route — pick the aircraft, pick the time,{" "}
+                <span className="italic text-gold-light">pay securely online</span>.
+                We handle everything else.
               </p>
             </div>
           </section>
@@ -171,7 +170,7 @@ export default function PrivateJetContent() {
                 Choose Your Aircraft
               </h2>
               <p className="font-sans text-muted text-[15px] mt-4 max-w-lg mx-auto leading-relaxed">
-                Select the aircraft that suits your route and party size. Pricing is per hour of flight time.
+                Pick the jet that fits your route and party. You see the price before you commit — per flight hour, no surprises.
               </p>
             </div>
 
@@ -336,7 +335,7 @@ export default function PrivateJetContent() {
                   disabled={submitting}
                   className="group inline-flex items-center gap-3 bg-gold text-obsidian uppercase tracking-[0.2em] text-[11px] font-bold px-12 py-5 transition-all duration-500 hover:bg-gold-light hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-100"
                 >
-                  {submitting ? "Processing..." : session ? "Continue to Payment" : "Sign In to Book"}
+                  {submitting ? "Processing..." : session ? "Continue to secure payment" : "Sign In to Book"}
                   {!submitting && <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-1" />}
                 </button>
               </div>

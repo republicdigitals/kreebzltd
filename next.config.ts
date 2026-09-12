@@ -1,6 +1,39 @@
 import type { NextConfig } from "next";
 
+const isProd = process.env.NODE_ENV === "production";
+
+// 'unsafe-eval' is required by Next.js dev-mode HMR but never in production.
+// 'unsafe-inline' stays: JSON-LD blocks and the GA bootstrap are inline scripts,
+// and nonce-based CSP requires per-request dynamic rendering of every page.
+const scriptSrc = [
+  "'self'",
+  "'unsafe-inline'",
+  ...(isProd ? [] : ["'unsafe-eval'"]),
+  "https://www.googletagmanager.com",
+  "https://www.google-analytics.com",
+  "https://maps.googleapis.com",
+].join(" ");
+
+const csp = [
+  "default-src 'self'",
+  `script-src ${scriptSrc}`,
+  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+  "font-src 'self' https://fonts.gstatic.com data:",
+  "img-src 'self' data: blob: https://*.supabase.co https://*.supabase.in https://images.unsplash.com https://www.google-analytics.com https://www.googletagmanager.com",
+  "connect-src 'self' https://*.supabase.co https://*.supabase.in wss://*.supabase.co https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://api.paystack.co https://checkout.paystack.com",
+  "media-src 'self'",
+  "frame-src 'self' https://www.google.com https://checkout.paystack.com https://js.paystack.co",
+  "child-src 'self' https://www.google.com https://checkout.paystack.com https://js.paystack.co",
+  "object-src 'none'",
+  "base-uri 'self'",
+  "form-action 'self'",
+  "frame-ancestors 'none'",
+  "worker-src 'self'",
+  ...(isProd ? ["upgrade-insecure-requests"] : []),
+].join("; ");
+
 const nextConfig: NextConfig = {
+  poweredByHeader: false,
   images: {
     remotePatterns: [
       {
@@ -45,12 +78,8 @@ const nextConfig: NextConfig = {
             value: "max-age=63072000; includeSubDomains; preload",
           },
           {
-            key: "X-XSS-Protection",
-            value: "1; mode=block",
-          },
-          {
             key: "X-Frame-Options",
-            value: "SAMEORIGIN",
+            value: "DENY",
           },
           {
             key: "X-Content-Type-Options",
@@ -58,11 +87,19 @@ const nextConfig: NextConfig = {
           },
           {
             key: "Referrer-Policy",
-            value: "origin-when-cross-origin",
+            value: "strict-origin-when-cross-origin",
+          },
+          {
+            key: "Permissions-Policy",
+            value: "camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()",
+          },
+          {
+            key: "Cross-Origin-Opener-Policy",
+            value: "same-origin",
           },
           {
             key: "Content-Security-Policy",
-            value: "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://maps.googleapis.com https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https: blob:; child-src 'self' https://www.google.com; frame-src 'self' https://www.google.com; connect-src 'self' https:;",
+            value: csp,
           },
         ],
       },

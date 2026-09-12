@@ -1,11 +1,12 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { Suspense, useState } from "react";
 import Button from "@/components/ui/Button";
 
 function MockCheckoutContent() {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const bookingId = searchParams?.get("bookingId");
   const [processing, setProcessing] = useState(false);
 
@@ -19,7 +20,7 @@ function MockCheckoutContent() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ bookingId })
       }).then(() => {
-        window.location.href = "/account/bookings?status=success";
+        router.push("/account/bookings?status=success");
       });
     }, 2000);
   };

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Home, Users, Settings, LogOut, Menu, X } from "lucide-react";
+import { LayoutDashboard, Home, Users, Settings, LogOut, Menu, X, Plane, CalendarCheck, UserCircle } from "lucide-react";
 import { signOut } from "next-auth/react";
 
 export default function AdminSidebar() {
@@ -13,7 +13,10 @@ export default function AdminSidebar() {
   const links = [
     { href: "/admin", label: "Dashboard", Icon: LayoutDashboard, exact: true },
     { href: "/admin/properties", label: "Properties", Icon: Home },
+    { href: "/admin/bookings", label: "Bookings", Icon: CalendarCheck },
+    { href: "/admin/fleet", label: "Fleet", Icon: Plane },
     { href: "/admin/leads", label: "Leads", Icon: Users },
+    { href: "/admin/users", label: "Users", Icon: UserCircle },
     { href: "/admin/settings", label: "Settings", Icon: Settings },
   ];
 

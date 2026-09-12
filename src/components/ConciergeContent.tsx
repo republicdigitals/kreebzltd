@@ -8,32 +8,33 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { Plane, Search, CalendarCheck, Shield, ArrowRight } from "lucide-react";
 
+// TODO: Replace Unsplash URLs with local brand-supplied photography in /public/images/concierge/
 const services = [
   {
     title: "Private Aviation",
-    description: "Seamless global connectivity. Charter private jets with unprecedented ease and discretion through our aviation partners.",
+    description: "Charter a jet on your schedule. We arrange the aircraft, handle the details, and confirm it end to end.",
     icon: Plane,
     href: "/services/private-jet",
     image: "https://images.unsplash.com/photo-1540962351504-03099e0a754b?q=80&w=1974&auto=format&fit=crop",
     highlight: true,
   },
   {
-    title: "Property Matchmaking",
-    description: "Access our exclusive off-market inventory. We discretely source properties that perfectly align with your exacting specifications.",
+    title: "Off-Market Sourcing",
+    description: "The best properties never get listed. Tell us what you want; we'll find it.",
     icon: Search,
     href: "/matchmaking",
     image: "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=80&w=2070&auto=format&fit=crop",
   },
   {
-    title: "Lifestyle Orchestration",
-    description: "From securing reservations at highly sought-after venues to curating bespoke private events, our team handles the details.",
+    title: "Day-to-Day",
+    description: "Restaurants, events, contractors, staff — one message and it's handled.",
     icon: CalendarCheck,
     href: "/contact",
     image: "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?q=80&w=2070&auto=format&fit=crop",
   },
   {
-    title: "Portfolio Management",
-    description: "Protecting your asset's value through predictive maintenance, elite security protocols, and 24/7 proactive care.",
+    title: "Ongoing Care",
+    description: "Maintenance, security, tenants — your property stays in shape without you chasing it.",
     icon: Shield,
     href: "/management",
     image: "https://images.unsplash.com/photo-1613977257363-707ba9348227?q=80&w=2070&auto=format&fit=crop",
@@ -66,7 +67,7 @@ export default function ConciergeContent() {
       <section className="py-24 px-6 lg:px-12 max-w-[1400px] mx-auto border-b border-border/10">
         <div className="max-w-3xl mx-auto text-center fade-up">
           <p className="text-muted font-sans text-lg leading-relaxed">
-            At Kreebz, we believe true luxury is the absence of friction. Our concierge hub connects you to a curated ecosystem of services designed to eliminate complexity from your life, allowing you to focus on your highest pursuits.
+            The point of a concierge is simple: you ask once, it&apos;s done. Whatever touches your life or your property — bring it to us.
           </p>
         </div>
       </section>
@@ -75,7 +76,7 @@ export default function ConciergeContent() {
       <section className="py-24 max-w-[1400px] mx-auto px-6 lg:px-12">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {services.map((service, idx) => (
-            <Link href={service.href} key={idx} className="fade-up group relative block h-[450px] overflow-hidden rounded-xl border border-border/20">
+            <Link href={service.href} key={idx} className="fade-up group relative block h-[450px] overflow-hidden rounded-[var(--radius-lg)] border border-border/20">
               <Image
                 src={service.image}
                 alt={service.title}
@@ -93,7 +94,7 @@ export default function ConciergeContent() {
                   {service.description}
                 </p>
                 <div className="flex items-center gap-3 text-[11px] uppercase tracking-[0.2em] font-bold text-off-white group-hover:text-gold transition-colors duration-300">
-                  Explore Service <ArrowRight size={14} className="group-hover:translate-x-2 transition-transform duration-300" />
+                  Ask us about it <ArrowRight size={14} className="group-hover:translate-x-2 transition-transform duration-300" />
                 </div>
               </div>
             </Link>

@@ -1,0 +1,14 @@
+-- AlterTable
+ALTER TABLE "Lead" ADD COLUMN "project" TEXT;
+ALTER TABLE "Lead" ADD COLUMN "nextStep" TEXT;
+ALTER TABLE "Lead" ADD COLUMN "timeframe" TEXT;
+ALTER TABLE "Lead" ADD COLUMN "preferredContact" TEXT;
+ALTER TABLE "Lead" ADD COLUMN "consent" BOOLEAN NOT NULL DEFAULT false;
+ALTER TABLE "Lead" ADD COLUMN "utmSource" TEXT;
+ALTER TABLE "Lead" ADD COLUMN "utmMedium" TEXT;
+ALTER TABLE "Lead" ADD COLUMN "utmCampaign" TEXT;
+ALTER TABLE "Lead" ADD COLUMN "utmContent" TEXT;
+ALTER TABLE "Lead" ADD COLUMN "referrer" TEXT;
+ALTER TABLE "Lead" ADD COLUMN "landingPage" TEXT;
+ALTER TABLE "Lead" ADD COLUMN "assignedTo" TEXT;
+ALTER TABLE "Lead" ADD COLUMN "firstResponseAt" TIMESTAMP(3);

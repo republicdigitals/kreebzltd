@@ -1,12 +1,12 @@
 "use client";
 import { useRef, useState, useEffect } from "react";
-import Link from "next/link";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import RevealText from "./RevealText";
+import Button from "./ui/Button";
 export default function Hero() {
   const containerRef = useRef<HTMLElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
@@ -63,26 +63,26 @@ export default function Hero() {
     // Fade in video
     gsap.from(".hero-bg-img", {
       opacity: 0,
-      duration: 2.5,
-      ease: "power2.inOut"
+      duration: 1.4,
+      ease: "power2.out"
     });
 
-    // Staggered cinematic text reveals
+    // Staggered text reveal — short and settled
     tl.from(subtitleRef.current, {
-      y: 30,
-      opacity: 0,
-      duration: 1.5,
-      delay: 0.5,
-    })
-    .from(buttonRef.current, {
       y: 20,
       opacity: 0,
-      duration: 1.5,
-    }, "-=1.0")
+      duration: 0.9,
+      delay: 0.3,
+    })
+    .from(buttonRef.current, {
+      y: 16,
+      opacity: 0,
+      duration: 0.9,
+    }, "-=0.5")
     .from(scrollIndicatorRef.current, {
       opacity: 0,
-      duration: 2,
-    }, "-=1");
+      duration: 1,
+    }, "-=0.5");
     
     // Subtle breathing animation for scroll indicator arrow
     gsap.to(".scroll-arrow", {
@@ -96,7 +96,7 @@ export default function Hero() {
   }, { scope: containerRef });
 
   return (
-    <section ref={containerRef} id="hero" className="relative h-screen w-full overflow-hidden bg-obsidian">
+    <section ref={containerRef} id="hero" className="relative min-h-dvh w-full overflow-hidden bg-obsidian">
       {/* Background Setup */}
       <div className="absolute inset-0 overflow-hidden">
         {/* Background Video with slow cinematic scale */}
@@ -119,36 +119,38 @@ export default function Hero() {
         <div className="absolute inset-0 z-10 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-obsidian/80 via-obsidian/40 to-transparent" />
       </div>
 
-      {/* Content — High-end editorial prompt */}
-      <div className="relative z-10 h-full flex flex-col justify-center items-center px-[5vw]">
+      {/* Content — High-end editorial prompt.
+          pt-[120px] clears the fixed two-tier header so the headline can
+          never collide with the nav on short viewports. */}
+          <br  />
+          <br  />
+          <br  />
+          <br  />
+          <br  />
+      <div className="relative z-10 h-full flex flex-col justify-center items-center px-[5vw] pt-[120px] pb-16">
         <div className="text-center w-full max-w-[1000px] mx-auto drop-shadow-[0_4px_24px_rgba(0,0,0,0.8)]">
           <p
             ref={subtitleRef}
             className="eyebrow text-gold-light mb-6 drop-shadow-lg"
           >
-            Exclusive Properties & Lifestyle Management
+            Property, management &amp; private aviation · Lagos
           </p>
 
           <h1
             ref={titleRef}
             className="text-off-white display-xl flex flex-col items-center gap-2 md:gap-4 drop-shadow-2xl"
           >
-            <span className="block"><RevealText text="Own Prestige." delay={0.5} /></span>
-            <span className="block"><RevealText text="We Manage the Rest." delay={0.8} /></span>
+            <span className="block"><RevealText text="Find the right property." delay={0.5} /></span>
+            <span className="block"><RevealText text="Skip the hard part." delay={0.8} /></span>
           </h1>
 
-          <div ref={buttonRef} className="mt-14 flex flex-col items-center justify-center gap-6 w-full max-w-2xl mx-auto">
-            <Link
-              href="/properties"
-              className={cn(
-                "group relative flex items-center justify-center px-12 py-5",
-                "bg-gold text-obsidian uppercase tracking-[0.2em] text-[11px] font-bold",
-                "transition-all duration-500 hover:bg-gold-light hover:scale-105",
-                "focus:outline-none focus:ring-2 focus:ring-gold focus:ring-offset-2 focus:ring-offset-obsidian"
-              )}
-            >
-              Enter The Portfolio
-            </Link>
+          <div ref={buttonRef} className="mt-14 flex flex-col sm:flex-row items-center justify-center gap-6 w-full max-w-2xl mx-auto">
+            <Button href="/properties" className="px-12">
+              Browse the portfolio
+            </Button>
+            <Button href="/contact" variant="secondary" className="px-12">
+              Talk to a principal
+            </Button>
           </div>
         </div>
       </div>

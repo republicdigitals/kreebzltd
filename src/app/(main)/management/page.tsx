@@ -3,17 +3,17 @@ import PageHeader from "@/components/PageHeader";
 import ManagementContent from "@/components/ManagementContent";
 
 export const metadata: Metadata = {
-  title: "Premium Facility Management | Kreebz Limited",
-  description: "Living Perfected. We handle the operational complexity of your luxury real estate so you can focus on what matters most.",
+  title: "Property Management | Kreebz Limited",
+  description: "Repairs, staff, compliance, tenants — a named principal handles it all, and you get one number to call.",
 };
 
 export default function ManagementPage() {
   return (
     <div className="bg-obsidian">
       <PageHeader
-        eyebrow="Facility Management"
-        title="Living Perfected"
-        subtitle="Your time is precious. We handle the operational complexity of luxury ownership, ensuring your investment appreciates and your privacy remains sacred."
+        eyebrow="Property Management"
+        title="Own it. We'll run it."
+        subtitle="Repairs, staff, compliance, tenants — a named principal handles it all, and you get one number to call."
       />
       <ManagementContent />
     </div>

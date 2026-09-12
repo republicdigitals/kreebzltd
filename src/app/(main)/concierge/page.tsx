@@ -3,8 +3,8 @@ import PageHeader from "@/components/PageHeader";
 import ConciergeContent from "@/components/ConciergeContent";
 
 export const metadata: Metadata = {
-  title: "Premium Concierge Services | Kreebz Limited",
-  description: "Luxury beyond the sale. Our private concierge ecosystem provides seamless access to aviation, travel, and exclusive community experiences.",
+  title: "Concierge Services | Kreebz Limited",
+  description: "Jets, off-market homes, reservations, contractors — if it touches your life or your property, ask us.",
 };
 
 export default function ConciergePage() {
@@ -12,8 +12,8 @@ export default function ConciergePage() {
     <div className="bg-obsidian">
       <PageHeader
         eyebrow="The Concierge Hub"
-        title="Luxury Beyond the Sale"
-        subtitle="Exclusive access, curated experiences, and private aviation. The Kreebz lifestyle ecosystem is designed for those who demand the extraordinary."
+        title="More than property"
+        subtitle="Jets, off-market homes, reservations, contractors — if it touches your life or your property, ask us."
       />
       <ConciergeContent />
     </div>

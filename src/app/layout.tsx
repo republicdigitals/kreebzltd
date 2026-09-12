@@ -4,18 +4,18 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://kreebzltd.com"),
-  title: "Kreebz Ltd | Official Marketing & Facility Management",
+  title: "Kreebz | Property, Management & Private Aviation — Lagos",
   description:
-    "Kreebz Ltd is a premium marketing and facility management company. We market premium properties, manage estates, provide concierge and private aviation services, and connect residents to trusted contractors in Lagos, Nigeria.",
+    "Vetted homes, property management, concierge, and private jet charter in Lagos — one team, one principal, one standard.",
   icons: {
     icon: "/kreebz-logo.png",
     shortcut: "/kreebz-logo.png",
     apple: "/kreebz-logo.png",
   },
   openGraph: {
-    title: "Kreebz Ltd | Official Marketing & Facility Management",
+    title: "Kreebz | Property, Management & Private Aviation — Lagos",
     description:
-      "Kreebz Ltd is a premium marketing and facility management company.",
+      "Vetted homes, property management, concierge, and private jet charter in Lagos.",
     url: "/",
     siteName: "Kreebz Ltd",
     images: ["/opengraph-image.png"],
@@ -24,9 +24,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Kreebz Ltd | Official Marketing & Facility Management",
+    title: "Kreebz | Property, Management & Private Aviation — Lagos",
     description:
-      "Kreebz Ltd is a premium marketing and facility management company.",
+      "Vetted homes, property management, concierge, and private jet charter in Lagos.",
     images: ["/twitter-image.png"],
   },
   alternates: {
@@ -36,6 +36,12 @@ export const metadata: Metadata = {
 
 import Script from "next/script";
 import AppProviders from "@/components/AppProviders";
+
+// Only allow well-formed GA4 IDs — prevents a malformed env value from
+// breaking out of the inline gtag config string.
+const gaId = /^G-[A-Z0-9]+$/.test(process.env.NEXT_PUBLIC_GA_ID ?? "")
+  ? process.env.NEXT_PUBLIC_GA_ID
+  : undefined;
 
 export default function RootLayout({
   children,
@@ -66,25 +72,29 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-full flex flex-col overflow-x-clip">
-        {/* Google Analytics */}
-        <Script
-          strategy="afterInteractive"
-          src={`https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX`}
-        />
-        <Script
-          id="google-analytics"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-XXXXXXXXXX', {
-                page_path: window.location.pathname,
-              });
-            `,
-          }}
-        />
+        {/* Google Analytics — only rendered when a real measurement ID is configured */}
+        {gaId && (
+          <>
+            <Script
+              strategy="afterInteractive"
+              src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
+            />
+            <Script
+              id="google-analytics"
+              strategy="afterInteractive"
+              dangerouslySetInnerHTML={{
+                __html: `
+                  window.dataLayer = window.dataLayer || [];
+                  function gtag(){dataLayer.push(arguments);}
+                  gtag('js', new Date());
+                  gtag('config', '${gaId}', {
+                    page_path: window.location.pathname,
+                  });
+                `,
+              }}
+            />
+          </>
+        )}
         <AppProviders>
           {children}
         </AppProviders>

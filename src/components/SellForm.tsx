@@ -64,21 +64,21 @@ export default function SellForm() {
       <motion.div 
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="p-12 border border-border/30 bg-surface/50 text-center rounded-2xl"
+        className="p-12 border border-border/30 bg-surface/50 text-center rounded-[var(--radius-lg)]"
       >
         <div className="w-16 h-16 mx-auto bg-gold/10 border border-gold/30 rounded-full flex items-center justify-center text-gold mb-6">
           <CheckCircle2 size={32} strokeWidth={1.5} />
         </div>
-        <h3 className="font-serif text-3xl text-off-white font-light mb-4">Inquiry Received</h3>
+        <h3 className="font-serif text-3xl text-off-white font-light mb-4">Got it — you&apos;re in.</h3>
         <p className="font-sans text-muted tracking-wide text-sm leading-relaxed max-w-sm mx-auto">
-          Thank you for trusting Kreebz Ltd. A principal will review your submission and contact you shortly with complete discretion.
+          A principal will review your property and reach out within one business day.
         </p>
       </motion.div>
     );
   }
 
   return (
-    <div className="p-8 sm:p-12 border border-border/20 bg-surface/30 rounded-2xl relative overflow-hidden">
+    <div className="p-8 sm:p-12 border border-border/20 bg-surface/30 rounded-[var(--radius-lg)] relative overflow-hidden">
       {/* Decorative background glow */}
       <div className="absolute top-0 right-0 w-64 h-64 bg-gold/5 blur-[100px] rounded-full pointer-events-none" />
 
@@ -107,9 +107,9 @@ export default function SellForm() {
               className="space-y-8"
             >
               <div>
-                <h3 className="font-serif text-2xl text-off-white font-light mb-2">Let&apos;s begin</h3>
+                <h3 className="font-serif text-2xl text-off-white font-light mb-2">Start here</h3>
                 <p className="text-muted text-sm tracking-wide">
-                  Your information is handled with the utmost confidentiality.
+                  Everything you share stays between us.
                 </p>
               </div>
 
@@ -125,7 +125,7 @@ export default function SellForm() {
                     required
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full input-pill px-6 py-4 text-[15px] focus:ring-1 focus:ring-gold/50"
+                    className="w-full input-underline"
                     placeholder="Enter your full name"
                   />
                 </div>
@@ -141,7 +141,7 @@ export default function SellForm() {
                     required
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full input-pill px-6 py-4 text-[15px] focus:ring-1 focus:ring-gold/50"
+                    className="w-full input-underline"
                     placeholder="you@domain.com"
                   />
                 </div>
@@ -169,9 +169,9 @@ export default function SellForm() {
               className="space-y-8"
             >
               <div>
-                <h3 className="font-serif text-2xl text-off-white font-light mb-2">About the Asset</h3>
+                <h3 className="font-serif text-2xl text-off-white font-light mb-2">Tell us about the property</h3>
                 <p className="text-muted text-sm tracking-wide">
-                  Share the essential details of your property to help us prepare an accurate valuation strategy.
+                  A few details help us put together a realistic valuation and sales plan.
                 </p>
               </div>
 
@@ -186,7 +186,7 @@ export default function SellForm() {
                   rows={5}
                   value={formData.propertyDetails}
                   onChange={(e) => setFormData({ ...formData, propertyDetails: e.target.value })}
-                  className="w-full bg-surface border border-border-strong rounded-2xl px-6 py-4 text-off-white font-sans text-[15px] focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold/50 transition-colors resize-none placeholder:text-muted"
+                  className="w-full input-underline"
                   placeholder="e.g. 4 Bedroom Penthouse in Ikoyi. Recently renovated."
                 />
               </div>
@@ -210,7 +210,7 @@ export default function SellForm() {
                   disabled={status === "loading" || !formData.propertyDetails}
                 >
                   {status === "loading" ? "Submitting..." : (
-                    <>Submit to Principals <Send size={16} /></>
+                    <>Send it to a principal <Send size={16} /></>
                   )}
                 </Button>
               </div>

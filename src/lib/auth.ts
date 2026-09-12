@@ -1,31 +1,28 @@
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/lib/prisma";
 import bcrypt from "bcryptjs";
+import { rateLimit, clientIp } from "@/lib/rate-limit";
 
-
-// Initialize Prisma Client
-const globalForPrisma = globalThis as unknown as {
-  prisma: PrismaClient | undefined;
-};
-
-export const prisma =
-  globalForPrisma.prisma ??
-  new PrismaClient({
-    log: process.env.NODE_ENV === "development" ? ["query", "error", "warn"] : ["error"],
-  });
-
-if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
+// Dummy hash so a login attempt for a non-existent email costs the same
+// bcrypt work as a real account — prevents user enumeration via timing.
+const DUMMY_HASH = "$2a$12$LJ3m4y2nJZ1mVQq3Z0fLHuJ3l5k9m0vXkYy0QhK8kXkE4v0e0pG0a";
 
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        email: { label: "Email", type: "email", placeholder: "admin@kreebzltd.com" },
+        email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" }
       },
-      async authorize(credentials) {
+      async authorize(credentials, req) {
+        // Per-IP limit on credential attempts (in addition to the delay below)
+        const ip = clientIp(req);
+        if (!rateLimit(`login:${ip}`, 10, 15 * 60_000).ok) {
+          return null;
+        }
+
         // Artificial delay to mitigate brute force attacks
         await new Promise(resolve => setTimeout(resolve, 2000));
 
@@ -35,20 +32,16 @@ export const authOptions: NextAuthOptions = {
 
         const user = await prisma.user.findUnique({
           where: {
-            email: credentials.email
+            email: credentials.email.toLowerCase().trim()
           }
         });
 
-        if (!user) {
-          return null;
-        }
-
         const isPasswordValid = await bcrypt.compare(
           credentials.password,
-          user.password
+          user?.password ?? DUMMY_HASH
         );
 
-        if (!isPasswordValid) {
+        if (!user || !isPasswordValid) {
           return null;
         }
 
@@ -63,7 +56,7 @@ export const authOptions: NextAuthOptions = {
   ],
   session: {
     strategy: "jwt",
-    maxAge: 30 * 24 * 60 * 60, // 30 days
+    maxAge: 24 * 60 * 60, // 24 hours — limits stolen-token exposure
   },
   callbacks: {
     async jwt({ token, user }) {

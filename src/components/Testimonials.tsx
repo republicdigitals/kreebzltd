@@ -25,8 +25,8 @@ export default function Testimonials() {
     <section className="py-24 bg-obsidian-light border-y border-white/5">
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-serif text-white mb-4">Client Testimonials</h2>
-          <p className="uppercase tracking-[0.2em] text-[10px] text-gold">Trusted by the best</p>
+          <h2 className="text-3xl md:text-5xl font-serif text-white mb-4">What clients tell us</h2>
+          <p className="uppercase tracking-[0.2em] text-[10px] text-gold">In their words</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

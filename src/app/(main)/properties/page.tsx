@@ -6,7 +6,7 @@ import { getPublishedProperties } from "@/data/properties";
 
 export const metadata: Metadata = {
   title: "Properties | Kreebz Limited",
-  description: "Explore our portfolio of prime residences currently under management across Lagos.",
+  description: "Vetted homes and investments across Lagos — every listing inspected before you see it.",
 };
 
 export const dynamic = "force-dynamic";

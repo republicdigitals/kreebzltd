@@ -29,17 +29,15 @@ export default function RevealText({
     visible: {
       opacity: 1,
       y: 0,
-      rotate: 0,
       transition: {
         type: "spring",
-        damping: 12,
-        stiffness: 100,
+        damping: 22,
+        stiffness: 140,
       },
     },
     hidden: {
       opacity: 0,
-      y: 40,
-      rotate: 5,
+      y: 24,
     },
   };
 

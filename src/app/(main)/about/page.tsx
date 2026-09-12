@@ -4,7 +4,7 @@ import AboutContent from "@/components/AboutContent";
 
 export const metadata: Metadata = {
   title: "About | Kreebz Limited",
-  description: "Where others manage, Kreebz represents. Our philosophy of principal-led property representation in Lagos.",
+  description: "One principal. Your standard. No exceptions. The Kreebz approach to property in Lagos.",
 };
 
 export default function AboutPage() {
@@ -12,8 +12,8 @@ export default function AboutPage() {
     <div className="bg-obsidian">
       <PageHeader
         eyebrow="About Kreebz"
-        title="Where Others Manage, We Represent"
-        subtitle="A principal-led practice built for owners who expect their standard held without exception."
+        title="The team behind the standard"
+        subtitle="We started Kreebz because owning property in Lagos was harder than it should be. So we built the team we wanted to call."
       />
       <AboutContent />
     </div>

@@ -42,10 +42,10 @@ export default function BrandStatement() {
     <section ref={containerRef} className="py-32 lg:py-48 px-6 lg:px-12 bg-obsidian text-center overflow-hidden relative">
       <div className="statement-parallax max-w-[1200px] mx-auto relative z-10 flex flex-col items-center">
         <p className="statement-reveal eyebrow text-gold-light/70 tracking-[0.3em] mb-12">
-          The Kreebz Philosophy
+          Why Kreebz
         </p>
-        <h2 className="statement-reveal text-off-white display-lg mx-auto" style={{ maxWidth: "18ch" }}>
-          Curating the world&apos;s most extraordinary properties for a discerning few.
+        <h2 className="statement-reveal text-off-white display-lg mx-auto" style={{ maxWidth: "22ch" }}>
+          One call. One principal. Every detail of your property handled — from finding it to flying you home to it.
         </h2>
       </div>
     </section>

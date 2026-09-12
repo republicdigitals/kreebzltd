@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { X, ArrowRight, ArrowLeft, Sparkles } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import Button from "./ui/Button";
 
 export default function ConciergeUX() {
   const [isOpen, setIsOpen] = useState(false);
@@ -30,6 +31,13 @@ export default function ConciergeUX() {
     };
   }, [isOpen]);
 
+  // Mobile tab bar opens this modal via a custom event
+  useEffect(() => {
+    const open = () => setIsOpen(true);
+    window.addEventListener("kreebz:open-concierge", open);
+    return () => window.removeEventListener("kreebz:open-concierge", open);
+  }, []);
+
 
 
   const inquiryOptions = [
@@ -43,20 +51,24 @@ export default function ConciergeUX() {
   return (
     <>
       {/* Floating Action Buttons Container */}
-      <div className="fixed bottom-6 right-6 md:bottom-8 md:right-8 z-[90] flex items-center gap-3">
+      <div className="concierge-fab hidden md:flex fixed bottom-6 right-6 md:bottom-8 md:right-8 z-[90] items-center gap-3 transition-opacity duration-300">
 
         {/* Concierge Button */}
-        <motion.button
+        <motion.div
           initial={{ y: 100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 1, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          onClick={() => setIsOpen(true)}
-          className="bg-off-white text-obsidian px-6 py-4 md:h-14 rounded-full font-sans uppercase tracking-[0.2em] text-[10px] font-semibold hover:bg-gold hover:text-off-white transition-colors duration-500 shadow-2xl flex items-center justify-center gap-3 group overflow-hidden"
         >
-          <span className="relative z-10 hidden md:inline-block">Private Concierge</span>
-          <Sparkles size={16} className="md:hidden relative z-10" />
-          <span className="relative z-10 w-2 h-2 rounded-full bg-obsidian group-hover:bg-off-white animate-pulse hidden md:block" />
-        </motion.button>
+          <Button
+            variant="fab"
+            onClick={() => setIsOpen(true)}
+            className="flex items-center justify-center gap-3 group"
+          >
+            <Sparkles size={16} className="relative z-10" />
+            <span className="relative z-10">Private Concierge</span>
+            <span className="relative z-10 w-2 h-2 rounded-full bg-obsidian group-hover:bg-off-white animate-pulse" />
+          </Button>
+        </motion.div>
       </div>
 
       {/* Full Screen Glassmorphism Modal */}
@@ -104,7 +116,7 @@ export default function ConciergeUX() {
                     className="flex flex-col gap-12"
                   >
                     <h2 className="font-serif italic text-4xl md:text-6xl text-off-white font-light">
-                      How may we assist you today?
+                      What can we handle for you?
                     </h2>
                     
                     <div className="flex flex-col gap-2">
@@ -170,34 +182,46 @@ export default function ConciergeUX() {
                         Inquiry: {inquiryType}
                       </p>
                       <h2 className="font-serif italic text-4xl md:text-5xl text-off-white font-light">
-                        Please provide your details, and a dedicated associate will contact you shortly.
+                        Leave your details — a real person gets back to you within one business day.
                       </h2>
                     </div>
 
                     <div className="flex flex-col gap-8">
-                      <input
-                        type="text"
-                        required
-                        value={formData.name}
-                        onChange={(e) => setFormData((d) => ({ ...d, name: e.target.value }))}
-                        placeholder="FULL NAME"
-                        className="w-full bg-transparent border-b border-border pb-4 text-sm text-off-white placeholder:text-muted/60 focus:outline-none focus:border-gold transition-colors tracking-widest uppercase"
-                      />
-                      <input
-                        type="email"
-                        required
-                        value={formData.email}
-                        onChange={(e) => setFormData((d) => ({ ...d, email: e.target.value }))}
-                        placeholder="EMAIL ADDRESS"
-                        className="w-full bg-transparent border-b border-border pb-4 text-sm text-off-white placeholder:text-muted/60 focus:outline-none focus:border-gold transition-colors tracking-widest uppercase"
-                      />
-                      <input
-                        type="tel"
-                        value={formData.phone}
-                        onChange={(e) => setFormData((d) => ({ ...d, phone: e.target.value }))}
-                        placeholder="PHONE NUMBER (OPTIONAL)"
-                        className="w-full bg-transparent border-b border-border pb-4 text-sm text-off-white placeholder:text-muted/60 focus:outline-none focus:border-gold transition-colors tracking-widest uppercase"
-                      />
+                      <div className="flex flex-col gap-3">
+                        <label htmlFor="concierge-name" className="text-[10px] uppercase tracking-[0.2em] text-off-white/60">Full Name</label>
+                        <input
+                          id="concierge-name"
+                          type="text"
+                          required
+                          value={formData.name}
+                          onChange={(e) => setFormData((d) => ({ ...d, name: e.target.value }))}
+                          placeholder="ENTER YOUR FULL NAME"
+                          className="w-full bg-transparent border-b border-border-strong pb-3 text-[15px] text-off-white placeholder:text-muted/70 placeholder:uppercase placeholder:tracking-[0.15em] placeholder:text-[10px] focus:outline-none focus:border-gold transition-colors"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-3">
+                        <label htmlFor="concierge-email" className="text-[10px] uppercase tracking-[0.2em] text-off-white/60">Email Address</label>
+                        <input
+                          id="concierge-email"
+                          type="email"
+                          required
+                          value={formData.email}
+                          onChange={(e) => setFormData((d) => ({ ...d, email: e.target.value }))}
+                          placeholder="ENTER YOUR EMAIL"
+                          className="w-full bg-transparent border-b border-border-strong pb-3 text-[15px] text-off-white placeholder:text-muted/70 placeholder:uppercase placeholder:tracking-[0.15em] placeholder:text-[10px] focus:outline-none focus:border-gold transition-colors"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-3">
+                        <label htmlFor="concierge-phone" className="text-[10px] uppercase tracking-[0.2em] text-off-white/60">Phone Number <span className="text-muted ml-2">(Optional)</span></label>
+                        <input
+                          id="concierge-phone"
+                          type="tel"
+                          value={formData.phone}
+                          onChange={(e) => setFormData((d) => ({ ...d, phone: e.target.value }))}
+                          placeholder="ENTER YOUR PHONE NUMBER"
+                          className="w-full bg-transparent border-b border-border-strong pb-3 text-[15px] text-off-white placeholder:text-muted/70 placeholder:uppercase placeholder:tracking-[0.15em] placeholder:text-[10px] focus:outline-none focus:border-gold transition-colors"
+                        />
+                      </div>
                     </div>
 
                     {submitError && (
@@ -206,10 +230,11 @@ export default function ConciergeUX() {
                       </p>
                     )}
 
-                    <button
+                    <Button
                       type="submit"
                       disabled={isSubmitting}
-                      className="bg-off-white text-obsidian hover:bg-gold hover:text-off-white transition-colors duration-500 py-5 w-full uppercase tracking-[0.2em] text-[11px] font-semibold flex items-center justify-center gap-4 disabled:opacity-60 disabled:cursor-not-allowed"
+                      variant="fab"
+                      className="w-full py-5 flex items-center justify-center gap-4 disabled:opacity-60 disabled:cursor-not-allowed"
                     >
                       {isSubmitting ? (
                         <>
@@ -225,7 +250,7 @@ export default function ConciergeUX() {
                           <ArrowRight size={16} />
                         </>
                       )}
-                    </button>
+                    </Button>
                   </motion.form>
                 )}
 
@@ -244,7 +269,7 @@ export default function ConciergeUX() {
                       Request Received.
                     </h2>
                     <p className="text-off-white/60 font-sans text-sm tracking-wide max-w-md mx-auto leading-relaxed">
-                      Your inquiry regarding {inquiryType.toLowerCase()} has been securely routed to our concierge team. We will be in touch within 24 hours.
+                      Done — your request about {inquiryType.toLowerCase()} is with the concierge team. Expect a reply within 24 hours.
                     </p>
                     <div className="flex flex-col gap-4 mt-12 items-center">
                       <button
