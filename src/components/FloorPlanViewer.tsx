@@ -148,7 +148,7 @@ export default function FloorPlanViewer({
           {/* Expand button overlay */}
           <button
             onClick={() => setLightboxOpen(true)}
-            className="absolute bottom-6 right-6 z-10 flex items-center gap-2 px-4 py-2.5 bg-black/50 backdrop-blur-md text-off-white border border-white/20 hover:border-gold hover:text-gold transition-all duration-500 uppercase text-[10px] tracking-[0.2em]"
+            className="absolute bottom-6 right-6 z-10 flex items-center gap-2 px-4 py-2.5 bg-black/50 backdrop-blur-md text-white border border-white/20 hover:border-gold hover:text-gold transition-all duration-500 uppercase text-[10px] tracking-[0.2em]"
             aria-label="Open floor plan full screen"
           >
             <Maximize2 size={14} strokeWidth={1.5} />
@@ -171,7 +171,7 @@ export default function FloorPlanViewer({
             aria-label={`Floor plan: ${activePlan.title}`}
           >
             {/* Toolbar */}
-            <div className="shrink-0 flex items-center justify-between px-6 py-4 border-b border-white/5">
+            <div className="shrink-0 flex items-center justify-between px-6 py-4 border-b border-border">
               <div className="flex items-center gap-4">
                 <p className="uppercase text-[10px] tracking-[0.2em] text-muted">
                   Floor Plan —{" "}
@@ -187,7 +187,7 @@ export default function FloorPlanViewer({
                         className={`px-3 py-1 text-[9px] uppercase tracking-[0.15em] border transition-colors duration-300 ${
                           activeIndex === i
                             ? "border-gold bg-gold/10 text-gold"
-                            : "border-white/10 text-muted hover:border-white/30 hover:text-off-white"
+                            : "border-border text-muted hover:border-border-strong hover:text-off-white"
                         }`}
                       >
                         {plan.title}
@@ -205,7 +205,7 @@ export default function FloorPlanViewer({
                 <button
                   onClick={() => zoom(-ZOOM_STEP)}
                   disabled={scale <= MIN_SCALE}
-                  className="w-9 h-9 flex items-center justify-center border border-white/10 text-muted hover:text-off-white hover:border-white/30 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                  className="w-9 h-9 flex items-center justify-center border border-border text-muted hover:text-off-white hover:border-border-strong transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
                   aria-label="Zoom out"
                 >
                   <ZoomOut size={15} strokeWidth={1.5} />
@@ -213,19 +213,19 @@ export default function FloorPlanViewer({
                 <button
                   onClick={() => zoom(ZOOM_STEP)}
                   disabled={scale >= MAX_SCALE}
-                  className="w-9 h-9 flex items-center justify-center border border-white/10 text-muted hover:text-off-white hover:border-white/30 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                  className="w-9 h-9 flex items-center justify-center border border-border text-muted hover:text-off-white hover:border-border-strong transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
                   aria-label="Zoom in"
                 >
                   <ZoomIn size={15} strokeWidth={1.5} />
                 </button>
                 <button
                   onClick={() => { setScale(1); setOffset({ x: 0, y: 0 }); }}
-                  className="w-9 h-9 flex items-center justify-center border border-white/10 text-muted hover:text-off-white hover:border-white/30 transition-colors"
+                  className="w-9 h-9 flex items-center justify-center border border-border text-muted hover:text-off-white hover:border-border-strong transition-colors"
                   aria-label="Reset view"
                 >
                   <RotateCcw size={14} strokeWidth={1.5} />
                 </button>
-                <div className="w-px h-6 bg-white/10 mx-1" />
+                <div className="w-px h-6 bg-black/10 mx-1" />
                 <button
                   onClick={() => setLightboxOpen(false)}
                   className="w-9 h-9 flex items-center justify-center border border-white/10 text-muted hover:text-gold hover:border-gold/50 transition-colors"
@@ -237,7 +237,7 @@ export default function FloorPlanViewer({
             </div>
 
             {/* Keyboard hint */}
-            <div className="shrink-0 px-6 py-2 flex items-center gap-6 text-[9px] uppercase tracking-[0.15em] text-muted/50 border-b border-white/5">
+            <div className="shrink-0 px-6 py-2 flex items-center gap-6 text-[9px] uppercase tracking-[0.15em] text-muted/50 border-b border-border">
               <span>+ / − to zoom</span>
               <span>Drag to pan when zoomed</span>
               <span>Esc to close</span>

@@ -57,16 +57,16 @@ export default function SearchBar({
         <div className="flex flex-col gap-6">
           {/* Top row: search + meta */}
           <div className="flex flex-col lg:flex-row lg:items-center gap-6 lg:gap-8">
-            <div className="flex items-center gap-3 px-5 py-3 flex-1 max-w-xl bg-obsidian-light border border-white/10 rounded-none focus-within:border-gold/50 transition-colors duration-300">
+            <div className="flex items-center gap-3 px-5 py-3 flex-1 max-w-xl bg-obsidian-light border border-border rounded-full focus-within:border-gold/50 transition-colors duration-300">
               {showChip && (
                 <span
-                  className="inline-flex items-center gap-2 px-3 py-1 shrink-0 bg-black/40 border border-gold/30 rounded-sm text-gold-light backdrop-blur-md shadow-xl uppercase text-[11px] tracking-[0.1em]"
+                  className="inline-flex items-center gap-2 px-3 py-1 shrink-0 bg-obsidian border border-gold/30 rounded-full text-gold-light uppercase text-[11px] tracking-[0.1em]"
                 >
                   Lagos, Nigeria
                   <button
                     onClick={() => setShowChip(false)}
                     aria-label="Remove location filter"
-                    className="hover:text-obsidian-light transition-colors"
+                    className="hover:text-gold transition-colors"
                   >
                     <X size={13} />
                   </button>
@@ -126,7 +126,7 @@ export default function SearchBar({
                 {openDropdown === "sort" && (
                   <>
                     <div className="fixed inset-0 z-10" onClick={() => toggle("sort")} aria-hidden="true" />
-                    <div className="absolute top-full right-0 mt-3 z-20 min-w-[200px] bg-obsidian-light border border-white/20 shadow-2xl shadow-black rounded-none p-2">
+                    <div className="absolute top-full right-0 mt-3 z-20 min-w-[200px] bg-obsidian border border-border shadow-card rounded-[var(--radius-sm)] p-2">
                       {(Object.keys(sortLabels) as PropertyFilters["sort"][]).map((key) => (
                         <button
                           key={key}
@@ -136,7 +136,7 @@ export default function SearchBar({
                           }}
                           className={`w-full text-left px-4 py-3 text-[11px] tracking-[0.1em] uppercase transition-colors ${
                             filters.sort === key
-                              ? "bg-gold text-obsidian"
+                              ? "bg-gold text-ink"
                               : "text-muted hover:text-off-white hover:bg-white/5"
                           }`}
                         >
@@ -154,8 +154,8 @@ export default function SearchBar({
 
 
           {/* Results headline */}
-          <div className="flex items-center justify-between border-t border-white/10 pt-6 mt-2">
-            <h1 className="font-serif text-off-white font-light" style={{ fontSize: "28px", lineHeight: 1.2 }}>
+          <div className="flex items-center justify-between border-t border-border pt-6 mt-2">
+            <h1 className="font-sans font-semibold tracking-tight text-off-white" style={{ fontSize: "28px", lineHeight: 1.2 }}>
               Homes and investments {filters.status !== "all" ? `for ${filters.status.toLowerCase()}` : ""} in Lagos
             </h1>
             <div className="flex items-center gap-6">
@@ -164,7 +164,7 @@ export default function SearchBar({
               </p>
               <button
                 onClick={onToggleView}
-                className="hidden lg:inline-flex items-center gap-2 px-5 py-2 eyebrow text-gold-light bg-black/40 border border-gold/30 rounded-sm backdrop-blur-md shadow-xl hover:bg-black/60 hover:border-gold/60 hover:text-gold transition-all duration-300"
+                className="hidden lg:inline-flex items-center gap-2 px-5 py-2 eyebrow text-gold bg-obsidian border border-gold/40 rounded-full hover:bg-gold/5 hover:border-gold transition-all duration-300"
                 aria-label={viewMode === "list" ? "Show map and list" : "Show list only"}
               >
                 {viewMode === "list" ? <Map size={14} /> : <List size={14} />}

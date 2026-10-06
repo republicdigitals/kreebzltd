@@ -55,7 +55,7 @@ export default function PropertyListings() {
                 onMouseEnter={() => setActivePropertyId(property.id)}
                 onMouseLeave={() => setActivePropertyId(null)}
                 className={`property-item transition-all duration-500 p-2 -m-2 rounded-[var(--radius-lg)] ${
-                  isActive ? "bg-white/5 ring-1 ring-gold/30" : ""
+                  isActive ? "bg-black/[0.03] ring-1 ring-gold/30" : ""
                 }`}
               >
                 <PropertyCard property={property} />

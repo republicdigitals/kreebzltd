@@ -50,8 +50,8 @@ export default function AviationSection() {
               className="object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.03]"
               sizes="(max-width: 1024px) 100vw, 50vw"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-obsidian/80 via-transparent to-transparent" />
-            <span className="absolute top-4 right-4 w-10 h-10 rounded-full bg-obsidian/60 border border-gold/30 backdrop-blur-sm flex items-center justify-center text-gold opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+            <span className="absolute top-4 right-4 w-10 h-10 rounded-full bg-black/40 border border-gold/30 backdrop-blur-sm flex items-center justify-center text-gold opacity-0 group-hover:opacity-100 transition-opacity duration-500">
               <ArrowUpRight size={16} strokeWidth={1.5} />
             </span>
           </Link>

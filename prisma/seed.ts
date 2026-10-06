@@ -12,7 +12,10 @@ async function main() {
   for (const p of data) {
     const property = await prisma.property.upsert({
       where: { id: p.id },
-      update: {},
+      update: {
+        slug: p.slug ?? p.id.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, ''),
+        projectSlug: p.projectSlug ?? null,
+      },
       create: {
         id: p.id,
         slug: p.slug ?? p.id.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, ''),
@@ -28,6 +31,7 @@ async function main() {
         lat: p.lat,
         lng: p.lng,
         imagePlaceholder: p.imagePlaceholder,
+        projectSlug: p.projectSlug ?? null,
         image: p.image,
         photoCount: p.photoCount,
         gallery: p.gallery || [],

@@ -52,10 +52,10 @@ export default function MobileFilterDrawer({ isOpen, onClose }: MobileFilterDraw
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "spring", damping: 25, stiffness: 200 }}
-            className="fixed inset-y-0 right-0 z-[70] w-full max-w-sm bg-obsidian border-l border-white/10 shadow-2xl flex flex-col lg:hidden"
+            className="fixed inset-y-0 right-0 z-[70] w-full max-w-sm bg-obsidian border-l border-border shadow-2xl flex flex-col lg:hidden"
           >
-            <div className="flex items-center justify-between p-6 border-b border-white/10">
-              <h2 className="font-serif text-xl text-off-white font-light">Filters</h2>
+            <div className="flex items-center justify-between p-6 border-b border-border">
+              <h2 className="font-sans font-semibold text-xl text-off-white">Filters</h2>
               <div className="flex items-center gap-4">
                 {activeFilterCount > 0 && (
                   <button
@@ -161,10 +161,10 @@ export default function MobileFilterDrawer({ isOpen, onClose }: MobileFilterDraw
               </FilterSection>
             </div>
 
-            <div className="p-6 border-t border-white/10 bg-obsidian-light">
+            <div className="p-6 border-t border-border bg-obsidian-light">
               <button
                 onClick={onClose}
-                className="w-full py-4 bg-gold text-obsidian uppercase tracking-[0.2em] text-[11px] font-semibold rounded-[var(--radius-sm)] hover:bg-gold-hover transition-colors"
+                className="w-full py-4 bg-gold text-ink text-[15px] font-medium rounded-[var(--radius-sm)] hover:bg-gold-hover transition-colors"
               >
                 View {total} Results
               </button>

@@ -69,7 +69,7 @@ function readAttribution(): Attribution {
 }
 
 const inputClasses =
-  "w-full bg-black/30 border border-white/10 rounded-[var(--radius-sm)] px-4 py-3 text-white placeholder:text-white/40 focus:outline-none focus:ring-1 focus:ring-gold focus:border-gold transition-colors";
+  "w-full bg-obsidian border border-border-strong rounded-[var(--radius-sm)] px-4 py-3 text-off-white placeholder:text-muted focus:outline-none focus:border-off-white transition-colors";
 const errorClasses = "border-red-500/50 focus:ring-red-500/50 focus:border-red-500/50";
 const labelClasses = "text-xs uppercase tracking-widest text-off-white/60";
 
@@ -354,7 +354,7 @@ export default function EnquiryForm({
         className="w-full py-4 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {isSubmitting ? (
-          <svg className="animate-spin h-4 w-4 text-obsidian" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+          <svg className="animate-spin h-4 w-4 text-ink" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
           </svg>

@@ -102,7 +102,7 @@ export default function PartnershipsContent() {
               <div className="flex flex-wrap gap-2 mb-10 items-center">
                 {model.steps.map((step, i) => (
                   <div key={i} className="flex items-center gap-2">
-                    <span className={`px-3 py-1 rounded-full text-xs font-semibold tracking-wider uppercase ${model.highlight ? 'bg-gold text-obsidian' : 'bg-border/30 text-off-white/60'}`}>
+                    <span className={`px-3 py-1 rounded-full text-xs font-semibold tracking-wider uppercase ${model.highlight ? 'bg-gold text-ink' : 'bg-border/30 text-off-white/60'}`}>
                       {step}
                     </span>
                     {i < model.steps.length - 1 && (

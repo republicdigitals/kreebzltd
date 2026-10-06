@@ -59,8 +59,9 @@ export async function POST(request: Request) {
         create: media.map((m) => ({
           storageKey: m.storageKey || m.url,
           url: m.url,
-          mimeType: "image/jpeg",
-          size: 0,
+          altText: m.altText ?? null,
+          mimeType: m.mimeType ?? "image/jpeg",
+          size: m.size ?? 0,
           isCover: m.isCover,
           order: m.order,
         }))

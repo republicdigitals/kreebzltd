@@ -21,7 +21,7 @@ const csp = [
   "font-src 'self' https://fonts.gstatic.com data:",
   "img-src 'self' data: blob: https://*.supabase.co https://*.supabase.in https://images.unsplash.com https://www.google-analytics.com https://www.googletagmanager.com",
   "connect-src 'self' https://*.supabase.co https://*.supabase.in wss://*.supabase.co https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://api.paystack.co https://checkout.paystack.com",
-  "media-src 'self'",
+  "media-src 'self' https://*.supabase.co https://*.supabase.in",
   "frame-src 'self' https://www.google.com https://checkout.paystack.com https://js.paystack.co",
   "child-src 'self' https://www.google.com https://checkout.paystack.com https://js.paystack.co",
   "object-src 'none'",
@@ -49,7 +49,7 @@ const nextConfig: NextConfig = {
         hostname: "images.unsplash.com",
       },
     ],
-    qualities: [25, 50, 75, 90, 100],
+    qualities: [25, 50, 75, 85, 90, 100],
   },
   turbopack: {
     root: process.cwd(),

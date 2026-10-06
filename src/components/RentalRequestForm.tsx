@@ -51,7 +51,7 @@ export default function RentalRequestForm() {
   }
 
   return (
-    <div className="max-w-xl mx-auto p-8 border border-white/10 bg-white/5 text-left">
+    <div className="max-w-xl mx-auto p-8 border border-border rounded-[var(--radius-md)] bg-obsidian text-left shadow-card">
       <h3 className="font-serif text-2xl text-off-white font-light mb-4">Off-Market Rentals</h3>
       <p className="font-sans text-muted tracking-wide text-sm leading-relaxed mb-8">
         Our premium rental portfolio is currently operating exclusively off-market to maintain the privacy of our high-net-worth clientele. Please share your requirements below, and a principal will curate a selection for you.
@@ -73,8 +73,8 @@ export default function RentalRequestForm() {
             id="name"
             name="name"
             required
-            className="w-full bg-transparent border-b border-white/20 pb-3 text-off-white font-sans text-[15px] focus:outline-none focus:border-gold transition-colors placeholder:text-white/20 rounded-none"
-            placeholder="John Doe"
+            className="w-full bg-transparent border-b border-border-strong pb-3 text-off-white font-sans text-[15px] focus:outline-none focus:border-gold transition-colors placeholder:text-muted rounded-none"
+            placeholder="Your name"
           />
         </div>
 
@@ -87,8 +87,8 @@ export default function RentalRequestForm() {
             id="email"
             name="email"
             required
-            className="w-full bg-transparent border-b border-white/20 pb-3 text-off-white font-sans text-[15px] focus:outline-none focus:border-gold transition-colors placeholder:text-white/20 rounded-none"
-            placeholder="john@example.com"
+            className="w-full bg-transparent border-b border-border-strong pb-3 text-off-white font-sans text-[15px] focus:outline-none focus:border-gold transition-colors placeholder:text-muted rounded-none"
+            placeholder="you@example.com"
           />
         </div>
 
@@ -101,7 +101,7 @@ export default function RentalRequestForm() {
             name="requirements"
             required
             rows={3}
-            className="w-full bg-transparent border-b border-white/20 pb-3 text-off-white font-sans text-[15px] focus:outline-none focus:border-gold transition-colors placeholder:text-white/20 resize-none rounded-none"
+            className="w-full bg-transparent border-b border-border-strong pb-3 text-off-white font-sans text-[15px] focus:outline-none focus:border-gold transition-colors placeholder:text-muted resize-none rounded-none"
             placeholder="e.g. 4+ bedrooms in Ikoyi, up to $200k/yr"
           />
         </div>

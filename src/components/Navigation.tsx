@@ -38,9 +38,9 @@ const menuGroups = [
 ];
 
 export default function Navigation() {
-  const [isScrolled, setIsScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  
+  const [isScrolled, setIsScrolled] = useState(false);
+
   const headerRef = useRef<HTMLElement>(null);
   
   // Register GSAP plugins
@@ -66,15 +66,19 @@ export default function Navigation() {
     });
   }, { scope: headerRef });
 
-  useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 50);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const { data: session } = useSession();
+
+  // Transparent over the homepage hero; solid dark chrome elsewhere/scrolled
+  const isHome = pathname === "/";
+
+  useEffect(() => {
+    const onScroll = () => setIsScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   const accountLink = session ? "/account" : "/login";
 
@@ -124,12 +128,14 @@ export default function Navigation() {
     <>
       <header
         ref={headerRef}
-        className={`fixed top-0 left-0 right-0 z-[60] transition-all duration-700 flex flex-col ${
-          isScrolled && !menuOpen ? "bg-obsidian/95 backdrop-blur-md" : "bg-transparent"
+        className={`fixed top-0 left-0 right-0 z-[60] transition-all duration-700 flex flex-col border-b ${
+          isHome && !isScrolled && !menuOpen
+            ? "bg-transparent border-transparent"
+            : "bg-panel/95 backdrop-blur-md border-white/10"
         }`}
       >
         {/* Top Tier: Desktop Utilities — secondary pages + account */}
-        <div className="hidden md:flex justify-between items-center px-6 lg:px-12 h-10 border-b border-white/10 eyebrow text-[9px] tracking-[0.15em] text-off-white/70">
+        <div className="hidden md:flex justify-between items-center px-6 lg:px-12 h-10 border-b border-white/10 eyebrow text-[9px] tracking-[0.15em] text-white/60">
           <div className="flex items-center gap-8">
             <Link href="/partnerships" className={`whitespace-nowrap hover:text-gold transition-colors ${isLinkActive('/partnerships') ? 'text-gold' : ''}`}>PARTNERSHIPS</Link>
             <Link href="/about" className={`whitespace-nowrap hover:text-gold transition-colors ${isLinkActive('/about') ? 'text-gold' : ''}`}>ABOUT</Link>
@@ -146,7 +152,7 @@ export default function Navigation() {
         </div>
 
         {/* Top Tier: Mobile Utilities */}
-        <div className="md:hidden flex justify-between items-center px-6 h-10 border-b border-white/10 eyebrow text-[9px] tracking-[0.15em] text-off-white/70">
+        <div className="md:hidden flex justify-between items-center px-6 h-10 border-b border-white/10 eyebrow text-[9px] tracking-[0.15em] text-white/60">
           <Link href={accountLink} className="flex items-center gap-2 hover:text-gold transition-colors">
             <User size={12} strokeWidth={1.5} /> ACCOUNT
           </Link>
@@ -162,7 +168,7 @@ export default function Navigation() {
             <div className="flex-1 flex items-center gap-6">
               <button
                 onClick={() => setMenuOpen(!menuOpen)}
-                className="md:hidden group flex items-center gap-4 text-off-white hover:text-gold active:scale-[0.95] transition-all duration-300 eyebrow"
+                className="md:hidden group flex items-center gap-4 text-white hover:text-gold active:scale-[0.95] transition-all duration-300 eyebrow"
                 aria-label="Toggle menu"
               >
                 <div className="relative w-6 h-3 flex flex-col justify-between">
@@ -175,16 +181,16 @@ export default function Navigation() {
                 <Link
                   href="/properties"
                   onClick={() => setMenuOpen(false)}
-                  className="text-off-white hover:text-gold active:scale-[0.95] transition-all duration-300"
+                  className="text-white hover:text-gold active:scale-[0.95] transition-all duration-300"
                   aria-label="Search properties"
                 >
                   <Search size={16} strokeWidth={1.5} />
                 </Link>
-                <Link href="/properties?intent=buy" className={`eyebrow text-[10px] tracking-[0.2em] whitespace-nowrap transition-colors duration-300 ${isLinkActive('/properties?intent=buy') ? 'text-gold' : 'text-off-white hover:text-gold'}`}>BUY</Link>
-                <Link href="/properties?intent=rent" className={`eyebrow text-[10px] tracking-[0.2em] whitespace-nowrap transition-colors duration-300 ${isLinkActive('/properties?intent=rent') ? 'text-gold' : 'text-off-white hover:text-gold'}`}>RENT</Link>
-                <Link href="/sell" className={`eyebrow text-[10px] tracking-[0.2em] whitespace-nowrap transition-colors duration-300 ${isLinkActive('/sell') ? 'text-gold' : 'text-off-white hover:text-gold'}`}>SELL</Link>
-                <Link href="/management" className={`eyebrow text-[10px] tracking-[0.2em] whitespace-nowrap transition-colors duration-300 ${isLinkActive('/management') ? 'text-gold' : 'text-off-white hover:text-gold'}`}>MANAGEMENT</Link>
-                <Link href="/services/private-jet" className={`eyebrow text-[10px] tracking-[0.2em] whitespace-nowrap transition-colors duration-300 ${isLinkActive('/services/private-jet') ? 'text-gold' : 'text-off-white hover:text-gold'}`}>PRIVATE JET</Link>
+                <Link href="/properties?intent=buy" className={`eyebrow text-[10px] tracking-[0.2em] whitespace-nowrap transition-colors duration-300 ${isLinkActive('/properties?intent=buy') ? 'text-gold' : 'text-white/80 hover:text-gold'}`}>BUY</Link>
+                <Link href="/properties?intent=rent" className={`eyebrow text-[10px] tracking-[0.2em] whitespace-nowrap transition-colors duration-300 ${isLinkActive('/properties?intent=rent') ? 'text-gold' : 'text-white/80 hover:text-gold'}`}>RENT</Link>
+                <Link href="/sell" className={`eyebrow text-[10px] tracking-[0.2em] whitespace-nowrap transition-colors duration-300 ${isLinkActive('/sell') ? 'text-gold' : 'text-white/80 hover:text-gold'}`}>SELL</Link>
+                <Link href="/management" className={`eyebrow text-[10px] tracking-[0.2em] whitespace-nowrap transition-colors duration-300 ${isLinkActive('/management') ? 'text-gold' : 'text-white/80 hover:text-gold'}`}>MANAGEMENT</Link>
+                <Link href="/services/private-jet" className={`eyebrow text-[10px] tracking-[0.2em] whitespace-nowrap transition-colors duration-300 ${isLinkActive('/services/private-jet') ? 'text-gold' : 'text-white/80 hover:text-gold'}`}>PRIVATE JET</Link>
               </div>
             </div>
 
@@ -212,17 +218,17 @@ export default function Navigation() {
               <Link
                 href="/properties"
                 onClick={() => setMenuOpen(false)}
-                className="md:hidden text-off-white hover:text-gold active:scale-[0.95] transition-all duration-300"
+                className="md:hidden text-white hover:text-gold active:scale-[0.95] transition-all duration-300"
                 aria-label="Search properties"
               >
                 <Search size={18} strokeWidth={1.5} />
               </Link>
 
               <div className="hidden md:flex items-center gap-6 xl:gap-8">
-                <Link href="/concierge" className={`eyebrow text-[10px] tracking-[0.2em] whitespace-nowrap transition-colors duration-300 ${isLinkActive('/concierge') ? 'text-gold' : 'text-off-white hover:text-gold'}`}>CONCIERGE</Link>
+                <Link href="/concierge" className={`eyebrow text-[10px] tracking-[0.2em] whitespace-nowrap transition-colors duration-300 ${isLinkActive('/concierge') ? 'text-gold' : 'text-white/80 hover:text-gold'}`}>CONCIERGE</Link>
                 <Link
                   href="/contact"
-                  className="eyebrow text-[10px] tracking-[0.2em] whitespace-nowrap shrink-0 px-5 py-2.5 border border-gold/40 text-gold rounded-[var(--radius-sm)] hover:bg-gold hover:text-obsidian transition-all duration-300"
+                  className="eyebrow text-[10px] tracking-[0.2em] whitespace-nowrap shrink-0 px-5 py-2.5 border border-white/40 text-white rounded-[var(--radius-pill)] hover:bg-gold hover:border-gold hover:text-ink transition-all duration-300"
                 >
                   TALK TO US
                 </Link>
@@ -251,11 +257,11 @@ export default function Navigation() {
               animate={{ y: 0 }}
               exit={{ y: "100%" }}
               transition={{ duration: 0.45, ease: [0.32, 0.72, 0, 1] }}
-              className="fixed inset-x-0 bottom-0 top-16 z-[58] bg-obsidian border-t border-white/10 rounded-t-3xl flex flex-col md:hidden overflow-hidden"
+              className="fixed inset-x-0 bottom-0 top-16 z-[58] bg-obsidian border-t border-border rounded-t-3xl flex flex-col md:hidden overflow-hidden"
             >
               {/* Grab handle */}
               <div className="flex justify-center pt-3 pb-1 shrink-0">
-                <span className="w-10 h-1 rounded-full bg-white/15" />
+                <span className="w-10 h-1 rounded-full bg-black/15" />
               </div>
 
               <div className="flex-1 overflow-y-auto overscroll-contain px-5 pt-4 pb-6">
@@ -264,7 +270,7 @@ export default function Navigation() {
                     <p className="eyebrow text-[10px] tracking-[0.25em] text-gold-light/60 mb-2 px-1">
                       {group.title}
                     </p>
-                    <div className="rounded-2xl border border-white/5 bg-obsidian-light/50 divide-y divide-white/5 overflow-hidden">
+                    <div className="rounded-2xl border border-border bg-obsidian-light/50 divide-y divide-white/5 overflow-hidden">
                       {group.items.map((item) => (
                         <Link
                           key={item.label}
@@ -285,7 +291,7 @@ export default function Navigation() {
                               {item.desc}
                             </span>
                           </span>
-                          <ChevronRight size={16} className="text-white/20 shrink-0" />
+                          <ChevronRight size={16} className="text-white/25 shrink-0" />
                         </Link>
                       ))}
                     </div>
@@ -299,26 +305,26 @@ export default function Navigation() {
               </div>
 
               {/* Pinned contact row */}
-              <div className="shrink-0 border-t border-white/10 bg-obsidian px-5 pt-4 pb-safe">
+              <div className="shrink-0 border-t border-border bg-obsidian px-5 pt-4 pb-safe">
                 <div className="flex gap-3 pb-4">
                   <Link
                     href="/contact"
                     onClick={() => setMenuOpen(false)}
-                    className="flex-1 flex items-center justify-center gap-2 bg-gold text-obsidian rounded-xl py-3.5 text-[11px] uppercase tracking-[0.2em] font-bold active:scale-[0.98] transition-all"
+                    className="flex-1 flex items-center justify-center gap-2 bg-gold text-ink rounded-xl py-3.5 text-[11px] uppercase tracking-[0.2em] font-bold active:scale-[0.98] transition-all"
                   >
                     Talk to us
                   </Link>
                   <a
                     href="tel:+2348069949948"
                     aria-label="Call Kreebz"
-                    className="w-12 flex items-center justify-center rounded-xl border border-white/10 text-off-white/80 active:bg-white/5 transition-colors"
+                    className="w-12 flex items-center justify-center rounded-xl border border-border text-off-white/80 active:bg-white/5 transition-colors"
                   >
                     <Phone size={18} strokeWidth={1.5} />
                   </a>
                   <a
                     href="https://wa.me/2348069949948"
                     aria-label="WhatsApp Kreebz"
-                    className="w-12 flex items-center justify-center rounded-xl border border-white/10 text-off-white/80 active:bg-white/5 transition-colors"
+                    className="w-12 flex items-center justify-center rounded-xl border border-border text-off-white/80 active:bg-white/5 transition-colors"
                   >
                     <MessageCircle size={18} strokeWidth={1.5} />
                   </a>

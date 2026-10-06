@@ -32,7 +32,9 @@ function mapPrismaProperty(p: PrismaProperty & { media?: PropertyMedia[] }): Pro
   if (p.media && p.media.length > 0) {
     const cover = p.media.find(m => m.isCover) || p.media[0];
     computedImage = cover.url;
-    computedGallery = p.media.filter(m => !m.isCover).sort((a, b) => a.order - b.order).map(m => m.url);
+    // Gallery includes ALL media, cover first — the detail page uses
+    // gallery[0] as the hero image, so the cover must lead the set.
+    computedGallery = [cover, ...p.media.filter(m => m.id !== cover.id).sort((a, b) => a.order - b.order)].map(m => m.url);
   } else {
     // Graceful fallback for unmigrated data, but warn in console
     computedImage = p.image || "";
@@ -91,6 +93,21 @@ export async function getPublishedPropertyBySlug(slug: string): Promise<Property
   } catch (error) {
     console.error("Failed to fetch published property by slug", error);
     return null;
+  }
+}
+
+/** All published listings that belong to a project page (e.g. "bourdillon"). */
+export async function getPropertiesByProjectSlug(projectSlug: string): Promise<Property[]> {
+  try {
+    const properties = await prisma.property.findMany({
+      where: { projectSlug, publicationStatus: "PUBLISHED" },
+      include: { media: true },
+      orderBy: { priceValue: "desc" },
+    });
+    return properties.map(mapPrismaProperty);
+  } catch (error) {
+    console.error("Failed to fetch properties by project slug", error);
+    return [];
   }
 }
 

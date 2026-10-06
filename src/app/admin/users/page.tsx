@@ -101,7 +101,7 @@ export default function UsersPage() {
         ) : (
           <>
             {/* Mobile: cards */}
-            <div className="md:hidden divide-y divide-white/5">
+            <div className="md:hidden divide-y divide-black/5">
               {filtered.map((u) => (
                 <div key={u.id} className="p-4 space-y-2">
                   <div className="flex justify-between items-start gap-3">
@@ -136,9 +136,9 @@ export default function UsersPage() {
                     <th className="px-4 py-3 font-medium">Saved</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-white/5">
+                <tbody className="divide-y divide-black/5">
                   {filtered.map((u) => (
-                    <tr key={u.id} className="hover:bg-white/[0.02] transition-colors">
+                    <tr key={u.id} className="hover:bg-black/[0.03] transition-colors">
                       <td className="px-4 py-3">
                         <p className="text-off-white">{u.name || "—"}</p>
                         <p className="text-muted text-xs">{u.email}</p>

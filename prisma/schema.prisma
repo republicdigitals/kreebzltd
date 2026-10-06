@@ -29,6 +29,8 @@ model Property {
   lat              Float
   lng              Float
   imagePlaceholder String
+  /// Links this listing to a project page (e.g. "bourdillon" → /projects/bourdillon)
+  projectSlug      String?
   /// @deprecated Use PropertyMedia instead
   image            String?
   photoCount       Int
@@ -42,6 +44,19 @@ model Property {
   publicationStatus PublicationStatus @default(DRAFT)
   media             PropertyMedia[]
   savedBy           SavedProperty[]
+}
+
+model Project {
+  id        String   @id @default(cuid())
+  /// Registry slug matching src/data/projects.ts (e.g. "bourdillon")
+  slug      String   @unique
+  name      String
+  /// ProgressUpdate[] — [{date, milestone, detail, image?, imageLabel?}]
+  progress  Json     @default("[]")
+  /// {clips: [{src,label}], photos: [{src,label}]}
+  siteMedia Json     @default("{\"clips\":[],\"photos\":[]}")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model PropertyMedia {

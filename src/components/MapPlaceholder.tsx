@@ -154,7 +154,7 @@ export default function MapPlaceholder({
       )}
 
       {/* Pin count badge */}
-      <div className="absolute bottom-4 left-4 px-3 py-1.5 rounded-full bg-black/90 shadow text-off-white text-xs tracking-wide">
+      <div className="absolute bottom-4 left-4 px-3 py-1.5 rounded-full bg-black/90 shadow text-white text-xs tracking-wide">
         {properties.length} {properties.length === 1 ? "property" : "properties"} on map
       </div>
     </div>

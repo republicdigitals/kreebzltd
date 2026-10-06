@@ -42,7 +42,7 @@ export default function PropertyCard({
           )}
 
           {/* Subtle gradient overlay to darken bottom of image for contrast if needed */}
-          <div className="absolute inset-0 bg-gradient-to-t from-obsidian/40 to-transparent opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-700" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-700" />
 
           {/* Favourite heart */}
           <button
@@ -51,7 +51,7 @@ export default function PropertyCard({
               toggleSave(property.id);
             }}
             aria-label="Save to favourites"
-            className="absolute top-4 right-4 z-10 text-off-white/80 hover:text-gold transition-colors duration-300"
+            className="absolute top-4 right-4 z-10 text-white/90 hover:text-gold transition-colors duration-300 drop-shadow-md"
           >
             <Heart
               size={20}

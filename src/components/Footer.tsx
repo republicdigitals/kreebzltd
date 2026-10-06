@@ -82,15 +82,15 @@ export default function Footer() {
   };
 
   return (
-    <footer className="bg-obsidian pt-24 overflow-hidden">
+    <footer className="bg-panel pt-24 overflow-hidden">
       <div className="max-w-[1600px] mx-auto px-6 lg:px-12">
         {/* Top Section: Newsletter and Brand */}
-        <div className="flex flex-col xl:flex-row justify-between items-start gap-16 pb-24 border-b border-border/50">
+        <div className="flex flex-col xl:flex-row justify-between items-start gap-16 pb-24 border-b border-white/10">
           <div className="max-w-2xl">
             <Link href="/" className="inline-block mb-12 hover:opacity-80 transition-opacity">
               <Image src="/kreebz-logo.png" alt="Kreebz" width={60} height={55} className="w-12 h-auto" />
             </Link>
-            <h2 className="font-serif italic text-off-white/90 text-3xl md:text-5xl leading-tight mb-10">
+            <h2 className="font-serif italic text-white/90 text-3xl md:text-5xl leading-tight mb-10">
               New listings, project updates, and the occasional insight — straight to your inbox.
             </h2>
             {/* Newsletter Form */}
@@ -101,7 +101,7 @@ export default function Footer() {
                     <path d="M20 6L9 17l-5-5" />
                   </svg>
                 </div>
-                <p className="text-sm text-off-white/70 tracking-wide">You&apos;re on the list — talk soon.</p>
+                <p className="text-sm text-white/70 tracking-wide">You&apos;re on the list — talk soon.</p>
               </div>
             ) : (
               <form className="flex items-center w-full max-w-md relative" onSubmit={handleNewsletterSubmit}>
@@ -114,12 +114,12 @@ export default function Footer() {
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="ENTER YOUR EMAIL"
                   disabled={newsState === "loading"}
-                  className="w-full bg-transparent border-b border-border-strong pb-3 text-[15px] text-off-white placeholder:text-muted/70 placeholder:uppercase placeholder:tracking-[0.15em] placeholder:text-[10px] focus:outline-none focus:border-gold transition-colors disabled:opacity-50"
+                  className="w-full bg-transparent border-b border-white/30 pb-3 text-[15px] text-white placeholder:text-white/40 placeholder:uppercase placeholder:tracking-[0.15em] placeholder:text-[10px] focus:outline-none focus:border-gold transition-colors disabled:opacity-50"
                 />
                 <button
                   type="submit"
                   disabled={newsState === "loading"}
-                  className="absolute right-0 bottom-4 text-off-white/60 hover:text-gold transition-colors disabled:cursor-not-allowed"
+                  className="absolute right-0 bottom-4 text-white/60 hover:text-gold transition-colors disabled:cursor-not-allowed"
                   aria-label={newsState === "loading" ? "Subscribing…" : "Subscribe"}
                 >
                   {newsState === "loading" ? (
@@ -136,7 +136,7 @@ export default function Footer() {
           <div className="grid grid-cols-2 md:grid-cols-3 gap-12 xl:gap-24 w-full xl:w-auto">
             {footerColumns.map((col) => (
               <div key={col.title}>
-                <h3 className="uppercase text-off-white/90 mb-8 text-[11px] tracking-[0.25em] font-medium whitespace-nowrap">
+                <h3 className="uppercase text-white/90 mb-8 text-[11px] tracking-[0.25em] font-medium whitespace-nowrap">
                   {col.title}
                 </h3>
                 <ul className="flex flex-col gap-3">
@@ -144,7 +144,7 @@ export default function Footer() {
                     <li key={link.label}>
                       <Link
                         href={link.href}
-                        className="inline-flex min-h-[44px] items-center uppercase transition-colors duration-300 hover:text-gold text-[10px] tracking-[0.2em] text-off-white/60 relative group whitespace-nowrap"
+                        className="inline-flex min-h-[44px] items-center uppercase transition-colors duration-300 hover:text-gold text-[10px] tracking-[0.2em] text-white/60 relative group whitespace-nowrap"
                       >
                         {link.label}
                         <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-gold transition-all duration-300 group-hover:w-full" />
@@ -159,26 +159,26 @@ export default function Footer() {
 
         {/* Oversized Brand Typography */}
         <div className="w-full pt-16 pb-8 flex justify-center overflow-hidden">
-          <h1 className="font-serif text-off-white/5 text-[15vw] leading-none tracking-tighter select-none">
+          <h1 className="font-serif text-white/5 text-[15vw] leading-none tracking-tighter select-none">
             KREEBZ
           </h1>
         </div>
 
         {/* Bottom Bar */}
-        <div className="py-8 flex flex-col md:flex-row items-center justify-between gap-6 border-t border-border/30">
+        <div className="py-8 flex flex-col md:flex-row items-center justify-between gap-6 border-t border-white/10">
           <div className="flex flex-wrap justify-center items-center gap-4">
             {legalLinks.map((link) => (
               <Link
                 key={link.label}
                 href={link.href}
-                className="inline-flex min-h-[44px] items-center px-2 uppercase transition-colors duration-300 hover:text-off-white text-[10px] tracking-[0.15em] text-off-white/60"
+                className="inline-flex min-h-[44px] items-center px-2 uppercase transition-colors duration-300 hover:text-white text-[10px] tracking-[0.15em] text-white/60"
               >
                 {link.label}
               </Link>
             ))}
           </div>
           
-          <div className="flex items-center gap-8 text-off-white/60 text-[10px] tracking-[0.1em] uppercase">
+          <div className="flex items-center gap-8 text-white/60 text-[10px] tracking-[0.1em] uppercase">
             <span>© {new Date().getFullYear()} Kreebz Limited</span>
             <a href="https://instagram.com/kreebzltd" className="hover:text-gold transition-colors duration-300 flex items-center gap-2">
               <InstagramIcon size={14} />

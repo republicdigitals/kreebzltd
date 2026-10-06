@@ -30,7 +30,7 @@ export default function PayNowButton({ bookingId }: { bookingId: string }) {
       <button
         onClick={handlePay}
         disabled={loading}
-        className="bg-gold text-obsidian px-6 py-3 uppercase tracking-wider text-xs font-semibold hover:bg-gold-light transition-colors whitespace-nowrap flex items-center gap-2 disabled:opacity-60"
+        className="bg-gold text-ink px-6 py-3 uppercase tracking-wider text-xs font-semibold hover:bg-gold-light transition-colors whitespace-nowrap flex items-center gap-2 disabled:opacity-60"
       >
         {loading ? (
           <>Starting checkout <Loader2 size={14} className="animate-spin" /></>

@@ -55,21 +55,36 @@ export const bourdillon = {
   statusLabel: "Current status",
   heroImage: "/images/townhouse-ibj-render-aerial.webp",
   /** Required whenever the hero image is not a photograph of completed work. */
-  heroImageLabel: "Illustrative render — proposed design, subject to approval",
+  heroImageLabel: "Concept film — proposed design, subject to approval",
   heroImageAlt:
     "Illustrative aerial render of the proposed Bourdillon residence, Ikoyi",
 
   /** "What is happening now" — latest first. */
   progress: [
     {
-      date: "September 2026",
-      milestone: "Foundation works in progress",
+      date: "14 May 2026",
+      milestone: "Piling works underway",
       detail:
-        "Substructure and foundation works are underway on site. This stage establishes the structural base for the residence and is verified by the project engineer before superstructure works begin.",
-      image: "/images/townhouse-ibj-render-angle.webp",
-      imageLabel: "Illustrative render",
+        "Bored piling for the foundation is in progress on site — the CFA rig is drilling and casing each pile before concrete placement. This stage establishes the structural base for the residence and is verified by the project engineer before superstructure works begin.",
+      image: "/images/bourdillon/site-piling-03.jpg",
+      imageLabel: "Site photo — piling works",
     },
   ] as ProgressUpdate[],
+
+  /** Raw site documentation shown in the progress section. */
+  siteMedia: {
+    clips: [
+      { src: "/videos/site-piling.mp4", label: "Piling rig in operation" },
+      { src: "/videos/site-concrete-pour.mp4", label: "Concrete pour" },
+      { src: "/videos/site-walksite.mp4", label: "Site walkthrough" },
+    ],
+    photos: [
+      { src: "/images/bourdillon/site-piling-01.jpg", label: "Site photo — piling rig" },
+      { src: "/images/bourdillon/site-piling-02.jpg", label: "Site photo — drilling" },
+      { src: "/images/bourdillon/site-piling-04.jpg", label: "Site photo — auger detail" },
+      { src: "/images/bourdillon/detail-rebar.jpg", label: "Site photo — reinforcement" },
+    ],
+  },
 
   /** "What is being created" — approved information only. */
   vision: {

@@ -50,12 +50,12 @@ export default function ViewingModal({ isOpen, onClose, propertyTitle }: Viewing
 
   return (
     <div 
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-obsidian/80 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/50 backdrop-blur-sm"
       role="dialog"
       aria-modal="true"
       aria-labelledby="modal-title"
     >
-      <div className="relative w-full max-w-lg bg-obsidian border border-white/10 p-8 sm:p-12 shadow-2xl">
+      <div className="relative w-full max-w-lg bg-obsidian border border-border rounded-[var(--radius-md)] p-8 sm:p-12 shadow-card">
         <button
           onClick={onClose}
           className="absolute top-4 right-4 p-2 text-muted hover:text-off-white transition-colors"
@@ -97,8 +97,8 @@ export default function ViewingModal({ isOpen, onClose, propertyTitle }: Viewing
                   id="name"
                   name="name"
                   required
-                  className="w-full bg-transparent border-b border-white/20 pb-3 text-off-white font-sans text-[15px] focus:outline-none focus:border-gold transition-colors placeholder:text-white/20 rounded-none"
-                  placeholder="John Doe"
+                  className="w-full bg-transparent border-b border-border-strong pb-3 text-off-white font-sans text-[15px] focus:outline-none focus:border-gold transition-colors placeholder:text-muted rounded-none"
+                  placeholder="Your name"
                 />
               </div>
 
@@ -111,8 +111,8 @@ export default function ViewingModal({ isOpen, onClose, propertyTitle }: Viewing
                   id="email"
                   name="email"
                   required
-                  className="w-full bg-transparent border-b border-white/20 pb-3 text-off-white font-sans text-[15px] focus:outline-none focus:border-gold transition-colors placeholder:text-white/20 rounded-none"
-                  placeholder="john@example.com"
+                  className="w-full bg-transparent border-b border-border-strong pb-3 text-off-white font-sans text-[15px] focus:outline-none focus:border-gold transition-colors placeholder:text-muted rounded-none"
+                  placeholder="you@example.com"
                 />
               </div>
 

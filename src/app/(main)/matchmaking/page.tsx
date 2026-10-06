@@ -52,7 +52,7 @@ export default function MatchmakingPage() {
           priority
           className="object-cover opacity-60 mix-blend-luminosity"
         />
-        <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-obsidian via-obsidian/80 to-transparent pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-black via-black/80 to-transparent pointer-events-none" />
         
         <div className="absolute inset-0 flex items-center p-8 md:p-16 lg:p-24 z-10">
           <div className="max-w-xl">

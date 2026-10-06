@@ -104,7 +104,7 @@ export default function Contact() {
             whileInView={{ y: 0, opacity: 1 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
-            className="display-lg text-off-white mb-6"
+            className="display-serif text-off-white mb-6"
           >
             Say hello —{" "}
             <span className="accent-italic text-gold-light">we actually reply.</span>
@@ -172,7 +172,7 @@ export default function Contact() {
                   type="text"
                   placeholder="John Doe"
                   className={cn(
-                    "w-full bg-black/30 border border-white/10 rounded-[var(--radius-sm)] px-4 py-3 text-white placeholder:text-white/40",
+                    "w-full bg-obsidian border border-border-strong rounded-[var(--radius-sm)] px-4 py-3 text-off-white placeholder:text-muted",
                     "focus:outline-none focus:ring-1 focus:ring-gold focus:border-gold transition-colors",
                     errors.name && "border-red-500/50 focus:ring-red-500/50 focus:border-red-500/50"
                   )}
@@ -188,7 +188,7 @@ export default function Contact() {
                   type="email"
                   placeholder="john@example.com"
                   className={cn(
-                    "w-full bg-black/30 border border-white/10 rounded-[var(--radius-sm)] px-4 py-3 text-white placeholder:text-white/40",
+                    "w-full bg-obsidian border border-border-strong rounded-[var(--radius-sm)] px-4 py-3 text-off-white placeholder:text-muted",
                     "focus:outline-none focus:ring-1 focus:ring-gold focus:border-gold transition-colors",
                     errors.email && "border-red-500/50 focus:ring-red-500/50 focus:border-red-500/50"
                   )}
@@ -206,7 +206,7 @@ export default function Contact() {
                   type="tel"
                   placeholder="+234..."
                   className={cn(
-                    "w-full bg-black/30 border border-white/10 rounded-[var(--radius-sm)] px-4 py-3 text-white placeholder:text-white/40",
+                    "w-full bg-obsidian border border-border-strong rounded-[var(--radius-sm)] px-4 py-3 text-off-white placeholder:text-muted",
                     "focus:outline-none focus:ring-1 focus:ring-gold focus:border-gold transition-colors"
                   )}
                   {...register("phone")}
@@ -218,7 +218,7 @@ export default function Contact() {
                 <select
                   id="interest"
                   className={cn(
-                    "w-full bg-black/30 border border-white/10 rounded-[var(--radius-sm)] px-4 py-3 text-white appearance-none",
+                    "w-full bg-obsidian border border-border-strong rounded-[var(--radius-sm)] px-4 py-3 text-off-white appearance-none",
                     "focus:outline-none focus:ring-1 focus:ring-gold focus:border-gold transition-colors",
                     errors.interest && "border-red-500/50 focus:ring-red-500/50 focus:border-red-500/50"
                   )}
@@ -241,7 +241,7 @@ export default function Contact() {
                 rows={5}
                 placeholder="How can we assist you?"
                 className={cn(
-                  "w-full bg-black/30 border border-white/10 rounded-[var(--radius-sm)] px-4 py-3 text-white placeholder:text-white/40 resize-none",
+                  "w-full bg-obsidian border border-border-strong rounded-[var(--radius-sm)] px-4 py-3 text-off-white placeholder:text-muted resize-none",
                   "focus:outline-none focus:ring-1 focus:ring-gold focus:border-gold transition-colors",
                   errors.message && "border-red-500/50 focus:ring-red-500/50 focus:border-red-500/50"
                 )}
@@ -256,7 +256,7 @@ export default function Contact() {
               className="w-full py-4 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isSubmitting ? (
-                <svg className="animate-spin -ml-1 mr-3 h-4 w-4 text-obsidian" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <svg className="animate-spin -ml-1 mr-3 h-4 w-4 text-ink" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>

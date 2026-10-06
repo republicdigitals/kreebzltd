@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 
 export default function CustomCursor() {
   const [isHovered, setIsHovered] = useState(false);
+  const [label, setLabel] = useState<string | null>(null);
   const [isVisible] = useState(true);
   const pathname = usePathname();
 
@@ -22,8 +23,8 @@ export default function CustomCursor() {
     document.body.classList.add("hide-native-cursor");
 
     const moveCursor = (e: MouseEvent) => {
-      cursorX.set(e.clientX - 16);
-      cursorY.set(e.clientY - 16);
+      cursorX.set(e.clientX - (label ? 40 : 16));
+      cursorY.set(e.clientY - (label ? 20 : 16));
     };
 
     window.addEventListener("mousemove", moveCursor);
@@ -32,58 +33,78 @@ export default function CustomCursor() {
       window.removeEventListener("mousemove", moveCursor);
       document.body.classList.remove("hide-native-cursor");
     };
-  }, [cursorX, cursorY]);
+  }, [cursorX, cursorY, label]);
 
-  // Hook into interactive elements globally
+  // Hook into interactive elements globally — and [data-cursor] labels
   useEffect(() => {
     const handleMouseOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
-      // Check if hovering over links, buttons, inputs, or anything clickable
-      if (
-        target.tagName.toLowerCase() === "a" ||
-        target.tagName.toLowerCase() === "button" ||
-        target.tagName.toLowerCase() === "input" ||
-        target.closest("a") ||
-        target.closest("button")
-      ) {
-        setIsHovered(true);
-      } else {
-        setIsHovered(false);
-      }
+      const labelled = target.closest("[data-cursor]") as HTMLElement | null;
+      setLabel(labelled?.dataset.cursor ?? null);
+      setIsHovered(
+        !!labelled ||
+          target.tagName.toLowerCase() === "a" ||
+          target.tagName.toLowerCase() === "button" ||
+          target.tagName.toLowerCase() === "input" ||
+          !!target.closest("a") ||
+          !!target.closest("button")
+      );
     };
 
     window.addEventListener("mouseover", handleMouseOver);
-    
-    // Make sure we un-hover when clicking a link that changes page
+
+    // Un-hover when clicking a link that changes page
     return () => {
       window.removeEventListener("mouseover", handleMouseOver);
     };
   }, []);
 
   useEffect(() => {
-    const timeout = setTimeout(() => setIsHovered(false), 0);
+    const timeout = setTimeout(() => {
+      setIsHovered(false);
+      setLabel(null);
+    }, 0);
     return () => clearTimeout(timeout);
   }, [pathname]);
 
-  // Removed window.matchMedia check to prevent hydration mismatch.
   // The cursor is hidden on mobile via CSS (hidden md:flex).
-
   return (
     <motion.div
-      className="fixed top-0 left-0 w-8 h-8 rounded-full pointer-events-none z-[9999] mix-blend-difference hidden md:flex items-center justify-center"
+      className="fixed top-0 left-0 pointer-events-none z-[9999] hidden md:flex items-center justify-center"
       style={{
         x: cursorXSpring,
         y: cursorYSpring,
         opacity: isVisible ? 1 : 0,
       }}
-      animate={{
-        scale: isHovered ? 1.0 : 0.5,
-        backgroundColor: isHovered ? "rgba(255, 255, 255, 1)" : "rgba(255, 255, 255, 0.8)",
-      }}
-      transition={{
-        scale: { type: "spring", stiffness: 300, damping: 20 },
-        backgroundColor: { duration: 0.2 }
-      }}
-    />
+    >
+      {/* Dot / hovered ring */}
+      <motion.div
+        className={`rounded-full mix-blend-difference ${label ? "opacity-0" : ""}`}
+        animate={{
+          width: isHovered ? 32 : 16,
+          height: isHovered ? 32 : 16,
+          backgroundColor: isHovered ? "rgba(255,255,255,1)" : "rgba(255,255,255,0.8)",
+        }}
+        transition={{
+          width: { type: "spring", stiffness: 300, damping: 20 },
+          height: { type: "spring", stiffness: 300, damping: 20 },
+          backgroundColor: { duration: 0.2 },
+          opacity: { duration: 0.15 },
+        }}
+      />
+      {/* Labelled pill — gold, ink text, e.g. "View" / "Play" */}
+      <motion.div
+        className="absolute rounded-full bg-gold text-ink-fixed flex items-center justify-center eyebrow font-medium"
+        animate={{
+          width: label ? 80 : 0,
+          height: label ? 40 : 0,
+          opacity: label ? 1 : 0,
+        }}
+        transition={{ type: "spring", stiffness: 350, damping: 26 }}
+        style={{ overflow: "hidden" }}
+      >
+        <span className="whitespace-nowrap text-[11px] tracking-[0.18em]">{label}</span>
+      </motion.div>
+    </motion.div>
   );
 }

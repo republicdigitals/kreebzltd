@@ -7,14 +7,14 @@ export default function PropertiesLoading() {
           <div className="max-w-[1400px] mx-auto px-6 lg:px-12 py-5">
             <div className="flex flex-col gap-6">
               <div className="flex flex-col lg:flex-row lg:items-center gap-6 lg:gap-8">
-                <div className="flex items-center gap-3 px-5 py-3 flex-1 max-w-xl bg-obsidian-light border border-white/10 rounded-none animate-pulse h-12">
+                <div className="flex items-center gap-3 px-5 py-3 flex-1 max-w-xl bg-obsidian-light border border-border rounded-full animate-pulse h-12">
                 </div>
                 <div className="flex items-center gap-6 lg:ml-auto">
                   <div className="w-24 h-4 bg-obsidian-light animate-pulse rounded" />
                   <div className="w-20 h-4 bg-obsidian-light animate-pulse rounded" />
                 </div>
               </div>
-              <div className="flex items-center justify-between border-t border-white/10 pt-6 mt-2">
+              <div className="flex items-center justify-between border-t border-border pt-6 mt-2">
                 <div className="w-64 h-8 bg-obsidian-light animate-pulse rounded" />
                 <div className="hidden lg:flex gap-6">
                   <div className="w-20 h-4 bg-obsidian-light animate-pulse rounded" />

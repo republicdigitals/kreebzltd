@@ -143,7 +143,7 @@ export default function BookingsPage() {
             onClick={() => setFilter(s)}
             className={`shrink-0 px-4 py-2 rounded-full text-xs font-medium border transition-colors ${
               filter === s
-                ? "bg-gold text-obsidian border-gold"
+                ? "bg-gold text-ink border-gold"
                 : "border-border text-muted hover:text-off-white"
             }`}
           >
@@ -175,7 +175,7 @@ export default function BookingsPage() {
         ) : (
           <>
             {/* Mobile: cards */}
-            <div className="md:hidden divide-y divide-white/5">
+            <div className="md:hidden divide-y divide-black/5">
               {filtered.map((b) => (
                 <div key={b.id} className="p-4 space-y-3">
                   <div className="flex justify-between items-start gap-3">
@@ -227,9 +227,9 @@ export default function BookingsPage() {
                     <th className="px-4 py-3 font-medium">Payment</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-white/5">
+                <tbody className="divide-y divide-black/5">
                   {filtered.map((b) => (
-                    <tr key={b.id} className="hover:bg-white/[0.02] transition-colors">
+                    <tr key={b.id} className="hover:bg-black/[0.03] transition-colors">
                       <td className="px-4 py-3">
                         <p className="text-off-white font-medium">{b.jet.name}</p>
                         <p className="text-muted text-xs">{b.jet.class}</p>

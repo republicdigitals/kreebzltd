@@ -83,17 +83,17 @@ export default function ConciergeContent() {
                 fill
                 className="object-cover opacity-50 group-hover:opacity-70 group-hover:scale-105 transition-all duration-700 mix-blend-luminosity group-hover:mix-blend-normal"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-obsidian via-obsidian/50 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
               
               <div className="absolute inset-0 p-10 flex flex-col justify-end">
-                <service.icon className={`w-10 h-10 mb-6 ${service.highlight ? 'text-gold' : 'text-off-white/80'}`} strokeWidth={1.5} />
-                <h3 className="text-off-white font-serif text-3xl mb-4 group-hover:text-gold transition-colors duration-300">
+                <service.icon className={`w-10 h-10 mb-6 ${service.highlight ? 'text-gold' : 'text-white/80'}`} strokeWidth={1.5} />
+                <h3 className="text-white font-sans font-semibold tracking-tight text-3xl mb-4 group-hover:text-gold transition-colors duration-300">
                   {service.title}
                 </h3>
-                <p className="text-muted leading-relaxed mb-8 max-w-sm">
+                <p className="text-white/60 leading-relaxed mb-8 max-w-sm">
                   {service.description}
                 </p>
-                <div className="flex items-center gap-3 text-[11px] uppercase tracking-[0.2em] font-bold text-off-white group-hover:text-gold transition-colors duration-300">
+                <div className="flex items-center gap-3 text-[11px] uppercase tracking-[0.2em] font-bold text-white group-hover:text-gold transition-colors duration-300">
                   Ask us about it <ArrowRight size={14} className="group-hover:translate-x-2 transition-transform duration-300" />
                 </div>
               </div>

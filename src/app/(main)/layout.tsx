@@ -17,19 +17,22 @@ export default function MainLayout({
 }>) {
   return (
     <LenisProvider>
-      <Suspense fallback={null}>
-        <Navigation />
-      </Suspense>
-      {/* pb-24 clears the fixed mobile tab bar; desktop unaffected */}
-      <main className="flex-1 pb-24 md:pb-0">
-        <PageTransition>{children}</PageTransition>
-      </main>
-      <Footer />
-      <StickyMobileCTA />
-      <FilmGrain />
-      <CustomCursor />
-      <ConciergeUX />
-      <CookieConsent />
+      {/* Dark world — re-scopes all design tokens for the public site */}
+      <div data-theme="dark" className="flex min-h-dvh flex-col bg-[#0c0b09]">
+        <Suspense fallback={null}>
+          <Navigation />
+        </Suspense>
+        {/* pb-24 clears the fixed mobile tab bar; desktop unaffected */}
+        <main className="flex-1 pb-24 md:pb-0">
+          <PageTransition>{children}</PageTransition>
+        </main>
+        <Footer />
+        <StickyMobileCTA />
+        <FilmGrain />
+        <CustomCursor />
+        <ConciergeUX />
+        <CookieConsent />
+      </div>
     </LenisProvider>
   );
 }

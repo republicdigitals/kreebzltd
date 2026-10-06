@@ -30,10 +30,10 @@ export default function CaseStudies() {
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
           <div>
-            <h2 className="text-3xl md:text-5xl font-serif text-white mb-4">Recent work</h2>
+            <h2 className="text-3xl md:text-5xl font-sans font-semibold tracking-tight text-off-white mb-4">Recent work</h2>
             <p className="uppercase tracking-[0.2em] text-[10px] text-gold">What we&apos;ve done</p>
           </div>
-          <Link href="/contact" className="inline-flex items-center gap-2 text-gold hover:text-white transition-colors uppercase tracking-widest text-xs font-medium">
+          <Link href="/contact" className="inline-flex items-center gap-2 text-gold hover:text-gold-hover transition-colors uppercase tracking-widest text-xs font-medium">
             Talk it through with us <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
@@ -46,7 +46,7 @@ export default function CaseStudies() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.2, duration: 0.8 }}
-              className="group relative block overflow-hidden rounded-xl border border-white/5 bg-obsidian-light"
+              className="group relative block overflow-hidden rounded-[var(--radius-md)] border border-border bg-obsidian-light"
             >
               <div className="aspect-[16/9] relative overflow-hidden">
                 <Image
@@ -62,13 +62,13 @@ export default function CaseStudies() {
                 <div className="flex justify-between items-start mb-4">
                   <div>
                     <p className="text-gold uppercase tracking-[0.2em] text-[10px] mb-2">{study.category}</p>
-                    <h3 className="text-2xl font-serif text-white">{study.title}</h3>
+                    <h3 className="text-2xl font-sans font-semibold tracking-tight text-off-white">{study.title}</h3>
                   </div>
                   <div className="bg-gold/10 text-gold px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap">
                     {study.metric}
                   </div>
                 </div>
-                <p className="text-white/60 leading-relaxed font-light mb-6">
+                <p className="text-muted leading-relaxed mb-6">
                   {study.description}
                 </p>
               </div>

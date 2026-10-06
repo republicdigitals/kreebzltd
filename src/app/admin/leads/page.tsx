@@ -46,7 +46,7 @@ function statusClass(status: string) {
     case "Consultation booked": return "bg-emerald-900/30 text-emerald-400";
     case "Viewing booked":      return "bg-emerald-900/30 text-emerald-400";
     case "Nurture":             return "bg-violet-900/30 text-violet-400";
-    case "Closed":              return "bg-neutral-800 text-neutral-400";
+    case "Closed":              return "bg-neutral-100 text-neutral-500";
     case "Not suitable":        return "bg-red-900/30 text-red-400";
     case "Lost":                return "bg-red-900/30 text-red-500";
     default:                    return "bg-obsidian-light text-muted";
@@ -226,7 +226,7 @@ export default function LeadsPage() {
                       <tr key={lead.id} className="hover:bg-obsidian transition-colors">
                         <td className="px-6 py-4 font-medium text-off-white whitespace-nowrap">
                           <div className="flex items-center gap-3">
-                            <div className="w-8 h-8 rounded-full bg-neutral-800 flex items-center justify-center text-neutral-400 shrink-0">
+                            <div className="w-8 h-8 rounded-full bg-neutral-100 flex items-center justify-center text-neutral-500 shrink-0">
                               <User className="w-4 h-4" />
                             </div>
                             <div>

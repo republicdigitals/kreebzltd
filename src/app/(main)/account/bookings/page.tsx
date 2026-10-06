@@ -68,7 +68,7 @@ export default async function AccountBookingsPage({ searchParams }: PageProps) {
             <p className="text-muted mb-6">You don&apos;t have any private jet charter bookings yet.</p>
             <Link 
               href="/services/private-jet"
-              className="inline-block bg-gold text-obsidian px-8 py-3 uppercase tracking-wider text-sm font-semibold hover:bg-gold-light transition-colors"
+              className="inline-block bg-gold text-ink px-8 py-3 uppercase tracking-wider text-sm font-semibold hover:bg-gold-light transition-colors"
             >
               Explore Fleet
             </Link>
@@ -82,7 +82,7 @@ export default async function AccountBookingsPage({ searchParams }: PageProps) {
                   <span className={`px-3 py-1 text-xs uppercase tracking-wider ${
                     booking.status === 'Confirmed' ? 'bg-green-500/10 text-green-400' :
                     booking.status === 'Pending' ? 'bg-yellow-500/10 text-yellow-400' :
-                    'bg-white/10 text-white'
+                    'bg-black/10 text-off-white'
                   }`}>
                     {booking.status}
                   </span>

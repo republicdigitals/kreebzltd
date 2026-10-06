@@ -27,7 +27,7 @@ export default function SavedClient({ initialProperties }: { initialProperties: 
           <p className="text-muted text-sm mb-8">You haven&apos;t saved any properties yet.</p>
           <Link 
             href="/#properties" 
-            className="inline-block px-8 py-4 bg-gold text-obsidian font-medium tracking-[0.2em] text-[11px] uppercase hover:bg-gold-light transition-colors duration-300"
+            className="inline-block px-8 py-4 bg-gold text-ink font-medium tracking-[0.2em] text-[11px] uppercase hover:bg-gold-light transition-colors duration-300"
           >
             Explore Portfolio
           </Link>

@@ -33,7 +33,7 @@ export default async function AccountPage() {
           </div>
         </div>
 
-        <div className="pt-8 border-t border-white/5">
+        <div className="pt-8 border-t border-border">
           <p className="text-sm text-muted font-sans leading-relaxed">
             Your information is handled with absolute discretion. If you need to update your details or require concierge support, please reach out directly to your assigned principal.
           </p>

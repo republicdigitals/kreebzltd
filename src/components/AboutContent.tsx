@@ -116,7 +116,7 @@ export default function AboutContent() {
       <section className="leadership-section py-32 bg-obsidian relative overflow-hidden border-t border-border/20">
         <div className="max-w-[1000px] mx-auto px-6 lg:px-12">
           <div className="mb-16 text-center">
-            <h2 className="text-h2 text-off-white font-light">Leadership</h2>
+            <h2 className="display-serif-sm text-off-white">Leadership</h2>
             <div className="w-12 h-[1px] bg-gold mx-auto mt-6" />
           </div>
           
@@ -150,7 +150,7 @@ export default function AboutContent() {
       {/* CTA */}
       <section className="cta-section py-32 lg:py-40 text-center">
         <div className="cta-content max-w-[800px] mx-auto px-6 lg:px-12">
-          <h2 className="text-h2 text-off-white font-light leading-tight mb-12">
+          <h2 className="display-serif-sm text-off-white mb-12">
             Want a principal on{" "}
             <span className="italic text-gold-light">your side?</span>
           </h2>

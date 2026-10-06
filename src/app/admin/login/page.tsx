@@ -33,39 +33,39 @@ export default function LoginPage() {
 
   return (
     <div className="fixed inset-0 z-[100] bg-obsidian flex flex-col items-center justify-center p-6">
-      <div className="w-full max-w-md bg-surface p-8 rounded-lg border border-white/5">
+      <div className="w-full max-w-md bg-surface p-8 rounded-[var(--radius-md)] border border-border shadow-card">
         <div className="flex justify-center mb-8">
           <Image src="/kreebz-logo.png" alt="Kreebz" width={80} height={80} />
         </div>
-        <h1 className="text-2xl font-serif text-white mb-6 text-center">Principal Access</h1>
-        
+        <h1 className="text-2xl font-sans font-semibold tracking-tight text-off-white mb-6 text-center">Principal Access</h1>
+
         {error && <p className="text-red-500 text-sm mb-4 text-center">{error}</p>}
-        
+
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="text-xs uppercase tracking-widest text-white/50 mb-2 block">Email</label>
-            <input 
-              type="email" 
+            <label className="text-xs uppercase tracking-widest text-muted mb-2 block">Email</label>
+            <input
+              type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full bg-black/30 border border-white/10 rounded-md px-4 py-3 text-white focus:border-gold outline-none" 
+              className="w-full bg-obsidian border border-border-strong rounded-[var(--radius-sm)] px-4 py-3 text-off-white focus:border-off-white outline-none"
               required
             />
           </div>
           <div>
-            <label className="text-xs uppercase tracking-widest text-white/50 mb-2 block">Password</label>
-            <input 
-              type="password" 
+            <label className="text-xs uppercase tracking-widest text-muted mb-2 block">Password</label>
+            <input
+              type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full bg-black/30 border border-white/10 rounded-md px-4 py-3 text-white focus:border-gold outline-none" 
+              className="w-full bg-obsidian border border-border-strong rounded-[var(--radius-sm)] px-4 py-3 text-off-white focus:border-off-white outline-none"
               required
             />
           </div>
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             disabled={loading}
-            className="w-full bg-gold hover:bg-gold-light text-obsidian font-medium uppercase tracking-widest py-3 rounded-md transition-colors mt-4"
+            className="w-full bg-gold hover:bg-gold-hover text-ink font-medium py-3 rounded-[var(--radius-sm)] transition-colors mt-4"
           >
             {loading ? "Authenticating..." : "Sign In"}
           </button>

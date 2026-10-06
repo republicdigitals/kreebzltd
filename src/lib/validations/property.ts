@@ -6,6 +6,9 @@ export const mediaMutationSchema = z.object({
   isNew: z.boolean().optional(),
   storageKey: z.string().nullable().optional(),
   url: z.string().min(1, "URL is required"),
+  altText: z.string().nullable().optional(),
+  mimeType: z.string().optional(),
+  size: z.number().optional(),
   isCover: z.boolean().default(false),
   order: z.number().default(0),
 });
@@ -27,6 +30,7 @@ const basePropertySchema = z.object({
   lat: z.number().default(0),
   lng: z.number().default(0),
   imagePlaceholder: z.string().default(""),
+  projectSlug: z.string().nullable().optional(),
   image: z.string().optional().nullable(),
   photoCount: z.number().int().nonnegative().default(0),
   gallery: z.array(z.string()).default([]),

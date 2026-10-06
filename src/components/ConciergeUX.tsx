@@ -86,7 +86,7 @@ export default function ConciergeUX() {
               {step > 1 && step < 3 ? (
                 <button
                   onClick={() => setStep(step - 1)}
-                  className="text-off-white/50 hover:text-white transition-colors p-2 flex items-center gap-2 text-xs uppercase tracking-widest font-medium"
+                  className="text-off-white/50 hover:text-off-white transition-colors p-2 flex items-center gap-2 text-xs uppercase tracking-widest font-medium"
                 >
                   <ArrowLeft size={20} />
                   <span className="hidden sm:inline">Back</span>
@@ -96,7 +96,7 @@ export default function ConciergeUX() {
               )}
               <button
                 onClick={() => setIsOpen(false)}
-                className="text-off-white/50 hover:text-white transition-colors p-2"
+                className="text-off-white/50 hover:text-off-white transition-colors p-2"
                 aria-label="Close"
               >
                 <X size={32} strokeWidth={1} />
@@ -274,13 +274,13 @@ export default function ConciergeUX() {
                     <div className="flex flex-col gap-4 mt-12 items-center">
                       <button
                         onClick={() => setIsOpen(false)}
-                        className="text-gold uppercase tracking-[0.2em] text-[10px] hover:text-white transition-colors border-b border-gold pb-1 hover:border-white"
+                        className="text-gold uppercase tracking-[0.2em] text-[10px] hover:text-gold-hover transition-colors border-b border-gold pb-1 hover:border-gold-hover"
                       >
                         Return to Website
                       </button>
                       <button
                         onClick={() => setStep(1)}
-                        className="text-off-white/40 uppercase tracking-[0.1em] text-[10px] hover:text-white transition-colors mt-4"
+                        className="text-off-white/40 uppercase tracking-[0.1em] text-[10px] hover:text-off-white transition-colors mt-4"
                       >
                         Submit Another Inquiry
                       </button>

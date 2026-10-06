@@ -35,7 +35,7 @@ export default function RichTooltip({ children, content, position = "top" }: Ric
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
             transition={{ duration: 0.15 }}
-            className={`absolute z-50 whitespace-nowrap px-3 py-2 bg-obsidian border border-gold/20 shadow-xl rounded-md text-xs text-white/90 font-sans tracking-wide pointer-events-none ${positionClasses[position]}`}
+            className={`absolute z-50 whitespace-nowrap px-3 py-2 bg-obsidian border border-border shadow-card rounded-[var(--radius-sm)] text-xs text-off-white/90 font-sans tracking-wide pointer-events-none ${positionClasses[position]}`}
           >
             {content}
           </motion.div>

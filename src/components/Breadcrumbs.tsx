@@ -31,7 +31,7 @@ export default function Breadcrumbs({ items }: { items: BreadcrumbItem[] }) {
               )}
               
               {!isLast && (
-                <ChevronRight size={12} className="text-white/20" />
+                <ChevronRight size={12} className="text-white/25" />
               )}
             </li>
           );

@@ -71,13 +71,13 @@ export default function HowItWorks() {
   }, { scope: containerRef });
 
   return (
-    <section ref={containerRef} id="how-it-works" className="py-24 lg:py-40 bg-obsidian border-t border-white/10">
+    <section ref={containerRef} id="how-it-works" className="py-24 lg:py-40 bg-obsidian border-t border-border">
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
         <div className="text-center mb-20 lg:mb-32">
           <p className="journey-reveal eyebrow text-gold-light/70 tracking-[0.3em] mb-6">
             Start here
           </p>
-          <h2 className="journey-reveal text-off-white display-lg mx-auto max-w-[20ch]">
+          <h2 className="journey-reveal text-off-white display-serif mx-auto max-w-[20ch]">
             What do you need today?
           </h2>
         </div>
@@ -87,7 +87,7 @@ export default function HowItWorks() {
             <Link 
               key={journey.title} 
               href={journey.href}
-              className="journey-reveal group relative p-10 border border-white/10 hover:border-gold/50 bg-white/5 hover:bg-white/10 transition-all duration-500 flex flex-col justify-between overflow-hidden"
+              className="journey-reveal group relative p-10 border border-border hover:border-gold/50 bg-obsidian-light hover:bg-obsidian-light rounded-[var(--radius-md)] transition-all duration-500 flex flex-col justify-between overflow-hidden"
             >
               <div className="relative z-10">
                 <span className="font-serif text-gold/40 group-hover:text-gold text-2xl mb-6 block font-light transition-colors duration-500">
@@ -103,8 +103,8 @@ export default function HowItWorks() {
               
               <div className="relative z-10 flex items-center justify-between mt-auto">
                 <span className="text-[10px] uppercase tracking-[0.2em] text-gold font-semibold">Start</span>
-                <div className="w-10 h-10 rounded-full border border-white/20 group-hover:border-gold group-hover:bg-gold flex items-center justify-center transition-all duration-500">
-                  <ArrowRight size={16} className="text-white group-hover:text-obsidian transition-colors duration-500" strokeWidth={1.5} />
+                <div className="w-10 h-10 rounded-full border border-border-strong group-hover:border-gold group-hover:bg-gold flex items-center justify-center transition-all duration-500">
+                  <ArrowRight size={16} className="text-off-white group-hover:text-white transition-colors duration-500" strokeWidth={1.5} />
                 </div>
               </div>
             </Link>

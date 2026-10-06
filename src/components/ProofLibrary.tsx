@@ -38,7 +38,7 @@ export default function ProofLibrary({
   if (points.length === 0) return null;
 
   return (
-    <section className="py-24 bg-obsidian-light border-y border-white/5">
+    <section className="py-24 bg-obsidian-light border-y border-border">
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
         <div className="text-center mb-16">
           <p className="eyebrow text-gold-light/70 tracking-[0.3em] mb-4">{eyebrow}</p>

@@ -50,10 +50,10 @@ export default function FAQ({
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <section className="py-24 bg-obsidian-light border-y border-white/5">
+    <section className="py-24 bg-obsidian-light border-y border-border">
       <div className="max-w-[800px] mx-auto px-6 lg:px-12">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-serif text-white mb-4">{heading}</h2>
+          <h2 className="display-serif-sm text-off-white mb-4">{heading}</h2>
           <p className="uppercase tracking-[0.2em] text-[10px] text-gold">{eyebrow}</p>
         </div>
 
@@ -63,14 +63,14 @@ export default function FAQ({
             return (
               <div 
                 key={faq.question} 
-                className={`border border-white/10 rounded-lg overflow-hidden transition-colors duration-300 ${isOpen ? 'bg-obsidian/50 border-gold/30' : 'bg-transparent'}`}
+                className={`border border-border rounded-lg overflow-hidden transition-colors duration-300 ${isOpen ? 'bg-obsidian border-gold/40' : 'bg-transparent'}`}
               >
                 <button
                   onClick={() => setOpenIndex(isOpen ? null : i)}
                   className="w-full flex items-center justify-between p-6 text-left focus:outline-none"
                 >
-                  <span className="font-serif text-lg text-white pr-8">{faq.question}</span>
-                  <div className={`shrink-0 w-8 h-8 rounded-full border flex items-center justify-center transition-colors ${isOpen ? 'border-gold text-gold bg-gold/5' : 'border-white/20 text-white/50'}`}>
+                  <span className="font-sans font-medium text-lg text-off-white pr-8">{faq.question}</span>
+                  <div className={`shrink-0 w-8 h-8 rounded-full border flex items-center justify-center transition-colors ${isOpen ? 'border-gold text-gold bg-gold/5' : 'border-border-strong text-muted'}`}>
                     {isOpen ? <Minus size={16} /> : <Plus size={16} />}
                   </div>
                 </button>
@@ -82,7 +82,7 @@ export default function FAQ({
                       exit={{ height: 0, opacity: 0 }}
                       transition={{ duration: 0.3, ease: "easeInOut" }}
                     >
-                      <div className="px-6 pb-6 pt-0 text-white/60 leading-relaxed font-light">
+                      <div className="px-6 pb-6 pt-0 text-muted leading-relaxed">
                         {faq.answer}
                       </div>
                     </motion.div>

@@ -83,7 +83,7 @@ export default function Services() {
                 className="absolute inset-0 flex items-center justify-center bg-obsidian-light"
               >
                 {/* Fallback pattern/text for placeholder */}
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-white/[0.03] to-transparent" />
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-black/[0.02] to-transparent" />
                 <span className="uppercase text-xs tracking-[0.4em] text-gold-light/60 z-20 text-center px-8">
                   {services[hoveredIndex].title}
                 </span>
@@ -193,7 +193,7 @@ export default function Services() {
                         
                         {/* Mobile Image Placeholder */}
                         <div className="relative h-48 w-full bg-obsidian border border-border/20 mb-6 flex items-center justify-center overflow-hidden">
-                          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-white/[0.03] to-transparent" />
+                          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-black/[0.02] to-transparent" />
                           <span className="uppercase text-[10px] tracking-[0.3em] text-gold-light/30 z-20">
                             {service.placeholder}
                           </span>

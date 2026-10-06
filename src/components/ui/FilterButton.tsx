@@ -24,7 +24,7 @@ export default function FilterButton({
         "text-left px-4 py-3 text-[11px] tracking-[0.1em] uppercase transition-colors border rounded-[var(--radius-sm)]",
         isSelected
           ? "bg-gold/10 border-gold/50 text-gold"
-          : "border-white/10 text-off-white/70 hover:border-white/30 hover:bg-white/5",
+          : "border-border text-off-white/70 hover:border-border-strong hover:bg-white/5",
         className
       )}
     >

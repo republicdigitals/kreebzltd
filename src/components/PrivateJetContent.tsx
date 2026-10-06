@@ -109,15 +109,15 @@ export default function PrivateJetContent() {
           <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
             <div className="absolute inset-0">
               <Image src="/images/jets/heavy.jpg" alt="Private jet" fill className="object-cover object-center" priority />
-              <div className="absolute inset-0 bg-gradient-to-b from-obsidian/70 via-obsidian/50 to-obsidian" />
+              <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/80" />
             </div>
             <div className="relative z-10 text-center px-6 max-w-4xl mx-auto">
               <p className="eyebrow text-gold-light mb-8 drop-shadow-lg">Private Air Charter</p>
-              <h1 className="display-xl text-off-white mb-6 drop-shadow-2xl leading-tight">
+              <h1 className="display-xl text-white mb-6 drop-shadow-2xl leading-tight">
                 Your schedule.<br />
                 <span className="italic font-light text-gold-light">Your jet.</span>
               </h1>
-              <p className="font-sans text-off-white/70 text-[15px] leading-[1.9] max-w-xl mx-auto mb-4">
+              <p className="font-sans text-white/70 text-[15px] leading-[1.9] max-w-xl mx-auto mb-4">
                 Tell us where and when. We arrange the aircraft, confirm the details,
                 and you&apos;re wheels-up.
               </p>
@@ -128,16 +128,11 @@ export default function PrivateJetContent() {
               )}
               <button
                 onClick={() => setStep(2)}
-                className="group inline-flex items-center gap-3 bg-gold text-obsidian uppercase tracking-[0.2em] text-[11px] font-bold px-12 py-5 transition-all duration-500 hover:bg-gold-light hover:scale-105"
+                className="group inline-flex items-center gap-3 bg-gold text-ink uppercase tracking-[0.2em] text-[11px] font-bold px-12 py-5 transition-all duration-500 hover:bg-gold-light hover:scale-105"
               >
                 View Available Aircraft
                 <ChevronRight size={14} className="transition-transform duration-300 group-hover:translate-x-1" />
               </button>
-            </div>
-            {/* scroll cue */}
-            <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 text-off-white/30 animate-bounce">
-              <span className="text-[9px] uppercase tracking-[0.4em]">Scroll</span>
-              <Plane size={14} />
             </div>
           </section>
 
@@ -198,7 +193,7 @@ export default function PrivateJetContent() {
                         </div>
                       )}
                       <div className="absolute inset-0 bg-gradient-to-t from-obsidian-light to-transparent" />
-                      <span className="absolute top-4 left-4 eyebrow text-gold-light/80 bg-obsidian/60 backdrop-blur-sm px-3 py-1.5">
+                      <span className="absolute top-4 left-4 eyebrow text-gold-light bg-obsidian/80 backdrop-blur-sm px-3 py-1.5 rounded-full">
                         {jet.class}
                       </span>
                     </div>
@@ -209,11 +204,11 @@ export default function PrivateJetContent() {
                       <p className="font-serif text-gold-light text-[22px] italic mb-6">{formatNaira(jet.baseHourlyRate)}<span className="text-[14px] not-italic text-muted">/hr</span></p>
 
                       <ul className="space-y-3 mb-8">
-                        <li className="flex items-center justify-between text-[13px] border-b border-white/5 pb-3">
+                        <li className="flex items-center justify-between text-[13px] border-b border-border pb-3">
                           <span className="flex items-center gap-2 text-gold-light/60 uppercase text-[10px] tracking-[0.18em]"><Users size={11} /> Capacity</span>
                           <span className="text-off-white">Up to {jet.passengers} pax</span>
                         </li>
-                        <li className="flex items-center justify-between text-[13px] border-b border-white/5 pb-3">
+                        <li className="flex items-center justify-between text-[13px] border-b border-border pb-3">
                           <span className="flex items-center gap-2 text-gold-light/60 uppercase text-[10px] tracking-[0.18em]"><Gauge size={11} /> Range</span>
                           <span className="text-off-white">{jet.range}</span>
                         </li>
@@ -302,7 +297,7 @@ export default function PrivateJetContent() {
                     required
                     value={form.startDate}
                     onChange={(e) => setForm({ ...form, startDate: e.target.value })}
-                    className="w-full bg-obsidian-light border border-border/30 px-6 py-5 text-[13px] text-off-white focus:outline-none focus:border-gold/60 transition-colors [color-scheme:dark]"
+                    className="w-full bg-obsidian-light border border-border/30 px-6 py-5 text-[13px] text-off-white focus:outline-none focus:border-gold/60 transition-colors [color-scheme:light]"
                   />
                 </div>
                 <div className="space-y-2">
@@ -312,7 +307,7 @@ export default function PrivateJetContent() {
                     required
                     value={form.endDate}
                     onChange={(e) => setForm({ ...form, endDate: e.target.value })}
-                    className="w-full bg-obsidian-light border border-border/30 px-6 py-5 text-[13px] text-off-white focus:outline-none focus:border-gold/60 transition-colors [color-scheme:dark]"
+                    className="w-full bg-obsidian-light border border-border/30 px-6 py-5 text-[13px] text-off-white focus:outline-none focus:border-gold/60 transition-colors [color-scheme:light]"
                   />
                 </div>
               </div>
@@ -333,7 +328,7 @@ export default function PrivateJetContent() {
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="group inline-flex items-center gap-3 bg-gold text-obsidian uppercase tracking-[0.2em] text-[11px] font-bold px-12 py-5 transition-all duration-500 hover:bg-gold-light hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-100"
+                  className="group inline-flex items-center gap-3 bg-gold text-ink uppercase tracking-[0.2em] text-[11px] font-bold px-12 py-5 transition-all duration-500 hover:bg-gold-light hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-100"
                 >
                   {submitting ? "Processing..." : session ? "Continue to secure payment" : "Sign In to Book"}
                   {!submitting && <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-1" />}

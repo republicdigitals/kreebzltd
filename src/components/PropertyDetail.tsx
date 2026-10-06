@@ -1,35 +1,64 @@
 "use client";
 
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Heart, Share2, Printer, ArrowLeft, ChevronLeft, ChevronRight, X, MapPin } from "lucide-react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useGSAP } from "@gsap/react";
+import {
+  Heart,
+  Share2,
+  Printer,
+  ArrowLeft,
+  ArrowRight,
+  ChevronLeft,
+  ChevronRight,
+  X,
+  MapPin,
+  BedDouble,
+  Bath,
+  Home,
+  Tag,
+  Banknote,
+  Maximize2,
+  ShieldCheck,
+  Eye,
+} from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import type { Property } from "@/data/properties";
+import { getProjectBySlug } from "@/data/projects";
 import Button from "./ui/Button";
 import FloorPlanViewer from "./FloorPlanViewer";
-import Breadcrumbs from "./Breadcrumbs";
 import ViewingModal from "./ViewingModal";
 
 import { useSavedProperties } from "@/context/SavedPropertiesContext";
 
-export default function PropertyDetail({ property }: { property: Property }) {
+interface PropertyDetailProps {
+  property: Property;
+  nextProperty?: { slug: string; address: string };
+  /** DB-backed project site clips — overrides the registry's file defaults. */
+  projectClips?: { src: string; label: string }[];
+}
+
+const fadeUp = {
+  initial: { y: 24, opacity: 0 },
+  whileInView: { y: 0, opacity: 1 },
+  viewport: { once: true, margin: "-60px" },
+  transition: { duration: 0.7, ease: [0.25, 0.1, 0.25, 1] as const },
+};
+
+export default function PropertyDetail({ property, nextProperty, projectClips }: PropertyDetailProps) {
   const router = useRouter();
   const { savedIds, toggleSave } = useSavedProperties();
   const favourited = savedIds.has(property.id);
-  
+
   const [activeFloorPlan, setActiveFloorPlan] = useState(0);
   const [currentPhoto, setCurrentPhoto] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  gsap.registerPlugin(ScrollTrigger, useGSAP);
 
   const hasFloorPlans = property.floorPlans && property.floorPlans.length > 0;
+  const project = getProjectBySlug(property.projectSlug);
+  const siteClips = projectClips ?? project?.siteMedia.clips ?? [];
 
   const photoGallery = property.gallery?.length
     ? property.gallery
@@ -41,7 +70,6 @@ export default function PropertyDetail({ property }: { property: Property }) {
   const nextPhoto = useCallback(() => setCurrentPhoto((i) => (i + 1) % photoCount), [photoCount]);
   const prevPhoto = useCallback(() => setCurrentPhoto((i) => (i - 1 + photoCount) % photoCount), [photoCount]);
 
-  // Handle keyboard navigation for lightbox
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (!isLightboxOpen) return;
@@ -53,267 +81,258 @@ export default function PropertyDetail({ property }: { property: Property }) {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isLightboxOpen, nextPhoto, prevPhoto]);
 
-  useGSAP(() => {
-    const mm = gsap.matchMedia();
-    
-    // Desktop: Full cinematic animations
-    mm.add("(min-width: 768px)", () => {
-      const tl = gsap.timeline();
+  const openLightbox = (index: number) => {
+    setCurrentPhoto(index);
+    setIsLightboxOpen(true);
+  };
 
-      tl.from(".reveal-title", {
-        y: 30,
-        opacity: 0,
-        duration: 1,
-        ease: "power3.out"
-      })
-      .from(".reveal-meta", {
-        y: 10,
-        opacity: 0,
-        duration: 0.8,
-        ease: "power3.out"
-      }, "-=0.6");
-
-      gsap.from(".gallery-container", {
-        scrollTrigger: {
-          trigger: ".gallery-container",
-          start: "top 85%",
-        },
-        opacity: 0,
-        y: 40,
-        duration: 1.5,
-        ease: "power2.out"
-      });
-
-      // Room reveals
-      const rooms = gsap.utils.toArray('.room-section') as HTMLElement[];
-      rooms.forEach((room) => {
-        gsap.from(room, {
-          scrollTrigger: {
-            trigger: room,
-            start: "top 85%"
-          },
-          y: 40,
-          opacity: 0,
-          duration: 1,
-          ease: "power3.out"
-        });
-      });
-
-      // Principal card sticky reveal
-      gsap.from(".principal-card", {
-        scrollTrigger: {
-          trigger: ".principal-card",
-          start: "top 85%"
-        },
-        y: 50,
-        opacity: 0,
-        duration: 1.2,
-        ease: "power3.out"
-      });
-    });
-
-    // Mobile: Lightweight fade-ins
-    mm.add("(max-width: 767px)", () => {
-      gsap.from(".gallery-container", { opacity: 0, duration: 0.8 });
-      gsap.from(".content-header", { opacity: 0, duration: 0.8, delay: 0.2 });
-    });
-
-  }, { scope: containerRef });
+  const specRows = [
+    { icon: Tag, label: "Property Status", value: property.status },
+    { icon: Home, label: "Property Type", value: property.type },
+    { icon: BedDouble, label: "Bedrooms", value: `${property.beds}` },
+    { icon: Bath, label: "Bathrooms", value: `${property.baths}` },
+    { icon: MapPin, label: "Neighbourhood", value: `${property.neighbourhood}, ${property.city}` },
+    { icon: Banknote, label: "Property Price", value: property.price, highlight: true },
+  ];
 
   return (
-    <div ref={containerRef} className="bg-obsidian">
-      
-      {/* 1. Header (Title Card) Above the Gallery */}
-      <div className="content-header text-center py-16 px-6 relative max-w-[1400px] mx-auto">
-        <div className="flex justify-center mb-8">
-          <Breadcrumbs 
-            items={[
-              { label: "Home", href: "/" },
-              { label: "Properties", href: "/#properties" },
-              { label: property.address }
-            ]} 
+    <div className="bg-obsidian">
+      {/* ---------- 1. Hero ---------- */}
+      <section className="relative h-[62vh] min-h-[440px] md:h-[72vh] w-full overflow-hidden">
+        {photoGallery[0] ? (
+          <Image
+            src={photoGallery[0]}
+            alt={`${property.address} main photo`}
+            fill
+            priority
+            className="object-cover"
+            sizes="100vw"
           />
-        </div>
-        
-        <h1 className="reveal-title display-xl text-off-white">
-          {property.address}
-        </h1>
-        <p className="reveal-title uppercase mt-6 tracking-[0.3em] text-[11px] text-gold-light/70">
-          {property.neighbourhood} &mdash; {property.city}
-        </p>
-        
-        <div className="reveal-meta flex flex-wrap items-center justify-center gap-4 md:gap-6 mt-10 uppercase tracking-[0.2em] text-[10px] md:text-[11px] text-muted">
-          <span>{property.status}</span>
-          <span className="w-[1px] h-3 bg-white/20 hidden sm:block" />
-          <span>{property.type}</span>
-          <span className="w-[1px] h-3 bg-white/20 hidden sm:block" />
-          <span>{property.beds} Beds</span>
-          <span className="w-[1px] h-3 bg-white/20 hidden sm:block" />
-          <span>{property.baths} Baths</span>
-          <span className="w-[1px] h-3 bg-white/20 hidden sm:block" />
-          <span className="text-gold font-semibold text-[13px]">{property.price}</span>
-        </div>
-      </div>
+        ) : (
+          <div className="absolute inset-0 bg-obsidian-light flex items-center justify-center">
+            <span className="uppercase text-muted text-xs tracking-[0.25em]">
+              {property.imagePlaceholder}
+            </span>
+          </div>
+        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-black/30" />
 
-      {/* 2. Editorial Masonry Gallery */}
-      <div className="gallery-container relative w-full max-w-[1600px] mx-auto px-4 md:px-8 mb-8 flex gap-2 md:gap-4">
-        {/* Main large image */}
-        <div className="relative w-full md:w-2/3 h-[50vh] md:h-[65vh] overflow-hidden group">
-          {photoGallery[0] ? (
-            <Image
-              src={photoGallery[0]}
-              alt={`${property.address} main photo`}
-              fill
-              priority
-              className="object-cover cursor-pointer group-hover:scale-[1.03] transition-transform duration-1000 ease-out"
-              onClick={() => { setCurrentPhoto(0); setIsLightboxOpen(true); }}
-            />
-          ) : (
-            <div className="absolute inset-0 bg-black flex items-center justify-center">
-              <span className="uppercase text-gold-light/50 text-[11px] tracking-[0.3em]">
-                {property.imagePlaceholder}
-              </span>
-            </div>
-          )}
-          
-          <button
-            onClick={() => router.back()}
-            className="absolute top-6 left-6 z-20 flex items-center gap-3 px-5 py-3 bg-black/40 border border-white/10 rounded-sm uppercase tracking-[0.2em] text-[10px] font-semibold text-off-white backdrop-blur-md shadow-xl hover:bg-black/60 hover:text-gold active:scale-95 transition-all duration-300"
-            aria-label="Go back"
+        <button
+          onClick={() => router.back()}
+          className="absolute top-24 left-6 lg:left-12 z-20 flex items-center gap-2 px-5 py-2.5 bg-black/40 border border-white/15 rounded-full text-white text-xs font-medium backdrop-blur-md hover:bg-black/60 transition-colors"
+          aria-label="Go back"
+        >
+          <ArrowLeft size={14} strokeWidth={1.5} /> Back
+        </button>
+
+        <div className="absolute bottom-0 left-0 right-0 z-10 max-w-[1400px] mx-auto px-6 lg:px-12 pb-10">
+          <motion.div
+            initial={{ y: 24, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
           >
-            <ArrowLeft size={14} strokeWidth={1.5} />
-            <span className="hidden sm:inline font-medium">Back</span>
-          </button>
-          
-          {/* Mobile "View Photos" overlay */}
-          <div 
-            className="md:hidden absolute bottom-4 right-4 px-4 py-2 bg-black/60 backdrop-blur-md text-off-white text-[10px] uppercase tracking-[0.2em] border border-white/20"
-            onClick={() => { setCurrentPhoto(0); setIsLightboxOpen(true); }}
+            <p className="eyebrow text-gold-light mb-4 flex items-center gap-3">
+              <MapPin size={13} strokeWidth={1.5} />
+              {property.neighbourhood} &mdash; {property.city}
+            </p>
+            <h1 className="display-serif text-white max-w-4xl">{property.address}</h1>
+          </motion.div>
+        </div>
+
+        {photoCount > 1 && (
+          <button
+            onClick={() => openLightbox(0)}
+            className="md:hidden absolute bottom-6 right-6 z-10 px-4 py-2 bg-black/60 backdrop-blur-md text-white text-[11px] font-medium tracking-wide border border-white/20 rounded-full"
           >
             1 / {photoCount} Photos
-          </div>
-        </div>
-        
-        {/* Side images stack */}
-        <div className="hidden md:flex w-1/3 flex-col gap-4 h-[65vh]">
-          <div className="relative flex-1 overflow-hidden group">
-            {photoGallery[1] ? (
-              <Image 
-                src={photoGallery[1]} 
-                alt="Photo 2" 
-                fill 
-                className="object-cover cursor-pointer group-hover:scale-[1.03] transition-transform duration-1000 ease-out" 
-                onClick={() => { setCurrentPhoto(1); setIsLightboxOpen(true); }} 
-              />
-            ) : (
-              <div className="absolute inset-0 bg-obsidian-light/50" />
-            )}
-          </div>
-          
-          <div className="relative flex-1 overflow-hidden group">
-            {photoGallery[2] ? (
-              <Image 
-                src={photoGallery[2]} 
-                alt="Photo 3" 
-                fill 
-                className="object-cover cursor-pointer group-hover:scale-[1.03] transition-transform duration-1000 ease-out" 
-                onClick={() => { setCurrentPhoto(2); setIsLightboxOpen(true); }} 
-              />
-            ) : (
-              <div className="absolute inset-0 bg-obsidian-light/50" />
-            )}
-            
-            {/* View All Photos Overlay on the last visible image */}
-            {photoCount > 3 && (
-              <div 
-                className="absolute inset-0 bg-black/50 hover:bg-black/40 transition-colors duration-500 flex items-center justify-center cursor-pointer backdrop-blur-[2px]"
-                onClick={() => { setCurrentPhoto(0); setIsLightboxOpen(true); }}
-              >
-                <div className="px-6 py-3 border border-white/30 backdrop-blur-md bg-black/40 text-off-white uppercase tracking-[0.2em] text-[10px] font-semibold flex items-center gap-3 hover:text-gold transition-colors">
-                  View All {photoCount} Photos
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
+          </button>
+        )}
+      </section>
 
-      {/* Action links */}
-      <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
-        <div className="flex flex-wrap items-center justify-end gap-8 py-6 mb-12 border-b border-border/20">
-          <button
-            onClick={() => toggleSave(property.id)}
-            className="inline-flex items-center gap-3 uppercase tracking-[0.2em] text-[10px] text-muted hover:text-gold active:scale-95 transition-all duration-300"
-          >
-            <Heart
-              size={16}
-              strokeWidth={1.5}
-              fill={favourited ? "var(--gold)" : "none"}
-              className={favourited ? "text-gold" : "currentColor"}
-            />
-            Favorites
-          </button>
-          <button className="inline-flex items-center gap-3 uppercase tracking-[0.2em] text-[10px] text-muted hover:text-off-white transition-colors duration-300">
-            <Share2 size={16} strokeWidth={1.5} /> Share
-          </button>
-          <button className="inline-flex items-center gap-3 uppercase tracking-[0.2em] text-[10px] text-muted hover:text-off-white transition-colors duration-300">
-            <Printer size={16} strokeWidth={1.5} /> Print
-          </button>
-        </div>
-
-        {/* Two-column content */}
-        <div className="grid grid-cols-1 lg:grid-cols-[7fr_3fr] gap-16 lg:gap-24 pb-32">
-          {/* Left: description */}
-          <div>
-            {property.rooms.map((room) => (
-              <div key={room.heading} className="room-section mb-16">
-                <div className="w-8 h-[1px] mb-6 bg-gold" />
-                <h2 className="uppercase text-gold-light/90 mb-6 tracking-[0.25em] text-[11px] font-medium">
-                  {room.heading}
-                </h2>
-                <p className="font-serif text-off-white/90 font-light leading-[1.8] text-[20px] lg:text-[22px]">
-                  {room.body}
-                </p>
-              </div>
-            ))}
-            
-            <div className="room-section mb-16">
-              <div className="w-8 h-[1px] mb-6 bg-gold" />
-              <h2 className="uppercase text-gold-light/90 mb-6 tracking-[0.25em] text-[11px] font-medium">
-                Overview
-              </h2>
-              <p className="font-serif text-off-white/90 font-light leading-[1.8] text-[20px] lg:text-[22px]">
-                {property.description}
+      {/* ---------- 1.5 Project banner (if this listing is part of a project) ---------- */}
+      {project && (
+        <section className="py-6">
+          <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
+            <motion.div
+              {...fadeUp}
+              className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-panel rounded-[var(--radius-md)] px-6 py-5"
+            >
+              <p className="text-white/80 text-sm leading-relaxed">
+                This residence is part of the{" "}
+                <span className="font-semibold text-white">{project.name}</span>{" "}
+                development — real construction progress on site.
               </p>
+              <Link
+                href={project.url}
+                className="shrink-0 inline-flex items-center gap-2 text-gold-light hover:text-gold text-xs uppercase tracking-[0.2em] font-medium transition-colors"
+              >
+                Explore the project <ArrowRight size={14} strokeWidth={1.5} />
+              </Link>
+            </motion.div>
+          </div>
+        </section>
+      )}
+
+      {/* ---------- 2. Spec card ---------- */}
+      <section className="py-10 lg:py-14">
+        <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
+          <motion.div
+            {...fadeUp}
+            className="bg-surface border border-border rounded-[var(--radius-lg)] overflow-hidden grid grid-cols-1 lg:grid-cols-2 shadow-[var(--shadow-card)]"
+          >
+            {/* Photo + map pin */}
+            <div className="relative aspect-video lg:aspect-auto lg:min-h-[420px]">
+              {photoGallery[1] || property.image ? (
+                <Image
+                  src={photoGallery[1] ?? property.image!}
+                  alt={`${property.address} exterior`}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                />
+              ) : (
+                <div className="absolute inset-0 bg-obsidian-light" />
+              )}
+              <a
+                href="#location"
+                className="absolute bottom-4 left-4 inline-flex items-center gap-2 px-4 py-2 bg-black/60 backdrop-blur-md text-white text-[11px] font-medium tracking-wide rounded-full border border-white/20 hover:bg-black/80 transition-colors"
+              >
+                <MapPin size={13} strokeWidth={1.5} className="text-gold" />
+                Tap to view the location
+              </a>
             </div>
 
-            {/* Floor Plan Section */}
+            {/* Spec rows */}
+            <div className="p-8 lg:p-12 flex flex-col justify-center">
+              {specRows.map((row) => (
+                <div
+                  key={row.label}
+                  className="flex items-center justify-between gap-4 py-4 border-b border-border last:border-b-0"
+                >
+                  <span className="flex items-center gap-3">
+                    <row.icon size={16} strokeWidth={1.5} className="text-muted shrink-0" />
+                    <span className="eyebrow text-gold">{row.label}</span>
+                  </span>
+                  <span
+                    className={`font-sans font-bold text-right ${
+                      row.highlight ? "text-gold text-lg" : "text-off-white"
+                    }`}
+                  >
+                    {row.value}
+                  </span>
+                </div>
+              ))}
+
+              {/* Actions */}
+              <div className="flex items-center gap-3 pt-6">
+                <button
+                  onClick={() => toggleSave(property.id)}
+                  className="inline-flex items-center gap-2 px-4 py-2.5 border border-border rounded-full text-xs font-medium text-muted hover:border-gold hover:text-gold transition-colors"
+                >
+                  <Heart
+                    size={14}
+                    strokeWidth={1.5}
+                    fill={favourited ? "var(--gold)" : "none"}
+                    className={favourited ? "text-gold" : ""}
+                  />
+                  {favourited ? "Saved" : "Save"}
+                </button>
+                <button className="inline-flex items-center gap-2 px-4 py-2.5 border border-border rounded-full text-xs font-medium text-muted hover:border-gold hover:text-gold transition-colors">
+                  <Share2 size={14} strokeWidth={1.5} /> Share
+                </button>
+                <button className="inline-flex items-center gap-2 px-4 py-2.5 border border-border rounded-full text-xs font-medium text-muted hover:border-gold hover:text-gold transition-colors">
+                  <Printer size={14} strokeWidth={1.5} /> Print
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ---------- 3. Overview card ---------- */}
+      <section className="pb-10 lg:pb-14">
+        <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
+          <motion.div
+            {...fadeUp}
+            className="bg-surface border border-border rounded-[var(--radius-lg)] p-8 lg:p-12 shadow-[var(--shadow-card)]"
+          >
+            <div className="grid grid-cols-1 lg:grid-cols-[5fr_7fr] gap-8 lg:gap-14">
+              <div>
+                <p className="eyebrow text-gold mb-4">The Residence</p>
+                <h2 className="display-serif-sm text-off-white">Property Overview</h2>
+              </div>
+              <div>
+                <p className="text-lead text-off-white/85 leading-relaxed">
+                  {property.description}
+                </p>
+                <div className="flex flex-wrap gap-3 mt-8">
+                  <span className="inline-flex items-center gap-2 px-4 py-2 bg-obsidian-light rounded-full text-sm font-medium text-off-white">
+                    <BedDouble size={15} strokeWidth={1.5} className="text-gold" /> {property.beds} Bedrooms
+                  </span>
+                  <span className="inline-flex items-center gap-2 px-4 py-2 bg-obsidian-light rounded-full text-sm font-medium text-off-white">
+                    <Bath size={15} strokeWidth={1.5} className="text-gold" /> {property.baths} Bathrooms
+                  </span>
+                  <span className="inline-flex items-center gap-2 px-4 py-2 bg-obsidian-light rounded-full text-sm font-medium text-off-white">
+                    <Home size={15} strokeWidth={1.5} className="text-gold" /> {property.type}
+                  </span>
+                  <span className="inline-flex items-center gap-2 px-4 py-2 bg-obsidian-light rounded-full text-sm font-medium text-off-white">
+                    <Tag size={15} strokeWidth={1.5} className="text-gold" /> {property.status}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ---------- 4. Interior details + floor plans ---------- */}
+      <section className="pb-10 lg:pb-14">
+        <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
+          <motion.div
+            {...fadeUp}
+            className="bg-obsidian-light rounded-[var(--radius-lg)] p-8 lg:p-12"
+          >
+            <div className="grid grid-cols-1 lg:grid-cols-[4fr_8fr] gap-8 lg:gap-14">
+              <div>
+                <p className="eyebrow text-gold mb-4">Inside The Home</p>
+                <h2 className="display-serif-sm text-off-white">Interior Details</h2>
+              </div>
+              <div className="space-y-10">
+                {property.rooms.map((room) => (
+                  <div key={room.heading}>
+                    <div className="flex items-center gap-3 mb-3">
+                      <span className="w-8 h-8 rounded-full bg-surface border border-border flex items-center justify-center text-gold shrink-0">
+                        <Home size={14} strokeWidth={1.5} />
+                      </span>
+                      <h3 className="font-sans font-bold text-off-white text-lg">{room.heading}</h3>
+                    </div>
+                    <p className="text-body text-muted leading-relaxed pl-11">{room.body}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
             {hasFloorPlans && (
-              <div className="room-section mb-16 pt-16 border-t border-border/20">
-                <div className="w-8 h-[1px] mb-6 bg-gold" />
-                <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-6">
-                  <h2 className="uppercase text-gold-light/90 tracking-[0.25em] text-[11px] font-medium">
-                    Architectural Plans
-                  </h2>
-                  <div className="flex flex-wrap items-center gap-3">
+              <div className="mt-14 pt-10 border-t border-border">
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
+                  <h3 className="font-sans font-bold text-off-white text-lg">Architectural Plans</h3>
+                  <div className="flex flex-wrap gap-2">
                     {property.floorPlans!.map((plan, index) => (
                       <button
                         key={plan.title}
                         onClick={() => setActiveFloorPlan(index)}
-                        className="px-5 py-2 uppercase tracking-[0.15em] text-[9px] transition-all duration-300"
-                        style={{
-                          border: "1px solid rgba(255,255,255,0.1)",
-                          backgroundColor: activeFloorPlan === index ? "var(--gold)" : "transparent",
-                          color: activeFloorPlan === index ? "var(--obsidian)" : "var(--off-white)",
-                        }}
+                        className={`px-4 py-2 rounded-full text-xs font-medium transition-colors ${
+                          activeFloorPlan === index
+                            ? "bg-gold text-ink"
+                            : "bg-surface border border-border text-muted hover:border-gold hover:text-gold"
+                        }`}
                       >
                         {plan.title}
                       </button>
                     ))}
                   </div>
                 </div>
-                
-                <div className="w-full h-[50vh] min-h-[400px] border border-white/5 bg-black/20 rounded-sm overflow-hidden relative">
+                <div className="w-full h-[50vh] min-h-[380px] bg-surface border border-border rounded-[var(--radius-md)] overflow-hidden relative">
                   <FloorPlanViewer
                     floorPlans={property.floorPlans!}
                     activeIndex={activeFloorPlan}
@@ -322,69 +341,183 @@ export default function PropertyDetail({ property }: { property: Property }) {
                 </div>
               </div>
             )}
+          </motion.div>
+        </div>
+      </section>
 
-            {/* Map Section */}
-            <div className="room-section mb-8 pt-16 border-t border-border/20">
-              <div className="w-8 h-[1px] mb-6 bg-gold" />
-              <h2 className="uppercase text-gold-light/90 mb-8 tracking-[0.25em] text-[11px] font-medium flex items-center gap-3">
-                <MapPin size={14} /> Location
-              </h2>
-              <div className="w-full aspect-video bg-obsidian-light border border-border/20 flex flex-col items-center justify-center p-8 text-center relative overflow-hidden">
-                {/* Abstract map pattern background */}
-                <div className="absolute inset-0 opacity-5" style={{ backgroundImage: "radial-gradient(circle at 2px 2px, white 1px, transparent 0)", backgroundSize: "32px 32px" }} />
-                
-                <p className="uppercase text-[11px] tracking-[0.25em] text-gold relative z-10">{property.neighbourhood}</p>
-                <p className="text-[13px] text-off-white/80 mt-2 relative z-10">{property.city}</p>
-                <div className="mt-8 px-6 py-3 border border-gold/20 bg-gold/5 text-[11px] text-gold uppercase tracking-[0.2em] relative z-10">
-                  Exact Coordinates Protected
-                </div>
-                <p className="mt-6 font-sans text-xs tracking-wide text-muted max-w-xs text-center relative z-10">
-                  Detailed location information is provided exclusively to verified clients to ensure the privacy of our residents.
-                </p>
+      {/* ---------- 5. Gallery ---------- */}
+      {photoCount > 0 && (
+        <section className="pb-10 lg:pb-14">
+          <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
+            <motion.div {...fadeUp} className="flex items-end justify-between mb-8">
+              <div>
+                <p className="eyebrow text-gold mb-4">Photos</p>
+                <h2 className="display-serif-sm text-off-white">Explore the full gallery</h2>
               </div>
+              <span className="text-sm text-muted hidden sm:block">{photoCount} photos</span>
+            </motion.div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {photoGallery.map((src, i) => (
+                <motion.button
+                  key={src + i}
+                  {...fadeUp}
+                  onClick={() => openLightbox(i)}
+                  className="group relative aspect-[4/3] rounded-[var(--radius-md)] overflow-hidden border border-border text-left"
+                  aria-label={`View photo ${i + 1}`}
+                >
+                  <Image
+                    src={src}
+                    alt={`${property.address} — photo ${i + 1}`}
+                    fill
+                    className="object-cover group-hover:scale-[1.03] transition-transform duration-700"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  />
+                  <span className="absolute top-3 right-3 w-9 h-9 rounded-full bg-black/50 backdrop-blur-sm text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                    <Maximize2 size={15} strokeWidth={1.5} />
+                  </span>
+                </motion.button>
+              ))}
             </div>
           </div>
+        </section>
+      )}
 
-          {/* Right: sticky principal card */}
-          <aside>
-            <div className="principal-card lg:sticky lg:top-32 p-10 bg-obsidian-light border border-border/20 text-center">
-              {/* Headshot placeholder */}
-              <div className="w-24 h-24 rounded-full mb-6 flex items-center justify-center mx-auto bg-obsidian border border-border/30" aria-hidden="true">
-                <span className="uppercase text-gold-light/60 tracking-[0.2em] text-[10px]">
-                  Photo
-                </span>
+      {/* ---------- 5.5 Shared project site media ---------- */}
+      {project && siteClips.length > 0 && (
+        <section className="pb-10 lg:pb-14">
+          <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
+            <motion.div {...fadeUp} className="flex items-end justify-between mb-8">
+              <div>
+                <p className="eyebrow text-gold mb-4">From the site</p>
+                <h2 className="display-serif-sm text-off-white">Real construction progress</h2>
               </div>
-              <p className="font-serif text-off-white text-[28px] font-light">
-                {property.principal.name}
-              </p>
-              <p className="uppercase mt-3 tracking-[0.25em] text-[10px] text-muted">
-                {property.principal.title}
-              </p>
-              
-              <div className="w-full h-[1px] bg-border/30 my-8" />
-              
-              <a
-                href={property.principal?.phone ? `tel:${property.principal.phone.replace(/\s+/g, "")}` : "#"}
-                className="block text-off-white hover:text-gold transition-colors font-sans tracking-[0.1em] text-[14px]"
+              <Link
+                href={`${project.url}#progress`}
+                className="text-sm text-muted hover:text-gold transition-colors hidden sm:flex items-center gap-2 shrink-0"
               >
-                {property.principal.phone}
-              </a>
-              
-              <Button className="w-full mt-8" onClick={() => setIsModalOpen(true)}>
+                Full project documentation <ArrowRight size={14} strokeWidth={1.5} />
+              </Link>
+            </motion.div>
+            <motion.div {...fadeUp} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {siteClips.map((clip) => (
+                <div
+                  key={clip.src}
+                  className="relative aspect-video rounded-[var(--radius-md)] overflow-hidden border border-border bg-black"
+                >
+                  <video
+                    src={clip.src}
+                    muted
+                    loop
+                    autoPlay
+                    playsInline
+                    preload="metadata"
+                    className="w-full h-full object-cover"
+                  />
+                  <span className="absolute bottom-3 left-3 text-[9px] uppercase tracking-[0.2em] text-white/90 bg-black/50 backdrop-blur-sm px-3 py-1.5 rounded-full">
+                    {clip.label}
+                  </span>
+                </div>
+              ))}
+            </motion.div>
+          </div>
+        </section>
+      )}
+
+      {/* ---------- 6. Neighbourhood highlights ---------- */}
+      <section id="location" className="pb-10 lg:pb-14 scroll-mt-28">
+        <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
+          <motion.div {...fadeUp} className="mb-8">
+            <p className="eyebrow text-gold mb-4">The Area</p>
+            <h2 className="display-serif-sm text-off-white">Neighbourhood Highlights</h2>
+          </motion.div>
+          <motion.div {...fadeUp} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {[
+              { icon: MapPin, text: `${property.neighbourhood}, ${property.city}` },
+              { icon: ShieldCheck, text: "Exact coordinates protected" },
+              { icon: Eye, text: "Viewings by private appointment" },
+              { icon: Home, text: "Inspected by the Kreebz team" },
+            ].map((chip) => (
+              <div
+                key={chip.text}
+                className="flex items-center gap-3 bg-panel rounded-[var(--radius-md)] px-5 py-4"
+              >
+                <span className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center text-gold shrink-0">
+                  <chip.icon size={16} strokeWidth={1.5} />
+                </span>
+                <span className="text-white/90 text-sm font-medium leading-snug">{chip.text}</span>
+              </div>
+            ))}
+          </motion.div>
+          <motion.p {...fadeUp} className="text-sm text-muted mt-6 max-w-xl">
+            Detailed location information is provided exclusively to verified clients to ensure
+            the privacy of our residents.
+          </motion.p>
+        </div>
+      </section>
+
+      {/* ---------- 7. Interested CTA + next property ---------- */}
+      <section className="pb-24 lg:pb-32">
+        <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
+          <motion.div
+            {...fadeUp}
+            className="bg-panel rounded-[var(--radius-lg)] p-8 lg:p-12 flex flex-col lg:flex-row lg:items-center gap-10"
+          >
+            <div className="flex-1">
+              <p className="eyebrow text-gold mb-4">Enquiries</p>
+              <h2 className="display-serif-sm text-white mb-3">
+                Interested in {property.address}?
+              </h2>
+              <p className="text-white/60 leading-relaxed max-w-lg">
+                This residence is offered through private enquiry. Detailed plans, specifications,
+                and availability are shared on request.
+              </p>
+            </div>
+            <div className="shrink-0 flex flex-col items-start lg:items-end gap-5">
+              <div className="text-left lg:text-right">
+                <p className="font-sans font-semibold text-white">{property.principal.name}</p>
+                <p className="text-white/50 text-sm">{property.principal.title}</p>
+                {property.principal.phone && (
+                  <a
+                    href={`tel:${property.principal.phone.replace(/\s+/g, "")}`}
+                    className="text-gold-light text-sm hover:text-gold transition-colors"
+                  >
+                    {property.principal.phone}
+                  </a>
+                )}
+              </div>
+              <Button onClick={() => setIsModalOpen(true)} className="px-10">
                 Request Private Viewing
               </Button>
             </div>
-          </aside>
-        </div>
-      </div>
+          </motion.div>
 
-      <ViewingModal 
-        isOpen={isModalOpen} 
-        onClose={() => setIsModalOpen(false)} 
-        propertyTitle={property.address} 
+          <div className="flex items-center justify-between mt-8">
+            <Link
+              href="/properties"
+              className="text-sm text-muted hover:text-gold transition-colors inline-flex items-center gap-2"
+            >
+              <ArrowLeft size={14} strokeWidth={1.5} /> All properties
+            </Link>
+            {nextProperty && (
+              <Link
+                href={`/property/${nextProperty.slug}`}
+                className="font-sans font-semibold text-off-white hover:text-gold transition-colors inline-flex items-center gap-2"
+              >
+                Next Property — {nextProperty.address}
+                <ArrowRight size={15} strokeWidth={1.5} />
+              </Link>
+            )}
+          </div>
+        </div>
+      </section>
+
+      <ViewingModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        propertyTitle={property.address}
       />
 
-      {/* Full-Screen Cinematic Lightbox */}
+      {/* ---------- Lightbox ---------- */}
       <AnimatePresence>
         {isLightboxOpen && (
           <motion.div
@@ -394,23 +527,22 @@ export default function PropertyDetail({ property }: { property: Property }) {
             transition={{ duration: 0.4 }}
             className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-2xl flex flex-col"
           >
-            {/* Header controls */}
             <div className="flex items-center justify-between p-6 md:p-8 relative z-20">
-              <div className="font-serif text-off-white text-lg tracking-wide hidden md:block">
+              <div className="font-sans font-semibold text-white text-lg tracking-wide hidden md:block">
                 {property.address}
               </div>
               <div className="font-sans text-gold uppercase tracking-[0.2em] text-[11px] md:absolute md:left-1/2 md:-translate-x-1/2">
-                {String(currentPhoto + 1).padStart(2, '0')} / {String(photoCount).padStart(2, '0')}
+                {String(currentPhoto + 1).padStart(2, "0")} / {String(photoCount).padStart(2, "0")}
               </div>
               <button
                 onClick={() => setIsLightboxOpen(false)}
-                className="p-3 bg-white/5 hover:bg-white/10 rounded-full text-off-white transition-colors"
+                className="p-3 bg-white/5 hover:bg-white/10 rounded-full text-white transition-colors"
+                aria-label="Close gallery"
               >
                 <X size={24} strokeWidth={1.5} />
               </button>
             </div>
 
-            {/* Immersive Image Container */}
             <div className="flex-1 relative w-full flex items-center justify-center overflow-hidden px-4 md:px-16 pb-16">
               <AnimatePresence mode="wait">
                 <motion.div
@@ -434,18 +566,19 @@ export default function PropertyDetail({ property }: { property: Property }) {
                 </motion.div>
               </AnimatePresence>
 
-              {/* Navigation Arrows */}
               {photoCount > 1 && (
                 <>
                   <button
                     onClick={(e) => { e.stopPropagation(); prevPhoto(); }}
                     className="absolute left-2 md:left-8 top-1/2 -translate-y-1/2 z-20 w-12 h-12 md:w-16 md:h-16 flex items-center justify-center bg-black/40 border border-white/10 rounded-full text-white backdrop-blur-md hover:bg-white hover:text-black transition-all duration-300"
+                    aria-label="Previous photo"
                   >
                     <ChevronLeft size={24} strokeWidth={1.5} />
                   </button>
                   <button
                     onClick={(e) => { e.stopPropagation(); nextPhoto(); }}
                     className="absolute right-2 md:right-8 top-1/2 -translate-y-1/2 z-20 w-12 h-12 md:w-16 md:h-16 flex items-center justify-center bg-black/40 border border-white/10 rounded-full text-white backdrop-blur-md hover:bg-white hover:text-black transition-all duration-300"
+                    aria-label="Next photo"
                   >
                     <ChevronRight size={24} strokeWidth={1.5} />
                   </button>
@@ -456,18 +589,17 @@ export default function PropertyDetail({ property }: { property: Property }) {
         )}
       </AnimatePresence>
 
-      {/* Mobile Sticky Action Bar */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-obsidian/90 backdrop-blur-md border-t border-border/20 p-4 pb-safe flex items-center justify-between">
-        <div className="flex flex-col">
-          <span className="text-[10px] uppercase tracking-[0.2em] text-muted mb-0.5">Price</span>
-          <span className="font-serif text-lg text-off-white leading-none">{property.price}</span>
+      {/* ---------- Mobile sticky action bar ---------- */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-surface/95 backdrop-blur-md border-t border-border p-4 pb-safe flex items-center justify-between gap-4">
+        <div className="flex flex-col min-w-0">
+          <span className="text-[10px] uppercase tracking-[0.15em] text-muted mb-0.5">Price</span>
+          <span className="font-sans font-bold text-lg text-off-white leading-none truncate">
+            {property.price}
+          </span>
         </div>
-        <button
-          onClick={() => setIsModalOpen(true)}
-          className="bg-gold text-obsidian px-6 py-3 uppercase tracking-[0.2em] text-[10px] font-semibold hover:bg-gold-hover transition-colors duration-300"
-        >
+        <Button onClick={() => setIsModalOpen(true)} className="px-6 py-3 text-sm shrink-0">
           Request Viewing
-        </button>
+        </Button>
       </div>
     </div>
   );

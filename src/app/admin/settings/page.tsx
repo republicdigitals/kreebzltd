@@ -307,12 +307,12 @@ export default function SettingsPage() {
                   <button
                     onClick={handleSave}
                     disabled={saveState === "saving"}
-                    className="ml-auto bg-gold text-obsidian px-6 py-2 rounded-none font-medium uppercase tracking-wider text-xs hover:bg-gold-hover transition-colors flex items-center gap-2 disabled:opacity-60"
+                    className="ml-auto bg-gold text-ink px-6 py-2 rounded-none font-medium uppercase tracking-wider text-xs hover:bg-gold-hover transition-colors flex items-center gap-2 disabled:opacity-60"
                   >
                     {saveState === "saving" ? (
                       <><Loader2 className="w-4 h-4 animate-spin" /> Saving…</>
                     ) : saveState === "saved" ? (
-                      <><Check className="w-4 h-4 text-obsidian" /> Saved</>
+                      <><Check className="w-4 h-4 text-ink" /> Saved</>
                     ) : (
                       <><Save className="w-4 h-4" /> Save Changes</>
                     )}

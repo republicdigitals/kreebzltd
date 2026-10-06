@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowLeft, ArrowRight, ArrowUpRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, MapPin } from "lucide-react";
 import useEmblaCarousel from "embla-carousel-react";
 import { Property } from "@/data/properties";
 import { cn } from "@/lib/utils";
@@ -89,16 +89,19 @@ export default function FeaturedProperties({ properties }: { properties: Propert
   }, { scope: containerRef });
 
   return (
-    <section ref={containerRef} className="py-24 lg:py-32">
+    <section ref={containerRef} className="py-24 lg:py-32 bg-obsidian-light border-y border-border">
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
         {/* Section heading */}
-        <div className="text-center mb-16">
-          <p className="reveal-up eyebrow text-gold-light/70 tracking-[0.3em] mb-4">
-            The Portfolio
+        <div className="text-center mb-14">
+          <p className="reveal-up flex items-center justify-center gap-5 eyebrow text-gold tracking-[0.25em] mb-8">
+            <span className="hidden sm:block h-px w-16 lg:w-28 bg-border" aria-hidden="true" />
+            Featured Listings
+            <span className="hidden sm:block h-px w-16 lg:w-28 bg-border" aria-hidden="true" />
           </p>
-          <h2 className="reveal-up text-off-white display-lg">
+          <h2 className="reveal-up text-off-white display-serif-sm mb-4">
             <RevealText text="Every listing, personally vetted" delay={0.2} />
           </h2>
+          <p className="reveal-up text-muted text-lead">Homes for living and long-term value</p>
         </div>
 
         <div
@@ -107,13 +110,13 @@ export default function FeaturedProperties({ properties }: { properties: Propert
           onMouseLeave={() => setPaused(false)}
         >
           <div className="relative overflow-hidden bg-transparent rounded-none" ref={emblaRef}>
-            <div className="flex touch-pan-y -ml-4 md:-ml-8" style={{ backfaceVisibility: "hidden" }}>
+            <div className="flex touch-pan-y -ml-4 md:-ml-6" style={{ backfaceVisibility: "hidden" }}>
               {featured.map((property) => (
                 <div
                   key={property.id}
-                  className="relative flex-[0_0_100%] md:flex-[0_0_50%] lg:flex-[0_0_33.333333%] min-w-0 pl-4 md:pl-8"
+                  className="relative flex-[0_0_100%] md:flex-[0_0_50%] lg:flex-[0_0_33.333333%] min-w-0 pl-4 md:pl-6"
                 >
-                  <Link href={`/property/${property.slug}`} className="block w-full aspect-[4/3] group relative overflow-hidden rounded-[var(--radius-lg)]" draggable={false}>
+                  <Link href={`/property/${property.slug}`} data-cursor="View" className="block w-full aspect-[4/5] group relative overflow-hidden rounded-[var(--radius-lg)] bg-panel" draggable={false}>
                     {property.image ? (
                       <Image
                         src={property.image}
@@ -121,51 +124,49 @@ export default function FeaturedProperties({ properties }: { properties: Propert
                         fill
                         priority
                         draggable={false}
-                        className="object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.03] pointer-events-none"
+                        className="object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.05] pointer-events-none"
                         sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       />
                     ) : (
-                      <div className="absolute inset-0 flex items-center justify-center bg-obsidian-light">
+                      <div className="absolute inset-0 flex items-center justify-center bg-surface-2">
                         <span className="uppercase text-[11px] text-muted tracking-[0.3em]">
                           {property.imagePlaceholder || "IMAGE PENDING"}
                         </span>
                       </div>
                     )}
 
-                    {/* Gradient overlay */}
-                    <div
-                      className="absolute inset-0"
-                      style={{
-                        background:
-                          "linear-gradient(to top, rgba(11, 10, 8, 0.95) 0%, rgba(11, 10, 8, 0.5) 40%, rgba(11, 10, 8, 0) 100%)",
-                      }}
-                    />
-                    
-                    {/* Content overlay */}
-                    <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8">
-                      <div className="flex flex-col gap-4 text-white">
-                        <div className="min-w-0 mb-2">
-                          <span className="inline-flex items-center justify-center px-3 py-1.5 bg-black/40 border border-gold/30 rounded-sm uppercase text-[9px] tracking-[0.3em] text-gold-light backdrop-blur-md mb-4 shadow-xl">
-                            {property.status} &middot; {property.neighbourhood}
-                          </span>
-                          <p className="font-serif text-white text-[clamp(24px,4vw,32px)] leading-[1.1] font-light">
-                            {property.price}
+                    {/* Status pill — top left */}
+                    <span className="absolute top-4 left-4 z-10 px-3 py-1.5 rounded-full bg-black/55 backdrop-blur-md text-white/95 uppercase text-[9px] tracking-[0.2em] font-semibold">
+                      {property.status}
+                    </span>
+
+                    {/* Location pill — top right */}
+                    <span className="absolute top-4 right-4 z-10 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/45 backdrop-blur-sm text-white text-[10px] tracking-wide">
+                      <MapPin size={11} strokeWidth={2} />
+                      {property.neighbourhood || property.city}
+                    </span>
+
+                    {/* Bottom gradient + content */}
+                    <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent pt-24 p-6">
+                      <div className="flex items-end justify-between gap-4">
+                        <div className="min-w-0">
+                          <p className="font-sans font-bold text-white text-[22px] leading-tight truncate">
+                            {property.type} — {property.neighbourhood}
                           </p>
-                          <p className="text-white/80 mt-2 text-sm tracking-wide truncate">
+                          <p className="text-white/70 mt-1.5 text-sm truncate">
                             {property.address}
                           </p>
-                          <p className="uppercase text-white/60 mt-2 text-[10px] tracking-[0.2em]">
-                            {property.beds} Bed &nbsp;&middot;&nbsp; {property.baths} Bath
-                          </p>
                         </div>
-                        
-                        <span className="inline-flex items-center gap-2 text-white uppercase text-[10px] tracking-[0.2em] group-hover:text-gold transition-colors duration-300 mt-2">
-                          View this home
-                          <ArrowUpRight
-                            size={14}
-                            strokeWidth={1.5}
-                            className="transition-transform duration-500 ease-out group-hover:-translate-y-1 group-hover:translate-x-1"
-                          />
+                        <p className="font-sans font-bold text-white text-[15px] whitespace-nowrap shrink-0">
+                          {property.price}
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-4 mt-3 pt-3 border-t border-white/20 text-white/70 text-[12px] tracking-wide">
+                        <span>{property.beds} Beds</span>
+                        <span className="w-px h-3 bg-white/30" />
+                        <span>{property.baths} Baths</span>
+                        <span className="ml-auto inline-flex items-center gap-1 text-gold text-[11px] font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                          View
                         </span>
                       </div>
                     </div>
@@ -178,14 +179,14 @@ export default function FeaturedProperties({ properties }: { properties: Propert
             <button
               onClick={scrollPrev}
               aria-label="Previous property"
-              className="hidden sm:flex absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-10 items-center justify-center w-12 h-12 rounded-full bg-black/40 border border-gold/30 text-gold-light backdrop-blur-md shadow-xl hover:bg-black/60 hover:border-gold/60 hover:text-gold transition-all duration-500"
+              className="hidden sm:flex absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-10 items-center justify-center w-12 h-12 rounded-full bg-black/45 backdrop-blur-md border border-white/15 text-white shadow-card hover:bg-gold hover:border-gold hover:text-ink-fixed transition-all duration-300"
             >
               <ArrowLeft size={18} strokeWidth={1.5} />
             </button>
             <button
               onClick={scrollNext}
               aria-label="Next property"
-              className="hidden sm:flex absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-10 items-center justify-center w-12 h-12 rounded-full bg-black/40 border border-gold/30 text-gold-light backdrop-blur-md shadow-xl hover:bg-black/60 hover:border-gold/60 hover:text-gold transition-all duration-500"
+              className="hidden sm:flex absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-10 items-center justify-center w-12 h-12 rounded-full bg-black/45 backdrop-blur-md border border-white/15 text-white shadow-card hover:bg-gold hover:border-gold hover:text-ink-fixed transition-all duration-300"
             >
               <ArrowRight size={18} strokeWidth={1.5} />
             </button>
@@ -193,9 +194,9 @@ export default function FeaturedProperties({ properties }: { properties: Propert
 
           {/* Controls row: counter + dots */}
           <div className="flex items-center justify-between mt-8">
-            <span className="font-serif text-off-white/80 text-sm tracking-[0.15em]">
+            <span className="text-off-white/80 text-sm tracking-[0.15em] font-medium">
               {String(selectedIndex + 1).padStart(2, "0")}
-              <span className="text-off-white/30"> / {String(featured.length).padStart(2, "0")}</span>
+              <span className="text-muted"> / {String(featured.length).padStart(2, "0")}</span>
             </span>
 
             <div className="flex items-center gap-4">

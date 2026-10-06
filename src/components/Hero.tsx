@@ -1,25 +1,24 @@
 "use client";
 import { useRef, useState, useEffect } from "react";
-import { ChevronDown } from "lucide-react";
-import { cn } from "@/lib/utils";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import RevealText from "./RevealText";
+import RevealLines from "./RevealLines";
+import Magnetic from "./Magnetic";
 import Button from "./ui/Button";
+import { trackEvent } from "@/lib/analytics";
+
 export default function Hero() {
   const containerRef = useRef<HTMLElement>(null);
-  const subtitleRef = useRef<HTMLParagraphElement>(null);
-  const titleRef = useRef<HTMLHeadingElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const eyebrowRef = useRef<HTMLParagraphElement>(null);
+  const ruleRef = useRef<HTMLSpanElement>(null);
+  const subRef = useRef<HTMLParagraphElement>(null);
   const buttonRef = useRef<HTMLDivElement>(null);
-  const scrollIndicatorRef = useRef<HTMLButtonElement>(null);
+  const cueRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   gsap.registerPlugin(ScrollTrigger, useGSAP);
-
-  const scrollDown = () => {
-    window.scrollTo({ top: window.innerHeight, behavior: "smooth" });
-  };
 
   const [shouldPlay, setShouldPlay] = useState(true);
 
@@ -27,11 +26,11 @@ export default function Hero() {
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setShouldPlay(!mediaQuery.matches);
-    
+
     if (mediaQuery.matches && videoRef.current) {
       videoRef.current.pause();
     }
-    
+
     const listener = (e: MediaQueryListEvent) => {
       setShouldPlay(!e.matches);
       if (e.matches && videoRef.current) {
@@ -40,138 +39,167 @@ export default function Hero() {
         videoRef.current.play().catch(() => {});
       }
     };
-    
+
     mediaQuery.addEventListener('change', listener);
     return () => mediaQuery.removeEventListener('change', listener);
   }, []);
 
   useGSAP(() => {
-    const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+    const mm = gsap.matchMedia();
 
-    // Deep parallax scrolling effect
-    gsap.to(".hero-bg-img", {
-      scrollTrigger: {
-        trigger: containerRef.current,
-        start: "top top",
-        end: "bottom top",
-        scrub: true,
-      },
-      y: "25%",
-      ease: "none"
+    mm.add("(min-width: 768px)", () => {
+      // Deep parallax — film drifts down as you scroll past it
+      gsap.to(".hero-bg-img", {
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top top",
+          end: "bottom top",
+          scrub: true,
+        },
+        y: "22%",
+        ease: "none"
+      });
+      // Content counter-drift + fade — the frame recedes behind the canvas
+      gsap.to(contentRef.current, {
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top top",
+          end: "bottom 30%",
+          scrub: true,
+        },
+        y: "-8%",
+        opacity: 0,
+        ease: "none"
+      });
     });
 
-    // Fade in video
+    // Fade in the film
     gsap.from(".hero-bg-img", {
       opacity: 0,
-      duration: 1.4,
+      duration: 1.6,
       ease: "power2.out"
     });
 
-    // Staggered text reveal — short and settled
-    tl.from(subtitleRef.current, {
-      y: 20,
+    const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+
+    // Gold rule draws itself, then eyebrow, sub, CTAs settle in
+    tl.from(ruleRef.current, {
+      scaleX: 0,
+      duration: 1.1,
+      delay: 0.4,
+      ease: "power2.inOut",
+    })
+    .from(eyebrowRef.current, {
+      y: 14,
+      opacity: 0,
+      duration: 0.8,
+    }, "-=0.5")
+    .from(subRef.current, {
+      y: 18,
       opacity: 0,
       duration: 0.9,
-      delay: 0.3,
-    })
+    }, "+=0.15")
     .from(buttonRef.current, {
       y: 16,
       opacity: 0,
       duration: 0.9,
     }, "-=0.5")
-    .from(scrollIndicatorRef.current, {
+    .from(cueRef.current, {
       opacity: 0,
       duration: 1,
-    }, "-=0.5");
-    
-    // Subtle breathing animation for scroll indicator arrow
-    gsap.to(".scroll-arrow", {
-      y: 8,
-      duration: 1.5,
-      repeat: -1,
-      yoyo: true,
-      ease: "power1.inOut"
-    });
+    }, "-=0.3");
 
   }, { scope: containerRef });
 
   return (
     <section ref={containerRef} id="hero" className="relative min-h-dvh w-full overflow-hidden bg-obsidian">
-      {/* Background Setup */}
+      {/* Film */}
       <div className="absolute inset-0 overflow-hidden">
-        {/* Background Video with slow cinematic scale */}
         <div className="hero-bg-img absolute inset-0 w-full h-[130%] -top-[15%]">
           <video
             ref={videoRef}
-            src="/videos/kreebz_hero_video_one_way_premium.mp4"
+            src="/videos/morphix/hero-dusk-lagoon.mp4"
             autoPlay={shouldPlay}
             muted
+            loop
             playsInline
             preload="metadata"
             className="w-full h-full object-cover object-center"
           />
         </div>
-        
-        {/* Localized gradients for perfect contrast without muddying the whole video */}
-        {/* Top gradient for Navbar, Bottom gradient for section transition */}
-        <div className="absolute inset-0 z-10 bg-gradient-to-b from-obsidian/95 via-transparent to-obsidian/95" />
-        {/* Radial vignette behind the center text */}
-        <div className="absolute inset-0 z-10 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-obsidian/80 via-obsidian/40 to-transparent" />
+
+        {/* Cinematic grade — darker, warmer; contrast held at text zone */}
+        <div className="absolute inset-0 z-10 bg-gradient-to-b from-black/75 via-black/20 to-[#0c0b09]" />
+        <div className="absolute inset-0 z-10 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-black/50 via-black/20 to-transparent" />
+        {/* Warm gold cast at the horizon of the frame */}
+        <div className="absolute inset-0 z-10 bg-[radial-gradient(ellipse_at_bottom,_rgba(200,161,94,0.08),_transparent_55%)]" />
       </div>
 
-      {/* Content — High-end editorial prompt.
-          pt-[120px] clears the fixed two-tier header so the headline can
-          never collide with the nav on short viewports. */}
-          <br  />
-          <br  />
-          <br  />
-          <br  />
-          <br  />
-      <div className="relative z-10 h-full flex flex-col justify-center items-center px-[5vw] pt-[120px] pb-16">
-        <div className="text-center w-full max-w-[1000px] mx-auto drop-shadow-[0_4px_24px_rgba(0,0,0,0.8)]">
+      {/* Content */}
+      <div ref={contentRef} className="relative z-10 min-h-dvh flex flex-col justify-center items-center px-[5vw] pt-[120px] pb-24">
+        <div className="text-center w-full max-w-[1100px] mx-auto">
+          <span
+            ref={ruleRef}
+            className="block w-16 h-px bg-gold mx-auto mb-8"
+          />
           <p
-            ref={subtitleRef}
-            className="eyebrow text-gold-light mb-6 drop-shadow-lg"
+            ref={eyebrowRef}
+            className="eyebrow text-white/70 mb-8 drop-shadow-lg"
           >
             Property, management &amp; private aviation · Lagos
           </p>
 
-          <h1
-            ref={titleRef}
-            className="text-off-white display-xl flex flex-col items-center gap-2 md:gap-4 drop-shadow-2xl"
-          >
-            <span className="block"><RevealText text="Find the right property." delay={0.5} /></span>
-            <span className="block"><RevealText text="Skip the hard part." delay={0.8} /></span>
+          <h1 className="display-serif text-white flex flex-col items-center drop-shadow-2xl">
+            <RevealLines
+              lines={["Find the right property.", "Skip the hard part."]}
+              delay={0.7}
+            />
           </h1>
 
+          <p
+            ref={subRef}
+            className="text-white/60 text-lead max-w-md mx-auto mt-8"
+          >
+            A private practice for people who would rather be advised than sold to.
+          </p>
+
           <div ref={buttonRef} className="mt-14 flex flex-col sm:flex-row items-center justify-center gap-6 w-full max-w-2xl mx-auto">
-            <Button href="/properties" className="px-12">
-              Browse the portfolio
-            </Button>
-            <Button href="/contact" variant="secondary" className="px-12">
-              Talk to a principal
-            </Button>
+            <Magnetic>
+              <Button
+                href="/properties"
+                className="px-12"
+                onClick={() => trackEvent("click_primary_cta", { location: "hero", cta: "browse_portfolio" })}
+              >
+                Browse the portfolio
+              </Button>
+            </Magnetic>
+            <Magnetic>
+              <Button
+                href="/contact"
+                variant="secondary"
+                className="px-12"
+                onClick={() => trackEvent("click_secondary_cta", { location: "hero", cta: "talk_to_principal" })}
+              >
+                Talk to a principal
+              </Button>
+            </Magnetic>
           </div>
         </div>
       </div>
 
-      {/* Scroll Indicator */}
-      <button
-        ref={scrollIndicatorRef}
-        onClick={scrollDown}
-        className={cn(
-          "group absolute bottom-12 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-4",
-          "text-off-white/50 hover:text-gold focus:outline-none transition-colors duration-500"
-        )}
-        aria-label="Scroll down to explore"
-      >
-        <span className="uppercase text-[9px] tracking-[0.4em] opacity-80">
-          Scroll
-        </span>
-        <span className="scroll-arrow flex items-center justify-center w-10 h-10 rounded-full border border-border-strong group-hover:border-gold transition-colors duration-500">
-          <ChevronDown size={16} strokeWidth={1.5} />
-        </span>
-      </button>
+      {/* Scroll cue + coordinates — quiet chrome at the frame's edge */}
+      <div ref={cueRef} className="absolute bottom-8 left-0 right-0 z-10 px-6 lg:px-12 flex items-end justify-between">
+        <p className="eyebrow text-[9px] tracking-[0.28em] text-white/35 hidden sm:block">
+          6.5244° N — 3.3792° E
+        </p>
+        <div className="flex flex-col items-center gap-3 mx-auto sm:mx-0">
+          <span className="eyebrow text-[9px] tracking-[0.3em] text-white/35">SCROLL</span>
+          <span className="block w-px h-10 bg-gradient-to-b from-white/40 to-transparent" />
+        </div>
+        <p className="eyebrow text-[9px] tracking-[0.28em] text-white/35 hidden sm:block">
+          IKOYI · VI · BANANA ISLAND
+        </p>
+      </div>
     </section>
   );
 }

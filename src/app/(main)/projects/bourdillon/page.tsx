@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import BourdillonContent from "@/components/BourdillonContent";
 import { bourdillon } from "@/data/bourdillon";
+import { getPropertiesByProjectSlug } from "@/data/properties";
+import { getProjectContent } from "@/data/project-content";
 
 export const metadata: Metadata = {
   title: "Bourdillon, Ikoyi — Current Project | Kreebz Ltd",
@@ -18,6 +20,16 @@ export const metadata: Metadata = {
   },
 };
 
-export default function BourdillonPage() {
-  return <BourdillonContent />;
+export default async function BourdillonPage() {
+  const [residences, content] = await Promise.all([
+    getPropertiesByProjectSlug("bourdillon"),
+    getProjectContent("bourdillon"),
+  ]);
+  return (
+    <BourdillonContent
+      residences={residences}
+      progress={content.progress}
+      siteMedia={content.siteMedia}
+    />
+  );
 }

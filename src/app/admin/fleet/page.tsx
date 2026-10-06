@@ -159,7 +159,7 @@ export default function FleetPage() {
           </button>
           <button
             onClick={openCreate}
-            className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 text-sm bg-gold text-obsidian font-semibold hover:bg-gold-light transition-colors"
+            className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 text-sm bg-gold text-ink font-semibold hover:bg-gold-light transition-colors"
           >
             <Plus className="w-4 h-4" />
             Add Aircraft
@@ -199,7 +199,7 @@ export default function FleetPage() {
 
               <p className="font-serif text-gold-light text-xl">{formatNaira(jet.baseHourlyRate)}<span className="text-muted text-sm not-italic font-sans">/hr</span></p>
 
-              <div className="flex gap-2 mt-auto pt-2 border-t border-white/5">
+              <div className="flex gap-2 mt-auto pt-2 border-t border-border">
                 <button
                   onClick={() => openEdit(jet)}
                   className="flex-1 flex items-center justify-center gap-2 px-3 py-2.5 text-xs text-muted hover:text-off-white border border-border hover:border-gold rounded-lg transition-colors"
@@ -275,7 +275,7 @@ export default function FleetPage() {
                 <button type="button" onClick={() => setShowForm(false)} className="flex-1 px-4 py-3 text-sm text-muted border border-border rounded-lg hover:text-off-white transition-colors">
                   Cancel
                 </button>
-                <button type="submit" disabled={saving} className="flex-1 px-4 py-3 text-sm bg-gold text-obsidian font-semibold rounded-lg hover:bg-gold-light transition-colors disabled:opacity-50">
+                <button type="submit" disabled={saving} className="flex-1 px-4 py-3 text-sm bg-gold text-ink font-semibold rounded-lg hover:bg-gold-light transition-colors disabled:opacity-50">
                   {saving ? "Saving…" : editing ? "Save changes" : "Add aircraft"}
                 </button>
               </div>

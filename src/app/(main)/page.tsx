@@ -1,26 +1,36 @@
 import Hero from "@/components/Hero";
-import BrandStatement from "@/components/BrandStatement";
-import AviationSection from "@/components/AviationSection";
-import BrandLogos from "@/components/BrandLogos";
-import FeaturedProject from "@/components/FeaturedProject";
+import Manifesto from "@/components/Manifesto";
 import FeaturedProperties from "@/components/FeaturedProperties";
+import TrustRows from "@/components/TrustRows";
+import StatsBand from "@/components/StatsBand";
+import FeaturedProject from "@/components/FeaturedProject";
+import ServiceCards from "@/components/ServiceCards";
+import Testimonials from "@/components/Testimonials";
 import HowItWorks from "@/components/HowItWorks";
+import FAQ from "@/components/FAQ";
 import { getPublishedProperties } from "@/data/properties";
+import { getProjectContent } from "@/data/project-content";
 
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const properties = await getPublishedProperties();
+  const [properties, bourdillonContent] = await Promise.all([
+    getPublishedProperties(),
+    getProjectContent("bourdillon"),
+  ]);
 
   return (
     <div className="bg-obsidian">
       <Hero />
-      <BrandStatement />
-      <AviationSection />
-      <FeaturedProject />
+      <Manifesto />
       <FeaturedProperties properties={properties} />
-      <BrandLogos />
+      <TrustRows />
+      <StatsBand />
+      <FeaturedProject latestProgress={bourdillonContent.progress[0]} />
+      <ServiceCards />
+      <Testimonials />
       <HowItWorks />
+      <FAQ />
     </div>
   );
 }

@@ -1,53 +1,108 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Playfair+Display:ital,wght@1,400;1,500;1,600&family=Inter:wght@100..900&display=swap');
+@import url('https://api.fontshare.com/v2/css?f[]=satoshi@500,700,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,100..900;1,100..900&family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&display=swap');
 @import "tailwindcss";
 
 @source not "./dist/**/*";
 @source not "./.next/**/*";
 @source not "./node_modules/**/*";
 
-/* FONT SWAP: Replace Cormorant Garamond with [DESIGNER FONT] once webfont file is supplied */
-
+/* DeNest-inspired token system (dark chrome + light canvas + coral accent).
+   NOTE: Custom-property names below are legacy aliases kept so existing
+   utility classes (bg-obsidian, text-off-white, text-gold, ...) keep working.
+   The VALUES now follow the reference: white canvas, #212121 ink,
+   #ff7b54 coral accent, #1b1b1b dark panels. */
 :root {
-  /* Default to Dark Mode (Obsidian) */
-  --obsidian: #000000;
-  --obsidian-light: #0A0A0A;
-  --surface: #111111;
-  --surface-2: #151515;
-  --off-white: #FFFFFF;
-  --muted: rgba(255, 255, 255, 0.55);
-  --border: rgba(255, 255, 255, 0.06);
-  --border-strong: rgba(255, 255, 255, 0.15);
-  --gold: #D4AF37;
-  --gold-hover: #C4A030;
-  --gold-light: #E8CE7A;
-  --scrollbar: #cbc7bd;
+  /* Canvas & surfaces (was: obsidian palette) */
+  --obsidian: #ffffff;          /* canvas */
+  --obsidian-light: #f6f6f6;    /* surface-soft */
+  --surface: #ffffff;           /* surface-card */
+  --surface-2: #ececec;         /* surface-strong (icon buttons, hover fills) */
+
+  /* Text (was: off-white / muted-on-dark) */
+  --off-white: #212121;         /* ink */
+  --muted: #595959;             /* muted */
+
+  /* Dark chrome (nav, footer, dark cards) */
+  --panel: #1b1b1b;
+
+  /* Hairlines & borders */
+  --border: #dddddd;            /* hairline */
+  --border-strong: #c1c1c1;     /* border-strong */
+
+  /* Accent — champagne gold ("The Quiet Standard") */
+  --gold: #c8a15e;              /* primary */
+  --gold-hover: #a9884e;        /* darker on light canvas */
+  --gold-light: #e6cf9f;        /* tint for accents on dark */
+  --rausch-disabled: #e3d4b5;
+  --ink-fixed: #171512;         /* text that sits ON gold — stays dark in both worlds */
+  --error: #c13515;
+  --error-hover: #b32505;
+  --scrim: #000000;
+
+  --scrollbar: #c1c1c1;
 
   /* Type scale — shared across all components */
-  --text-display: clamp(38px, 5.5vw, 76px);
-  --text-h2: clamp(32px, 4.5vw, 56px);
-  --text-h3: clamp(24px, 3vw, 36px);
+  --text-display: clamp(36px, 6vw, 80px);
+  --text-h2: clamp(26px, 3.6vw, 46px);
+  --text-h3: clamp(20px, 2.6vw, 28px);
   --text-body: 16px;
   --text-lead: 18px;
-  --text-label: 11px;
-  --text-meta: 10px;
+  --text-label: 12px;
+  --text-meta: 11px;
 
   /* Letter-spacing tokens */
-  --tracking-eyebrow: 0.2em;
+  --tracking-eyebrow: 0.14em;
   --tracking-wide: 0.15em;
 
-  /* Radius scale — soft-rounded language */
+  /* Radius scale — rounded: sm 8 / md 14 / lg 24 / pill */
   --radius-sharp: 0px;
-  --radius-sm: 6px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 24px;
   --radius-pill: 9999px;
 
-  /* Navigation height — for sticky offsets */
-  --nav-height-mobile: 82px;
-  --nav-height-desktop: 112px;
+  /* Single shadow tier — DESIGN.md card hover float / search bar */
+  --shadow-card: rgba(0, 0, 0, 0.02) 0 0 0 1px, rgba(0, 0, 0, 0.04) 0 2px 6px, rgba(0, 0, 0, 0.1) 0 4px 8px;
+
+  /* Navigation height — for sticky offsets (DESIGN.md top-nav: 80px) */
+  --nav-height-mobile: 64px;
+  --nav-height-desktop: 80px;
+}
+
+/* ==========================================================================
+   DARK WORLD — "The Quiet Standard"
+   Scoped cinematic theme: wraps the public site, never the admin portal.
+   Re-maps the same token names so every token-driven component flips
+   without rewrites. Hardcoded bg-white/text-neutral-* still need audit.
+   ========================================================================== */
+[data-theme="dark"] {
+  --obsidian: #0c0b09;          /* canvas — warm near-black */
+  --obsidian-light: #14120f;    /* surface-soft */
+  --surface: #171512;           /* card */
+  --surface-2: #221e18;         /* raised / hover fill */
+
+  --off-white: #f2ede4;         /* warm paper ink */
+  --muted: #9a9184;             /* warm grey */
+
+  --panel: #12100d;             /* dark chrome — nav, footer */
+
+  --border: rgba(242, 237, 228, 0.10);   /* hairline */
+  --border-strong: rgba(242, 237, 228, 0.24);
+
+  --gold: #c8a15e;
+  --gold-hover: #d9b878;        /* lighter on dark canvas */
+  --gold-light: #e6cf9f;
+  --rausch-disabled: #4a4034;
+
+  --scrollbar: #3a352d;
+
+  --shadow-card: rgba(0, 0, 0, 0.35) 0 0 0 1px, rgba(0, 0, 0, 0.4) 0 12px 32px;
+
+  color-scheme: dark;
 }
 
 @theme inline {
+  /* Legacy aliases — values follow DESIGN.md */
   --color-obsidian: var(--obsidian);
   --color-obsidian-light: var(--obsidian-light);
   --color-surface: var(--surface);
@@ -59,26 +114,46 @@
   --color-gold: var(--gold);
   --color-gold-hover: var(--gold-hover);
   --color-gold-light: var(--gold-light);
-  --font-sans: 'Inter', sans-serif;
-  --font-serif: 'Cormorant Garamond', serif;
-  --font-accent: 'Playfair Display', serif;
+  --color-ink-fixed: var(--ink-fixed);
+
+  /* Canonical DESIGN.md names — prefer these in new code */
+  --color-canvas: var(--obsidian);
+  --color-ink: var(--off-white);
+  --color-panel: var(--panel);
+  --color-rausch: var(--gold);
+  --color-rausch-active: var(--gold-hover);
+  --color-rausch-soft: var(--rausch-disabled);
+  --color-hairline: var(--border);
+  --color-surface-soft: var(--obsidian-light);
+  --color-surface-strong: var(--surface-2);
+  --color-error: var(--error);
+
+  /* Satoshi (Fontshare) — UI/body; Fraunces (variable optical-size
+     serif) — display voice for the dark cinematic world */
+  --font-sans: 'Satoshi', 'Inter', -apple-system, system-ui, Roboto, 'Helvetica Neue', sans-serif;
+  --font-serif: 'Fraunces', 'Georgia', serif;
+  --font-accent: var(--font-serif);
+
   --radius-sharp: var(--radius-sharp);
   --radius-sm: var(--radius-sm);
   --radius-md: var(--radius-md);
   --radius-lg: var(--radius-lg);
   --radius-pill: var(--radius-pill);
+  --shadow-card: var(--shadow-card);
 }
 
 html {
   scroll-behavior: auto;
   overflow-x: clip;
   width: 100%;
+  /* Behind every page surface — shows only in overscroll/rubber-band */
+  background-color: #0c0b09;
 }
 
 body {
   background-color: var(--obsidian);
   color: var(--off-white);
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: clip;
@@ -109,151 +184,181 @@ body.nav-menu-open .concierge-fab {
   color: var(--off-white);
 }
 
-/* ---------- Elliman-style Design System Utilities ---------- */
+/* ---------- Design System Utilities ---------- */
 
-/* Metadata / label / nav text: Inter, uppercase, wide tracking, small */
+/* Metadata / label / nav text: uppercase, wide tracking, small */
 .eyebrow {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-sans);
   text-transform: uppercase;
   letter-spacing: var(--tracking-eyebrow);
   font-size: var(--text-label);
   line-height: 1;
 }
 
-/* Editorial italic accent — Playfair Display italic for prices & pull-quotes */
+/* Italic accent — serif italic for em-phrases in the dark world */
 .accent-italic {
-  font-family: var(--font-accent);
+  font-family: var(--font-serif);
   font-style: italic;
-  font-weight: 500;
+  font-weight: 400;
   letter-spacing: 0;
+}
+
+/* Display serif — Zodiak-style editorial headlines */
+.display-serif {
+  font-family: var(--font-serif);
+  font-variation-settings: 'opsz' 144;
+  font-weight: 400;
+  line-height: 1.02;
+  letter-spacing: -0.01em;
+  font-size: clamp(42px, 7.5vw, 104px);
+}
+
+.display-serif-sm {
+  font-family: var(--font-serif);
+  font-variation-settings: 'opsz' 100;
+  font-weight: 400;
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  font-size: clamp(30px, 4.6vw, 56px);
+}
+
+/* Gold hairline — the signature 1px rule drawn across headers */
+.gold-rule {
+  display: block;
+  height: 1px;
+  width: 100%;
+  background: linear-gradient(to right, var(--gold), transparent);
+  transform-origin: left;
 }
 
 /* ---------- Type Scale ---------- */
 .display-xl {
-  font-family: var(--font-serif);
-  font-weight: 400;
+  font-family: var(--font-sans);
+  font-weight: 700;
   line-height: 1.05;
-  letter-spacing: 0.01em;
+  letter-spacing: -0.02em;
   font-size: var(--text-display);
 }
 
 .display-lg {
-  font-family: var(--font-serif);
-  font-weight: 400;
-  line-height: 1.02;
-  letter-spacing: -0.01em;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
   font-size: var(--text-display);
 }
 
 .text-h2 {
-  font-family: var(--font-serif);
-  font-weight: 400;
-  line-height: 1.1;
-  letter-spacing: -0.01em;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
   font-size: var(--text-h2);
 }
 
 .text-h3 {
-  font-family: var(--font-serif);
-  font-weight: 300;
+  font-family: var(--font-sans);
+  font-weight: 600;
   line-height: 1.2;
-  letter-spacing: 0;
+  letter-spacing: -0.01em;
   font-size: var(--text-h3);
 }
 
 .text-body {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-sans);
   font-weight: 400;
-  line-height: 1.6;
+  line-height: 1.5;
   font-size: var(--text-body);
 }
 
 .text-lead {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-sans);
   font-weight: 400;
   line-height: 1.7;
   font-size: var(--text-lead);
 }
 
-/* Buttons — soft-rounded (6px) */
+/* Buttons — coral fill with ink text (dark-on-coral reads better
+   and matches the reference buttons) */
 .btn-primary {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   background-color: var(--gold);
-  color: var(--obsidian);
-  font-family: 'Inter', sans-serif;
-  text-transform: uppercase;
-  letter-spacing: 0.18em;
-  font-size: 12px;
+  color: var(--ink-fixed);
+  font-family: var(--font-sans);
+  font-size: 16px;
   font-weight: 500;
-  padding: 16px 32px;
+  line-height: 1.25;
+  padding: 14px 24px;
   border-radius: var(--radius-sm);
-  transition: background-color 0.3s ease;
+  transition: background-color 0.2s ease;
 }
 .btn-primary:hover {
   background-color: var(--gold-hover);
 }
+.btn-primary:active {
+  background-color: var(--gold-hover);
+  transform: translateY(1px);
+}
 
+/* DESIGN.md button-secondary: white fill, ink text, 1px ink outline */
 .btn-ghost {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background-color: transparent;
+  background-color: var(--surface);
   color: var(--off-white);
-  border: 1px solid var(--border-strong);
-  font-family: 'Inter', sans-serif;
-  text-transform: uppercase;
-  letter-spacing: 0.18em;
-  font-size: 12px;
-  padding: 15px 32px;
+  border: 1px solid var(--off-white);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.25;
+  padding: 13px 23px;
   border-radius: var(--radius-sm);
-  transition: border-color 0.3s ease, color 0.3s ease;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 .btn-ghost:hover {
-  border-color: var(--gold);
-  color: var(--gold);
+  background-color: var(--obsidian-light);
 }
 
-
-
-/* Underline input — canonical form input style */
+/* DESIGN.md text-input: white surface, 1px hairline, 8px radius,
+   56px height, focus = 2px ink border (no glow/ring) */
 .input-underline {
   width: 100%;
-  background-color: transparent;
-  border: none;
-  border-bottom: 1px solid var(--border-strong);
-  padding: 0 0 12px 0;
+  background-color: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  padding: 14px 12px;
+  height: 56px;
   color: var(--off-white);
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-sans);
   font-size: var(--text-body);
-  transition: border-color 0.3s ease;
+  transition: border-color 0.2s ease;
 }
 .input-underline::placeholder {
   color: var(--muted);
-  text-transform: uppercase;
-  letter-spacing: var(--tracking-wide);
-  font-size: var(--text-meta);
 }
 .input-underline:focus {
   outline: none;
-  border-bottom-color: var(--gold);
+  border: 2px solid var(--off-white);
+  padding: 13px 11px;
 }
 
-/* Pill-shaped dark input (legacy — kept for SellForm until migrated) */
+/* Pill input (legacy — kept for SellForm until migrated) */
 .input-pill {
   background-color: var(--surface);
-  border: 1px solid var(--border-strong);
+  border: 1px solid var(--border);
   border-radius: var(--radius-pill);
   color: var(--off-white);
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-sans);
 }
 .input-pill::placeholder {
   color: var(--muted);
 }
 .input-pill:focus {
   outline: none;
-  border-color: var(--gold);
+  border-color: var(--off-white);
 }
 
 
@@ -273,7 +378,7 @@ body.nav-menu-open .concierge-fab {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--gold);
+  background: var(--muted);
 }
 
 /* Sleek modal location scrollbar */
@@ -286,12 +391,12 @@ body.nav-menu-open .concierge-fab {
 }
 
 .location-scrollbar::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(0, 0, 0, 0.2);
   border-radius: 2px;
 }
 
 .location-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.5);
+  background: rgba(0, 0, 0, 0.4);
 }
 
 /* Brand logo marquee */
@@ -318,7 +423,7 @@ body.nav-menu-open .concierge-fab {
   animation-play-state: paused;
 }
 
-/* Focus-visible ring — gold highlight for keyboard accessibility */
+/* Focus-visible ring — keyboard accessibility */
 .focus-gold:focus-visible,
 a:focus-visible,
 button:focus-visible,
@@ -327,6 +432,12 @@ textarea:focus-visible,
 select:focus-visible {
   outline: 2px solid var(--gold);
   outline-offset: 2px;
+}
+
+/* Gold text selection in the dark world */
+[data-theme="dark"] ::selection {
+  background: var(--gold);
+  color: var(--ink-fixed);
 }
 
 /* Skeleton shimmer for loading states */
@@ -339,7 +450,7 @@ select:focus-visible {
   background: linear-gradient(
     90deg,
     var(--obsidian-light) 25%,
-    rgba(255, 255, 255, 0.04) 50%,
+    rgba(0, 0, 0, 0.04) 50%,
     var(--obsidian-light) 75%
   );
   background-size: 200% 100%;
@@ -361,7 +472,7 @@ select:focus-visible {
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.3);
+  background: var(--muted);
 }
 
 .custom-scrollbar {

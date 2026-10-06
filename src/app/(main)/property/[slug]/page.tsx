@@ -1,6 +1,7 @@
 import { notFound, permanentRedirect } from "next/navigation";
 import PropertyDetail from "@/components/PropertyDetail";
-import { getPublishedPropertyById, getPublishedPropertyBySlug } from "@/data/properties";
+import { getPublishedProperties, getPublishedPropertyById, getPublishedPropertyBySlug } from "@/data/properties";
+import { getProjectContent } from "@/data/project-content";
 
 import { Metadata } from "next";
 
@@ -73,6 +74,16 @@ export default async function PropertyPage({
     notFound();
   }
 
+  const all = await getPublishedProperties();
+  const projectContent = property.projectSlug
+    ? await getProjectContent(property.projectSlug)
+    : null;
+  const idx = all.findIndex((p) => p.id === property.id);
+  const next = all.length > 1 ? all[(idx + 1) % all.length] : undefined;
+  const nextProperty = next && next.id !== property.id
+    ? { slug: next.slug, address: next.address }
+    : undefined;
+
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "SingleFamilyResidence",
@@ -102,7 +113,7 @@ export default async function PropertyPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
-      <PropertyDetail property={property} />
+      <PropertyDetail property={property} nextProperty={nextProperty} projectClips={projectContent?.siteMedia.clips} />
     </div>
   );
 }

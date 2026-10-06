@@ -4,16 +4,19 @@ import { authOptions } from "@/lib/auth";
 import { uploadMedia } from "@/lib/storage";
 import { timingSafeEqual } from "crypto";
 
-const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
+const MAX_IMAGE_SIZE = 10 * 1024 * 1024; // 10 MB
+const MAX_VIDEO_SIZE = 60 * 1024 * 1024; // 60 MB
 
 const ALLOWED_MIME_TYPES = new Set([
   "image/jpeg",
   "image/png",
   "image/webp",
   "image/avif",
+  "video/mp4",
+  "video/webm",
 ]);
 
-/** Magic-byte signatures for the allowed image formats. */
+/** Magic-byte signatures for the allowed image/video formats. */
 function sniffMimeType(buffer: Buffer): string | null {
   if (buffer.length < 12) return null;
   // JPEG: FF D8 FF
@@ -24,6 +27,13 @@ function sniffMimeType(buffer: Buffer): string | null {
   if (buffer.toString("ascii", 0, 4) === "RIFF" && buffer.toString("ascii", 8, 12) === "WEBP") return "image/webp";
   // AVIF: "ftyp" box with avif/avis brand
   if (buffer.toString("ascii", 4, 8) === "ftyp" && ["avif", "avis"].includes(buffer.toString("ascii", 8, 12))) return "image/avif";
+  // WebM: EBML header 1A 45 DF A3
+  if (buffer[0] === 0x1a && buffer[1] === 0x45 && buffer[2] === 0xdf && buffer[3] === 0xa3) return "video/webm";
+  // MP4: "ftyp" box with an mp4/isom-family brand
+  if (buffer.toString("ascii", 4, 8) === "ftyp") {
+    const brand = buffer.toString("ascii", 8, 12);
+    if (["isom", "iso2", "mp41", "mp42", "avc1", "dash", "mp71", "M4V ", "MSNV"].includes(brand)) return "video/mp4";
+  }
   return null;
 }
 
@@ -56,27 +66,29 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "No file provided" }, { status: 400 });
     }
 
-    if (file.size > MAX_FILE_SIZE) {
-      return NextResponse.json({ error: "File exceeds the 10MB limit" }, { status: 413 });
+    const isVideoUpload = file.type.startsWith("video/");
+    const maxSize = isVideoUpload ? MAX_VIDEO_SIZE : MAX_IMAGE_SIZE;
+    if (file.size > maxSize) {
+      return NextResponse.json({ error: `File exceeds the ${maxSize / 1024 / 1024}MB limit` }, { status: 413 });
     }
 
     if (!ALLOWED_MIME_TYPES.has(file.type)) {
-      return NextResponse.json({ error: "Only JPEG, PNG, WebP, and AVIF images are allowed" }, { status: 415 });
+      return NextResponse.json({ error: "Only JPEG, PNG, WebP, AVIF images and MP4/WebM videos are allowed" }, { status: 415 });
     }
 
     // Convert Web File to Node Buffer
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
 
-    // Verify the file's actual bytes match an allowed image format —
+    // Verify the file's actual bytes match an allowed format —
     // the declared MIME type is client-controlled and can't be trusted.
     const sniffed = sniffMimeType(buffer);
     if (!sniffed) {
-      return NextResponse.json({ error: "File content is not a valid image" }, { status: 415 });
+      return NextResponse.json({ error: "File content is not a valid image or video" }, { status: 415 });
     }
 
     // Generate unique filename — extension derived from sniffed type, not user input
-    const ext = { "image/jpeg": "jpg", "image/png": "png", "image/webp": "webp", "image/avif": "avif" }[sniffed];
+    const ext = { "image/jpeg": "jpg", "image/png": "png", "image/webp": "webp", "image/avif": "avif", "video/mp4": "mp4", "video/webm": "webm" }[sniffed];
     const fileName = `${Date.now()}-${crypto.randomUUID()}.${ext}`;
 
     // Upload to Supabase

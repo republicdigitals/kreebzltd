@@ -135,7 +135,7 @@ export default async function AdminDashboard() {
         {recentBookings.length === 0 ? (
           <p className="p-6 text-sm text-muted">No bookings yet.</p>
         ) : (
-          <div className="divide-y divide-white/5">
+          <div className="divide-y divide-black/5">
             {recentBookings.map((b) => (
               <div key={b.id} className="flex items-center justify-between gap-4 p-4 md:px-5">
                 <div className="min-w-0">

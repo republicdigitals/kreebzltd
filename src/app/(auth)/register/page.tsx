@@ -59,10 +59,10 @@ export default function RegisterPage() {
         <Navigation />
       </Suspense>
       <div className="flex-1 flex items-center justify-center px-4 pt-24 pb-12">
-        <div className="w-full max-w-md bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-8 shadow-2xl">
+        <div className="w-full max-w-md bg-obsidian border border-border rounded-[var(--radius-md)] p-8 shadow-card">
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-serif text-white font-light">Create Account</h1>
-            <p className="text-neutral-400 mt-2">Save properties and access premium features.</p>
+            <h1 className="text-3xl font-sans font-semibold tracking-tight text-off-white">Create Account</h1>
+            <p className="text-muted mt-2">Save properties and access premium features.</p>
           </div>
 
           {error && (
@@ -73,37 +73,37 @@ export default function RegisterPage() {
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label className="block text-sm font-medium text-neutral-300 mb-2">Full Name</label>
+              <label className="block text-sm font-medium text-off-white mb-2">Full Name</label>
               <input
                 type="text"
                 required
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-neutral-500 focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold transition-colors"
-                placeholder="John Doe"
+                className="w-full bg-obsidian border border-border-strong rounded-[var(--radius-sm)] px-4 py-3 text-off-white placeholder:text-muted focus:outline-none focus:border-off-white transition-colors"
+                placeholder="Your name"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-neutral-300 mb-2">Email Address</label>
+              <label className="block text-sm font-medium text-off-white mb-2">Email Address</label>
               <input
                 type="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-neutral-500 focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold transition-colors"
+                className="w-full bg-obsidian border border-border-strong rounded-[var(--radius-sm)] px-4 py-3 text-off-white placeholder:text-muted focus:outline-none focus:border-off-white transition-colors"
                 placeholder="you@example.com"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-neutral-300 mb-2">Password</label>
+              <label className="block text-sm font-medium text-off-white mb-2">Password</label>
               <input
                 type="password"
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-neutral-500 focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold transition-colors"
+                className="w-full bg-obsidian border border-border-strong rounded-[var(--radius-sm)] px-4 py-3 text-off-white placeholder:text-muted focus:outline-none focus:border-off-white transition-colors"
                 placeholder="••••••••"
                 minLength={8}
               />
@@ -112,15 +112,15 @@ export default function RegisterPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-gold hover:bg-gold/90 text-obsidian font-semibold py-3 px-4 rounded-lg transition-colors flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed mt-4"
+              className="w-full bg-gold hover:bg-gold-hover text-ink font-medium py-3 px-4 rounded-[var(--radius-sm)] transition-colors flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed mt-4"
             >
               {loading ? "Creating account..." : "Create Account"}
             </button>
           </form>
           
-          <div className="mt-6 text-center text-sm text-neutral-400 border-t border-white/10 pt-6">
+          <div className="mt-6 text-center text-sm text-muted border-t border-border pt-6">
             Already have an account?{" "}
-            <Link href="/login" className="text-gold hover:text-white transition-colors">
+            <Link href="/login" className="text-gold hover:text-gold-hover transition-colors">
               Sign in
             </Link>
           </div>

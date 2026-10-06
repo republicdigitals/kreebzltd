@@ -54,7 +54,7 @@ export default function AdminPropertiesList() {
         </div>
         <Link 
           href="/admin/properties/new" 
-          className="bg-gold text-obsidian px-5 py-2.5 font-medium uppercase tracking-wider text-xs hover:bg-gold-hover transition-colors flex items-center justify-center gap-2 shrink-0 w-full sm:w-auto"
+          className="bg-gold text-ink px-5 py-2.5 font-medium uppercase tracking-wider text-xs hover:bg-gold-hover transition-colors flex items-center justify-center gap-2 shrink-0 w-full sm:w-auto"
         >
           <Plus className="w-5 h-5" />
           Add Property

@@ -34,7 +34,7 @@ export default function StickyMobileCTA() {
   return (
     <nav
       aria-label="Mobile navigation"
-      className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-obsidian/95 backdrop-blur-md border-t border-white/10"
+      className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-obsidian/95 backdrop-blur-md border-t border-border"
     >
       <div className="grid grid-cols-5 pb-safe">
         {tabs.map((tab) => {
