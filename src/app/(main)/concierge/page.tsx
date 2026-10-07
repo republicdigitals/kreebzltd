@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import PageHeader from "@/components/PageHeader";
 import ConciergeContent from "@/components/ConciergeContent";
 
 export const metadata: Metadata = {
@@ -10,11 +9,6 @@ export const metadata: Metadata = {
 export default function ConciergePage() {
   return (
     <div className="bg-obsidian">
-      <PageHeader
-        eyebrow="The Concierge Hub"
-        title="More than property"
-        subtitle="Jets, off-market homes, reservations, contractors — if it touches your life or your property, ask us."
-      />
       <ConciergeContent />
     </div>
   );

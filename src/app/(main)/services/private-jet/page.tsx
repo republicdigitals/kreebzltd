@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import PageHeader from "@/components/PageHeader";
 import PrivateJetContent from "@/components/PrivateJetContent";
 
 export const metadata: Metadata = {
@@ -28,11 +27,6 @@ export const metadata: Metadata = {
 export default function PrivateJetPage() {
   return (
     <div className="bg-obsidian">
-      <PageHeader
-        eyebrow="Lifestyle Services"
-        title="Private Jet Charter & Rental"
-        subtitle="Light, midsize, or heavy jets for business or leisure — we arrange every detail through vetted aviation partners."
-      />
       <PrivateJetContent />
     </div>
   );
