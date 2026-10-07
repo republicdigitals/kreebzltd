@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { X } from "lucide-react";
 import Button from "./ui/Button";
+import { useScrollLock } from "@/hooks/useScrollLock";
 
 interface ViewingModalProps {
   isOpen: boolean;
@@ -13,6 +14,8 @@ interface ViewingModalProps {
 export default function ViewingModal({ isOpen, onClose, propertyTitle }: ViewingModalProps) {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [errorMsg, setErrorMsg] = useState("");
+
+  useScrollLock(isOpen);
 
   if (!isOpen) return null;
 

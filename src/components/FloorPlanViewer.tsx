@@ -5,6 +5,7 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ZoomIn, ZoomOut, Maximize2, RotateCcw } from "lucide-react";
 import type { PropertyFloorPlan } from "@/data/properties";
+import { useScrollLock } from "@/hooks/useScrollLock";
 
 interface FloorPlanViewerProps {
   floorPlans: PropertyFloorPlan[];
@@ -63,15 +64,8 @@ export default function FloorPlanViewer({
     return () => window.removeEventListener("keydown", onKey);
   }, [lightboxOpen, scale, zoom]);
 
-  // Lock body scroll when lightbox is open
-  useEffect(() => {
-    if (lightboxOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => { document.body.style.overflow = ""; };
-  }, [lightboxOpen]);
+  // Lock scroll when the full-screen lightbox is open
+  useScrollLock(lightboxOpen);
 
   // ── Mouse drag ───────────────────────────────────────────────
   const onMouseDown = (e: React.MouseEvent) => {

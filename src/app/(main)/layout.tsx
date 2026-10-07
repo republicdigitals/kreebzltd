@@ -22,8 +22,8 @@ export default function MainLayout({
         <Suspense fallback={null}>
           <Navigation />
         </Suspense>
-        {/* pb-24 clears the fixed mobile tab bar; desktop unaffected */}
-        <main className="flex-1 pb-24 md:pb-0">
+        {/* Clears the fixed mobile tab bar incl. the iOS home-indicator inset; desktop unaffected */}
+        <main className="flex-1 pb-[calc(6rem+env(safe-area-inset-bottom))] md:pb-0">
           <PageTransition>{children}</PageTransition>
         </main>
         <Footer />

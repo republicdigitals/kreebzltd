@@ -31,6 +31,7 @@ import FloorPlanViewer from "./FloorPlanViewer";
 import ViewingModal from "./ViewingModal";
 
 import { useSavedProperties } from "@/context/SavedPropertiesContext";
+import { useScrollLock } from "@/hooks/useScrollLock";
 
 interface PropertyDetailProps {
   property: Property;
@@ -55,6 +56,8 @@ export default function PropertyDetail({ property, nextProperty, projectClips }:
   const [currentPhoto, setCurrentPhoto] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+
+  useScrollLock(isLightboxOpen);
 
   const hasFloorPlans = property.floorPlans && property.floorPlans.length > 0;
   const project = getProjectBySlug(property.projectSlug);
@@ -594,7 +597,7 @@ export default function PropertyDetail({ property, nextProperty, projectClips }:
       </AnimatePresence>
 
       {/* ---------- Mobile sticky action bar ---------- */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-surface/95 backdrop-blur-md border-t border-border p-4 pb-safe flex items-center justify-between gap-4">
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-surface/95 backdrop-blur-md border-t border-border p-4 pb-[calc(env(safe-area-inset-bottom)+16px)] flex items-center justify-between gap-4">
         <div className="flex flex-col min-w-0">
           <span className="text-[10px] uppercase tracking-[0.15em] text-muted mb-0.5">Price</span>
           <span className="font-sans font-bold text-lg text-off-white leading-none truncate">

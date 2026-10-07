@@ -61,7 +61,7 @@ export default function PropertiesClient() {
       <div className="flex-1 flex max-w-[1600px] mx-auto w-full">
         {/* Desktop Sidebar */}
         <div className="hidden lg:block w-[300px] shrink-0 border-r border-border/20 bg-obsidian z-10">
-          <div data-lenis-prevent="true" onWheel={(e) => e.stopPropagation()} className="sticky top-[calc(var(--nav-height-desktop)+88px)] h-[calc(100vh-var(--nav-height-desktop)-88px)] w-full overflow-y-auto custom-scrollbar">
+          <div className="sticky top-[calc(var(--nav-height-desktop)+88px)] h-[calc(100vh-var(--nav-height-desktop)-88px)] w-full overflow-y-auto custom-scrollbar">
             <FilterSidebar />
           </div>
         </div>

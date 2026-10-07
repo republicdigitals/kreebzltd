@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { X, ArrowRight, ArrowLeft, Sparkles } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Button from "./ui/Button";
+import { useScrollLock } from "@/hooks/useScrollLock";
 
 export default function ConciergeUX() {
   const [isOpen, setIsOpen] = useState(false);
@@ -14,21 +15,18 @@ export default function ConciergeUX() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   
+  useScrollLock(isOpen);
+
+  // Reset the wizard shortly after the modal closes (keeps the exit animation clean)
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
-      setTimeout(() => {
-        setStep(1);
-        setFormData({ name: "", email: "", phone: "" });
-        setSubmitError(null);
-        setIsSubmitting(false);
-      }, 500);
-    }
-    return () => {
-      document.body.style.overflow = "unset";
-    };
+    if (isOpen) return;
+    const timer = setTimeout(() => {
+      setStep(1);
+      setFormData({ name: "", email: "", phone: "" });
+      setSubmitError(null);
+      setIsSubmitting(false);
+    }, 500);
+    return () => clearTimeout(timer);
   }, [isOpen]);
 
   // Mobile tab bar opens this modal via a custom event

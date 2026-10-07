@@ -9,6 +9,7 @@ import { Search, Heart, User, ChevronRight, KeyRound, Building2, Tag, Plane, Wre
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { AnimatePresence, motion } from "framer-motion";
+import { useScrollLock } from "@/hooks/useScrollLock";
 
 const menuGroups = [
   {
@@ -98,38 +99,19 @@ export default function Navigation() {
     return pathname.startsWith(href);
   };
 
-  // Lock scroll when menu is open
+  // Lock scroll when menu is open (stops Lenis + hides overflow on <html>)
+  useScrollLock(menuOpen);
+
   useEffect(() => {
-    if (menuOpen) {
-      // Robust iOS scroll lock
-      const scrollY = window.scrollY;
-      document.body.style.position = 'fixed';
-      document.body.style.top = `-${scrollY}px`;
-      document.body.style.width = '100%';
-      document.body.classList.add('nav-menu-open');
-    } else {
-      const scrollY = document.body.style.top;
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.width = '';
-      document.body.classList.remove('nav-menu-open');
-      if (scrollY) {
-        window.scrollTo(0, parseInt(scrollY || '0') * -1);
-      }
-    }
-    return () => {
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.width = '';
-      document.body.classList.remove('nav-menu-open');
-    };
+    document.body.classList.toggle('nav-menu-open', menuOpen);
+    return () => document.body.classList.remove('nav-menu-open');
   }, [menuOpen]);
 
   return (
     <>
       <header
         ref={headerRef}
-        className={`fixed top-0 left-0 right-0 z-[60] transition-all duration-700 flex flex-col border-b ${
+        className={`fixed top-0 left-0 right-0 z-[60] pt-[env(safe-area-inset-top)] transition-all duration-700 flex flex-col border-b ${
           isHome && !isScrolled && !menuOpen
             ? "bg-transparent border-transparent"
             : "bg-panel/95 backdrop-blur-md border-white/10"
@@ -260,7 +242,7 @@ export default function Navigation() {
               animate={{ y: 0 }}
               exit={{ y: "100%" }}
               transition={{ duration: 0.45, ease: [0.32, 0.72, 0, 1] }}
-              className="fixed inset-x-0 bottom-0 top-16 z-[58] bg-obsidian border-t border-border rounded-t-3xl flex flex-col md:hidden overflow-hidden"
+              className="fixed inset-x-0 bottom-0 top-[calc(4rem+env(safe-area-inset-top))] z-[58] bg-obsidian border-t border-border rounded-t-3xl flex flex-col md:hidden overflow-hidden"
             >
               {/* Grab handle */}
               <div className="flex justify-center pt-3 pb-1 shrink-0">
@@ -308,7 +290,7 @@ export default function Navigation() {
               </div>
 
               {/* Pinned contact row */}
-              <div className="shrink-0 border-t border-border bg-obsidian px-5 pt-4 pb-safe">
+              <div className="shrink-0 border-t border-border bg-obsidian px-5 pt-4 pb-[calc(env(safe-area-inset-bottom)+16px)]">
                 <div className="flex gap-3 pb-4">
                   <Link
                     href="/contact"

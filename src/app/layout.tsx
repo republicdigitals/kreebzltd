@@ -1,6 +1,15 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  // Required for env(safe-area-inset-*) to resolve — without it every
+  // pb-safe / inset-aware layout gets 0 and the home indicator overlaps.
+  viewportFit: "cover",
+  themeColor: "#0c0b09",
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://kreebzltd.com"),
@@ -11,6 +20,14 @@ export const metadata: Metadata = {
     icon: "/kreebz-logo.png",
     shortcut: "/kreebz-logo.png",
     apple: "/kreebz-logo.png",
+  },
+  appleWebApp: {
+    capable: true,
+    title: "Kreebz",
+    statusBarStyle: "black-translucent",
+  },
+  other: {
+    "mobile-web-app-capable": "yes",
   },
   openGraph: {
     title: "Kreebz | Property, Management & Private Aviation — Lagos",

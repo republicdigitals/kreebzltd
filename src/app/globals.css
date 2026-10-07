@@ -64,8 +64,9 @@
   /* Single shadow tier — DESIGN.md card hover float / search bar */
   --shadow-card: rgba(0, 0, 0, 0.02) 0 0 0 1px, rgba(0, 0, 0, 0.04) 0 2px 6px, rgba(0, 0, 0, 0.1) 0 4px 8px;
 
-  /* Navigation height — utility bar (40px) + main bar (72px mobile / 80px desktop) */
-  --nav-height-mobile: 112px;
+  /* Navigation height — utility bar (40px) + main bar (72px mobile / 80px desktop)
+     + the iOS status bar inset when running as a home-screen app (0 in Safari) */
+  --nav-height-mobile: calc(112px + env(safe-area-inset-top, 0px));
   --nav-height-desktop: 120px;
 }
 

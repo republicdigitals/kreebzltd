@@ -16,7 +16,7 @@ export default function FilterSidebar() {
   } = usePropertyFilters();
 
   return (
-    <div data-lenis-prevent="true" onWheel={(e) => e.stopPropagation()} className="h-full flex flex-col bg-obsidian-light p-6 overflow-y-auto custom-scrollbar">
+    <div className="h-full flex flex-col bg-obsidian-light p-6 overflow-y-auto custom-scrollbar">
       <div className="flex items-center justify-between mb-8">
         <h2 className="font-serif text-xl text-off-white font-light">Filters</h2>
         {activeFilterCount > 0 && (
@@ -102,7 +102,7 @@ export default function FilterSidebar() {
         </FilterSection>
 
         <FilterSection title="Neighbourhood">
-          <div data-lenis-prevent="true" onWheel={(e) => e.stopPropagation()} className="flex flex-col gap-2 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
+          <div className="flex flex-col gap-2 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
             {["all", ...uniqueNeighbourhoods].map((value) => (
               <FilterButton
                 key={value}

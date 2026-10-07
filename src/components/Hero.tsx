@@ -188,7 +188,7 @@ export default function Hero() {
       </div>
 
       {/* Scroll cue + coordinates — quiet chrome at the frame's edge */}
-      <div ref={cueRef} className="absolute bottom-8 left-0 right-0 z-10 px-6 lg:px-12 flex items-end justify-between">
+      <div ref={cueRef} className="absolute bottom-[calc(6.5rem+env(safe-area-inset-bottom))] md:bottom-8 left-0 right-0 z-10 px-6 lg:px-12 flex items-end justify-between">
         <p className="eyebrow text-[9px] tracking-[0.28em] text-white/35 hidden sm:block">
           6.5244° N — 3.3792° E
         </p>

@@ -36,10 +36,10 @@ export default function StickyMobileCTA() {
       aria-label="Mobile navigation"
       className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-obsidian/95 backdrop-blur-md border-t border-border"
     >
-      <div className="grid grid-cols-5 pb-safe">
+      <div className="grid grid-cols-5 pb-[calc(env(safe-area-inset-bottom)+16px)]">
         {tabs.map((tab) => {
           const active = isActive("href" in tab ? tab.href : undefined);
-          const cls = `flex flex-col items-center justify-center gap-1 py-3 transition-colors ${
+          const cls = `flex flex-col items-center justify-center gap-1.5 pt-4 pb-2 transition-colors ${
             active ? "text-gold" : "text-off-white/60 active:text-gold"
           }`;
 

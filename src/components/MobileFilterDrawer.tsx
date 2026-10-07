@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect } from "react";
 import { X, RotateCcw } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
+import { useScrollLock } from "@/hooks/useScrollLock";
 import { usePropertyFilters, pricePresets, type PropertyFilters } from "./PropertyFilterProvider";
 import FilterSection from "./ui/FilterSection";
 import FilterButton from "./ui/FilterButton";
@@ -24,16 +24,7 @@ export default function MobileFilterDrawer({ isOpen, onClose }: MobileFilterDraw
   } = usePropertyFilters();
 
   // Lock scroll when open
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
-    }
-    return () => {
-      document.body.style.overflow = "unset";
-    };
-  }, [isOpen]);
+  useScrollLock(isOpen);
 
   return (
     <AnimatePresence>
@@ -76,7 +67,7 @@ export default function MobileFilterDrawer({ isOpen, onClose }: MobileFilterDraw
               </div>
             </div>
 
-            <div data-lenis-prevent="true" onWheel={(e) => e.stopPropagation()} className="flex-1 overflow-y-auto p-6 space-y-10 custom-scrollbar">
+            <div className="flex-1 overflow-y-auto p-6 space-y-10 custom-scrollbar">
               <FilterSection title="Status">
                 <div className="flex flex-col gap-2">
                   {["all", "For Sale", "For Lease", "Off-Plan"].map((value) => (
