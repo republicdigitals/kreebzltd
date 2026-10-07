@@ -26,6 +26,9 @@ export interface ProjectRef {
   positioning?: string;
   image?: string;
   imageLabel?: string;
+  /** Looping muted video shown in place of `image` on cards — poster must equal frame 1. */
+  video?: string;
+  videoPoster?: string;
 }
 
 const registry: Record<string, ProjectRef> = {
@@ -39,6 +42,8 @@ const registry: Record<string, ProjectRef> = {
     positioning: bourdillon.positioning,
     image: bourdillon.heroImage,
     imageLabel: bourdillon.heroImageLabel,
+    video: "/videos/morphix/bourdillon-concept-wide.mp4",
+    videoPoster: "/videos/morphix/bourdillon-concept-wide-poster.jpg",
   },
 };
 

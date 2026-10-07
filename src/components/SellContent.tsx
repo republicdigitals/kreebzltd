@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { motion } from "framer-motion";
 import { ArrowRight, Eye, Award, Handshake, MessageCircle } from "lucide-react";
 import SellForm from "./SellForm";
@@ -48,13 +47,15 @@ export default function SellContent() {
       {/* ── HERO ─────────────────────────────────────────────────── */}
       <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0">
-          <Image
-            src="/images/sell/hero.png"
-            alt="A luxury Lagos villa at dusk, lights glowing"
-            fill
-            sizes="100vw"
-            className="object-cover object-center"
-            priority
+          <video
+            src="/video/reel/02-villa-orbital.mp4"
+            poster="/images/sell/hero.png"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            className="w-full h-full object-cover object-[48%_center] md:object-center"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/45 to-obsidian" />
         </div>

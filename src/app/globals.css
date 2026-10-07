@@ -455,6 +455,19 @@ select:focus-visible {
   100% { background-position: 200% 0; }
 }
 
+/* Slow lateral pan for wide hero videos cropped into portrait — sweeps the
+   still-life so every object gets its moment. Mobile only; honours reduced motion. */
+@keyframes hero-pan-x {
+  0%, 100% { object-position: 22% center; }
+  50% { object-position: 72% center; }
+}
+
+@media (max-width: 767px) and (prefers-reduced-motion: no-preference) {
+  .hero-pan-mobile {
+    animation: hero-pan-x 24s ease-in-out infinite;
+  }
+}
+
 .skeleton {
   background: linear-gradient(
     90deg,

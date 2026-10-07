@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { motion } from "framer-motion";
 import {
   ArrowRight,
@@ -57,13 +56,15 @@ export default function ManagementContent() {
       {/* ── HERO ─────────────────────────────────────────────────── */}
       <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0">
-          <Image
-            src="/images/management/hero.png"
-            alt="An immaculate Kreebz-managed interior at dusk"
-            fill
-            sizes="100vw"
-            className="object-cover object-center"
-            priority
+          <video
+            src="/video/reel/05-interior-ikoyi.mp4"
+            poster="/images/management/hero-ikoyi-bridge.png"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            className="w-full h-full object-cover object-[62%_center] md:object-center"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/45 to-obsidian" />
         </div>

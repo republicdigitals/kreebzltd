@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
-import PageHeader from "@/components/PageHeader";
 import { areas } from "@/data/areas";
 
 export const metadata: Metadata = {
@@ -15,11 +14,33 @@ export const metadata: Metadata = {
 export default function AreasPage() {
   return (
     <div className="bg-obsidian min-h-screen">
-      <PageHeader
-        eyebrow="Where we work"
-        title="We only cover ground we can inspect."
-        subtitle="Five Lagos districts — each one walked, measured and answerable to a principal. If a listing is on this site, someone here has been inside it."
-      />
+      <section className="relative min-h-[70vh] flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0">
+          <video
+            src="/video/reel/01-lagos-pullback.mp4"
+            poster="/images/areas/eko-atlantic.png"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            className="w-full h-full object-cover object-center"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/45 to-obsidian" />
+        </div>
+        <div className="relative z-10 text-center px-6 max-w-4xl mx-auto pt-20">
+          <p className="eyebrow text-gold-light mb-8">Where we work</p>
+          <h1 className="display-serif text-white mb-6 drop-shadow-2xl">
+            We only cover ground
+            <br />
+            <span className="italic font-light text-gold-light">we can inspect.</span>
+          </h1>
+          <p className="font-sans text-white/70 text-[15px] leading-[1.9] max-w-xl mx-auto">
+            Five Lagos districts — each one walked, measured and answerable to a
+            principal. If a listing is on this site, someone here has been inside it.
+          </p>
+        </div>
+      </section>
 
       <section className="max-w-[1400px] mx-auto px-6 lg:px-12 pb-28">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

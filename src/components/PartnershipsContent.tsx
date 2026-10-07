@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import {
@@ -67,13 +66,15 @@ export default function PartnershipsContent() {
       {/* ── HERO ─────────────────────────────────────────────────── */}
       <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0">
-          <Image
-            src="/images/partnerships/hero.png"
-            alt="Luxury residential towers under construction at dusk"
-            fill
-            sizes="100vw"
-            className="object-cover object-center"
-            priority
+          <video
+            src="/video/reel/07-construction-towers.mp4"
+            poster="/images/partnerships/hero.png"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            className="w-full h-full object-cover object-center"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/45 to-obsidian" />
         </div>
@@ -265,6 +266,7 @@ export default function PartnershipsContent() {
             <div className="relative aspect-[16/10] overflow-hidden border border-border/30">
               <video
                 src="/videos/morphix/bourdillon-site-film.mp4"
+                poster="/videos/morphix/bourdillon-site-film-poster.jpg"
                 autoPlay
                 muted
                 loop

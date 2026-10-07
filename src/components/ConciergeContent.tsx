@@ -68,13 +68,18 @@ export default function ConciergeContent() {
       {/* ── HERO ─────────────────────────────────────────────────── */}
       <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0">
-          <Image
-            src="/images/concierge/hero.png"
-            alt="Private concierge desk — keys, phone and itinerary on dark marble"
-            fill
-            sizes="100vw"
-            className="object-cover object-center"
-            priority
+          <video
+            src="/video/reel/06-concierge-desk.mp4"
+            poster="/images/concierge/hero.png"
+            onLoadedMetadata={(e) => {
+              e.currentTarget.playbackRate = 0.7;
+            }}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            className="hero-pan-mobile w-full h-full object-cover object-center"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/45 to-obsidian" />
         </div>

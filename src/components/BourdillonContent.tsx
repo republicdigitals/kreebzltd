@@ -109,7 +109,7 @@ export default function BourdillonContent({
           <div className="bd-hero-img absolute inset-0 w-full h-[120%] -top-[10%]">
             <video
               src="/videos/morphix/bourdillon-site-film.mp4"
-              poster={bourdillon.heroImage}
+              poster="/videos/morphix/bourdillon-site-film-poster.jpg"
               autoPlay
               muted
               loop

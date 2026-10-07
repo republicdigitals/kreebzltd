@@ -33,7 +33,18 @@ export default function DevelopmentsPage() {
             >
               <div className="grid grid-cols-1 lg:grid-cols-2">
                 <div className="relative aspect-[16/10] lg:aspect-auto lg:min-h-[420px] overflow-hidden bg-obsidian-light">
-                  {project.image && (
+                  {project.video ? (
+                    <video
+                      src={project.video}
+                      poster={project.videoPoster}
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      preload="metadata"
+                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-[1.5s] ease-out group-hover:scale-105"
+                    />
+                  ) : project.image ? (
                     <Image
                       src={project.image}
                       alt={`${project.name} — ${project.location ?? "Kreebz development"}`}
@@ -41,7 +52,7 @@ export default function DevelopmentsPage() {
                       className="object-cover transition-transform duration-[1.5s] ease-out group-hover:scale-105"
                       sizes="(max-width: 1024px) 100vw, 50vw"
                     />
-                  )}
+                  ) : null}
                   {project.imageLabel && (
                     <span className="absolute top-4 right-4 px-3 py-1.5 rounded-full bg-black/60 backdrop-blur-md text-[9px] uppercase tracking-[0.14em] text-white/80">
                       {project.imageLabel}

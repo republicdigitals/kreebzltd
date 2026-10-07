@@ -82,7 +82,8 @@ export default function FeaturedProject({ latestProgress }: { latestProgress?: P
           >
             <video
               ref={videoRef}
-              src="/videos/morphix/bourdillon-site-film.mp4"
+              src="/videos/morphix/bourdillon-concept-portrait.mp4"
+              poster="/videos/morphix/bourdillon-concept-portrait-poster.jpg"
               muted
               playsInline
               preload="metadata"
