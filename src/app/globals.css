@@ -501,3 +501,37 @@ select:focus-visible {
   scrollbar-width: thin;
   scrollbar-color: var(--border-strong) transparent;
 }
+
+/* Cinematic grade for listing photography — unifies mixed-quality photos
+   into the site's dusk palette. Lifts on hover to reveal the true photo. */
+.listing-grade img {
+  filter: saturate(0.8) contrast(1.06) brightness(0.9);
+  transition: filter 0.9s ease;
+}
+
+.listing-grade::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(214, 178, 94, 0.07) 0%, transparent 45%),
+    linear-gradient(0deg, rgba(8, 7, 5, 0.42) 0%, transparent 55%);
+  mix-blend-mode: multiply;
+  transition: opacity 0.9s ease;
+}
+
+.group:hover .listing-grade img {
+  filter: saturate(1) contrast(1.02) brightness(1);
+}
+
+.group:hover .listing-grade::after {
+  opacity: 0.35;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .listing-grade img,
+  .listing-grade::after {
+    transition: none;
+  }
+}

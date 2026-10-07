@@ -3,7 +3,7 @@
 import { useRef, useEffect } from "react";
 import gsap from "gsap";
 import { usePropertyFilters } from "./PropertyFilterProvider";
-import PropertyCard from "./PropertyCard";
+import PropertyIndexRow from "./PropertyIndexRow";
 import RentalRequestForm from "./RentalRequestForm";
 import ConciergeCTA from "./ConciergeCTA";
 
@@ -45,8 +45,8 @@ export default function PropertyListings() {
           )}
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 lg:gap-10">
-          {filtered.map((property) => {
+        <div className="border-b border-border/25">
+          {filtered.map((property, index) => {
             const isActive = activePropertyId === property.id;
             return (
               <div
@@ -54,11 +54,11 @@ export default function PropertyListings() {
                 id={`property-${property.id}`}
                 onMouseEnter={() => setActivePropertyId(property.id)}
                 onMouseLeave={() => setActivePropertyId(null)}
-                className={`property-item transition-all duration-500 p-2 -m-2 rounded-[var(--radius-lg)] ${
-                  isActive ? "bg-black/[0.03] ring-1 ring-gold/30" : ""
+                className={`property-item @container transition-colors duration-500 px-3 -mx-3 lg:px-4 lg:-mx-4 rounded-[var(--radius-lg)] ${
+                  isActive ? "bg-gold/[0.04]" : ""
                 }`}
               >
-                <PropertyCard property={property} />
+                <PropertyIndexRow property={property} index={index} />
               </div>
             );
           })}

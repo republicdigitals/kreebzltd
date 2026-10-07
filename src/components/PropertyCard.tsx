@@ -20,7 +20,7 @@ export default function PropertyCard({
         className="h-full flex flex-col overflow-hidden rounded-[var(--radius-lg)] transition-all duration-700 bg-transparent hover:bg-obsidian-light"
       >
         {/* Standard Photography Aspect Ratio (4:3) - better for real estate */}
-        <div className="relative w-full aspect-[4/3] overflow-hidden rounded-[var(--radius-lg)] bg-obsidian-light">
+        <div className="listing-grade relative w-full aspect-[4/3] overflow-hidden rounded-[var(--radius-lg)] bg-obsidian-light">
           {property.image ? (
             <Image
               src={property.image}
@@ -41,8 +41,7 @@ export default function PropertyCard({
             </div>
           )}
 
-          {/* Subtle gradient overlay to darken bottom of image for contrast if needed */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-700" />
+          {/* Grade overlay (globals.css .listing-grade) provides bottom contrast */}
 
           {/* Inspected proof chip */}
           <span className="absolute bottom-4 left-4 z-10 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/55 backdrop-blur-md border border-white/15 text-[9px] uppercase tracking-[0.16em] text-white/80">
