@@ -63,9 +63,18 @@ export function rateLimit(
   return { ok: true };
 }
 
-/** Best-effort client IP extraction (works behind Vercel/Cloudflare proxies).
+/** Best-effort client IP extraction for rate limiting.
  *  Accepts a NextRequest, a fetch Request, or the plain-headers object that
- *  next-auth v4 passes to `authorize()`. */
+ *  next-auth v4 passes to `authorize()`.
+ *
+ *  Spoofing note: the FIRST x-forwarded-for entry is client-controlled — an
+ *  attacker can rotate it to dodge IP-keyed limits. Trust order here:
+ *   1. `x-nf-client-connection-ip` — Netlify sets this at the edge and
+ *      overwrites any client-supplied value, so it cannot be forged.
+ *   2. The LAST x-forwarded-for entry — appended by our own edge proxy.
+ *      Earlier entries may be attacker-supplied and are never trusted.
+ *   3. `x-real-ip` / `cf-connecting-ip` fallbacks, else "unknown" — one
+ *      shared bucket that still rate-limits rather than bypassing. */
 export function clientIp(request: NextRequest | Request | { headers?: unknown }): string {
   const h = request.headers as
     | { get?: (key: string) => string | null }
@@ -81,7 +90,13 @@ export function clientIp(request: NextRequest | Request | { headers?: unknown })
     return Array.isArray(v) ? v[0] : v;
   };
 
+  const nfIp = read("x-nf-client-connection-ip");
+  if (nfIp) return nfIp.trim();
+
   const fwd = read("x-forwarded-for");
-  if (fwd) return fwd.split(",")[0].trim();
+  if (fwd) {
+    const parts = fwd.split(",").map((p) => p.trim()).filter(Boolean);
+    if (parts.length > 0) return parts[parts.length - 1];
+  }
   return read("x-real-ip") ?? read("cf-connecting-ip") ?? "unknown";
 }

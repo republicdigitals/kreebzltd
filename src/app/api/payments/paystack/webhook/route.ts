@@ -46,21 +46,48 @@ export async function POST(req: Request) {
 
   if (event.event === "charge.success") {
     const reference = event.data?.reference;
-    if (reference) {
+    const bookingId = event.data?.metadata?.bookingId;
+    if (reference && bookingId && typeof bookingId === "string") {
       try {
-        // Bind to the reference we issued at initialize-time; verify the
-        // charged amount equals the booking total (both in kobo).
+        // Bind to the booking via metadata — NOT the stored paymentReference:
+        // a user may re-initialize (rotating the stored reference) and then
+        // pay on the older checkout link. The signature above already proves
+        // this event came from Paystack, so metadata is trustworthy; we still
+        // require the reference prefix we issue AND amount equality.
         const booking = await prisma.jetBooking.findUnique({
-          where: { paymentReference: reference },
+          where: { id: bookingId },
         });
 
-        if (booking && Number(booking.totalAmount) === Number(event.data?.amount)) {
-          await prisma.jetBooking.updateMany({
-            where: { id: booking.id, paymentStatus: { not: "Paid" } },
-            data: { paymentStatus: "Paid", status: "Confirmed" },
-          });
-        } else {
+        const referenceOurs = reference.startsWith(`KREEBZ-JET-${bookingId}-`);
+        if (!booking || !referenceOurs || Number(booking.totalAmount) !== Number(event.data?.amount)) {
           console.warn(`Webhook reference mismatch: ${reference}`);
+        } else {
+          // Confirm-time overlap check — two buyers can hold Pending bookings
+          // for the same dates and both pay; whoever confirms first wins. The
+          // loser is marked Paid but left Pending for manual review/refund
+          // rather than silently double-booking the aircraft.
+          const conflict = await prisma.jetBooking.count({
+            where: {
+              jetId: booking.jetId,
+              id: { not: booking.id },
+              status: { in: ["Confirmed", "Completed"] },
+              startDate: { lte: booking.endDate },
+              endDate: { gte: booking.startDate },
+            },
+          });
+
+          if (conflict > 0) {
+            await prisma.jetBooking.updateMany({
+              where: { id: booking.id, paymentStatus: { not: "Paid" } },
+              data: { paymentStatus: "Paid" },
+            });
+            console.error(`Booking ${booking.id} paid but overlaps a confirmed booking — needs manual review/refund`);
+          } else {
+            await prisma.jetBooking.updateMany({
+              where: { id: booking.id, paymentStatus: { not: "Paid" } },
+              data: { paymentStatus: "Paid", status: "Confirmed" },
+            });
+          }
         }
       } catch (error) {
         console.error("Webhook processing error:", error);

@@ -4,10 +4,12 @@ import { z } from "zod";
 import prisma from "@/lib/prisma";
 import { rateLimit, clientIp } from "@/lib/rate-limit";
 
+const noMarkup = (v: string) => v.replace(/[<>]/g, "");
+
 const conciergeSchema = z.object({
-  name: z.string().trim().min(1).max(120),
+  name: z.string().trim().min(1).max(120).transform(noMarkup),
   email: z.string().trim().email().max(254),
-  phone: z.string().trim().max(40).optional(),
+  phone: z.string().trim().max(40).transform(noMarkup).optional(),
   budget: z.string().trim().max(120).optional(),
   bedrooms: z.string().trim().max(40).optional(),
   neighbourhoods: z.string().trim().max(500).optional(),

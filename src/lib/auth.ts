@@ -17,9 +17,18 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" }
       },
       async authorize(credentials, req) {
+        const email = credentials?.email?.toLowerCase().trim();
+
         // Per-IP limit on credential attempts (in addition to the delay below)
         const ip = clientIp(req);
         if (!rateLimit(`login:${ip}`, 10, 15 * 60_000).ok) {
+          return null;
+        }
+
+        // Per-ACCOUNT limit — an attacker rotating source IPs still can't
+        // exceed the per-email bucket, so distributed credential stuffing
+        // against a single account stays capped.
+        if (email && !rateLimit(`login-acct:${email}`, 10, 15 * 60_000).ok) {
           return null;
         }
 
@@ -50,6 +59,7 @@ export const authOptions: NextAuthOptions = {
           email: user.email,
           name: user.name,
           role: user.role,
+          tokenVersion: user.tokenVersion,
         };
       }
     })
@@ -63,16 +73,40 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.role = user.role;
         token.id = user.id;
+        token.tokenVersion = user.tokenVersion;
       }
       return token;
     },
     async session({ session, token }) {
-      if (session.user) {
-        session.user.role = token.role;
-        session.user.id = token.id;
+      // Server-side revocation: the JWT embeds the tokenVersion it was
+      // issued under. If the user's version has moved on (sign-out bumps
+      // it), this token is dead even if it hasn't expired — strip the user
+      // so downstream guards reject it.
+      if (session.user && token.id) {
+        const fresh = await prisma.user.findUnique({
+          where: { id: token.id as string },
+          select: { tokenVersion: true, role: true },
+        });
+        if (!fresh || fresh.tokenVersion !== token.tokenVersion) {
+          return { ...session, user: undefined };
+        }
+        session.user.role = fresh.role;
+        session.user.id = token.id as string;
       }
       return session;
     }
+  },
+  events: {
+    // Revoke all outstanding JWTs for this user on sign-out — a stolen
+    // token dies immediately instead of living out its 24h maxAge.
+    async signOut({ token }) {
+      if (token?.id) {
+        await prisma.user.update({
+          where: { id: token.id as string },
+          data: { tokenVersion: { increment: 1 } },
+        });
+      }
+    },
   },
   pages: {
     signIn: "/login",

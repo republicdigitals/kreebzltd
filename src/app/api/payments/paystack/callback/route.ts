@@ -35,23 +35,36 @@ export async function GET(req: Request) {
 
     const booking = await prisma.jetBooking.findUnique({ where: { id: bookingId } });
 
+    // The stored paymentReference rotates on re-init, but a user may pay on
+    // an older link — accept any reference we issued for this booking
+    // (KREEBZ-JET-<id>-*); amount equality still binds it to the total.
+    const referenceOurs = reference.startsWith(`KREEBZ-JET-${bookingId}-`);
     if (
       !booking ||
-      booking.paymentReference !== reference ||
+      !referenceOurs ||
       Number(booking.totalAmount) !== Number(data.amount)
     ) {
       console.warn(`Paystack callback mismatch for reference ${reference}`);
       return NextResponse.redirect(new URL("/account/bookings?error=payment_mismatch", req.url));
     }
 
-    // Idempotent — only transition Unpaid bookings
+    // Idempotent — only transition Unpaid bookings. Don't confirm over an
+    // already-confirmed overlap; the webhook does the authoritative check.
     if (booking.paymentStatus !== "Paid") {
+      const conflict = await prisma.jetBooking.count({
+        where: {
+          jetId: booking.jetId,
+          id: { not: booking.id },
+          status: { in: ["Confirmed", "Completed"] },
+          startDate: { lte: booking.endDate },
+          endDate: { gte: booking.startDate },
+        },
+      });
       await prisma.jetBooking.update({
         where: { id: booking.id },
-        data: {
-          paymentStatus: "Paid",
-          status: "Confirmed",
-        },
+        data: conflict > 0
+          ? { paymentStatus: "Paid" }
+          : { paymentStatus: "Paid", status: "Confirmed" },
       });
     }
 

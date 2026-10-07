@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Navigation from "@/components/Navigation";
 import { Suspense } from "react";
-import { signIn } from "next-auth/react";
 
 export default function RegisterPage() {
   const [name, setName] = useState("");
@@ -33,20 +32,10 @@ export default function RegisterPage() {
         throw new Error(data.error || "Failed to register");
       }
 
-      // Automatically sign in after registering
-      const result = await signIn("credentials", {
-        redirect: false,
-        email,
-        password,
-      });
-
-      if (result?.error) {
-        setError("Account created, but failed to automatically sign in. Please log in manually.");
-        setLoading(false);
-      } else {
-        router.refresh();
-        router.push("/account");
-      }
+      // No auto sign-in: probing signIn right after registering would reveal
+      // whether the email was newly created vs already registered. Send the
+      // user to the login page instead — same response for every outcome.
+      router.push("/login?registered=1");
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "An unexpected error occurred");
       setLoading(false);

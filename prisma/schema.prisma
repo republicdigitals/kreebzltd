@@ -128,6 +128,8 @@ model User {
   password  String
   name      String?
   role      String   @default("USER")
+  // Bumped on sign-out — lets JWT sessions be revoked server-side.
+  tokenVersion Int   @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   savedProperties SavedProperty[]
@@ -177,6 +179,10 @@ model JetBooking {
   paymentStatus    String   @default("Unpaid")  // "Unpaid" | "Paid" | "Refunded"
   totalAmount      BigInt   // In smallest currency unit (kobo)
   paymentReference String?  @unique
+  // Stored at initialize-time so a retried /pay call can return the same
+  // checkout instead of spawning duplicate Paystack transactions.
+  checkoutUrl        String?
+  paymentInitiatedAt DateTime?
   
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt

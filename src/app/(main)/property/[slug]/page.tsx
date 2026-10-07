@@ -111,7 +111,7 @@ export default async function PropertyPage({
     <div className="bg-obsidian pt-24 md:pt-28">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData).replace(/</g, "\\u003c") }}
       />
       <PropertyDetail property={property} nextProperty={nextProperty} projectClips={projectContent?.siteMedia.clips} />
     </div>

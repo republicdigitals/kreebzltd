@@ -7,6 +7,11 @@ import { rateLimit } from "@/lib/rate-limit";
 import { initializeTransaction } from "@/lib/paystack";
 
 const MAX_BOOKING_DAYS = 30;
+// How long an unpaid Pending booking still reserves the aircraft — long
+// enough to complete checkout, short enough that abandoned carts free it.
+const PENDING_HOLD_MINUTES = 45;
+
+class BookingConflictError extends Error {}
 
 const bookingSchema = z.object({
   jetId: z.string().trim().min(1).max(80),
@@ -24,9 +29,10 @@ export async function POST(req: Request) {
     if (!session || !session.user || !session.user.id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
+    const userId = session.user.id;
 
     // Throttle booking creation per user — prevents inventory/payment spam
-    if (!rateLimit(`jet-booking:${session.user.id}`, 10, 60_000).ok) {
+    if (!rateLimit(`jet-booking:${userId}`, 10, 60_000).ok) {
       return NextResponse.json({ error: "Too many requests. Please try again later." }, { status: 429 });
     }
 
@@ -66,46 +72,93 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: `Aircraft maximum capacity is ${jet.passengers} passengers` }, { status: 400 });
     }
 
-    // 2. Inventory Check: Ensure no overlapping confirmed bookings
-    const overlappingBookings = await prisma.jetBooking.findMany({
-      where: {
-        jetId: jet.id,
-        status: { in: ["Confirmed", "Completed"] },
-        OR: [
-          {
-            startDate: { lte: end },
-            endDate: { gte: start },
-          },
-        ],
-      },
-    });
-
-    if (overlappingBookings.length > 0) {
-      return NextResponse.json({ error: "Aircraft is not available for the selected dates" }, { status: 409 });
-    }
+    // 2. Inventory check + insert run inside a SERIALIZABLE transaction.
+    //    Concurrent requests used to both pass the overlap check and then
+    //    both insert — serializable isolation makes Postgres abort one of
+    //    them (P2034 → 409 below).
+    //    A Pending booking also counts against inventory while it's inside
+    //    the checkout window — otherwise two buyers could hold overlapping
+    //    pendings, both pay, and the aircraft is double-booked.
+    const pendingHoldCutoff = new Date(Date.now() - PENDING_HOLD_MINUTES * 60_000);
 
     // 3. Calculate estimated cost
-    // For simplicity, we calculate hours based on start/end date difference
-    // In a real scenario, flight hours are much shorter than reservation blocks,
-    // so this is a simplified calculation: rate * block duration (in hours)
     const durationHours = Math.max(1, Math.ceil(durationMs / (1000 * 60 * 60)));
     // baseHourlyRate is a Prisma BigInt (kobo); keep the total in BigInt to match the schema.
     const totalAmount = jet.baseHourlyRate * BigInt(durationHours);
 
-    // 4. Create Pending Booking
-    const booking = await prisma.jetBooking.create({
-      data: {
-        userId: session.user.id,
-        jetId: jet.id,
-        startDate: start,
-        endDate: end,
-        route,
-        passengers,
-        status: "Pending",
-        paymentStatus: "Unpaid",
-        totalAmount,
-      },
-    });
+    let result;
+    try {
+      result = await prisma.$transaction(
+        async (tx) => {
+          // Idempotent create: a retry/refresh of the same request returns the
+          // existing pending booking instead of minting a duplicate.
+          const duplicate = await tx.jetBooking.findFirst({
+            where: {
+              userId,
+              jetId: jet.id,
+              startDate: start,
+              endDate: end,
+              status: "Pending",
+              paymentStatus: "Unpaid",
+            },
+          });
+          if (duplicate) return { booking: duplicate, created: false };
+
+          const overlapping = await tx.jetBooking.count({
+            where: {
+              jetId: jet.id,
+              startDate: { lte: end },
+              endDate: { gte: start },
+              OR: [
+                { status: { in: ["Confirmed", "Completed"] } },
+                { status: "Pending", paymentStatus: "Unpaid", createdAt: { gte: pendingHoldCutoff } },
+              ],
+            },
+          });
+          if (overlapping > 0) {
+            throw new BookingConflictError();
+          }
+
+          const created = await tx.jetBooking.create({
+            data: {
+              userId,
+              jetId: jet.id,
+              startDate: start,
+              endDate: end,
+              route,
+              passengers,
+              status: "Pending",
+              paymentStatus: "Unpaid",
+              totalAmount,
+            },
+          });
+          return { booking: created, created: true };
+        },
+        { isolationLevel: "Serializable" }
+      );
+    } catch (error) {
+      if (error instanceof BookingConflictError) {
+        return NextResponse.json({ error: "Aircraft is not available for the selected dates" }, { status: 409 });
+      }
+      // P2034 = transaction failed due to a serialization conflict / deadlock —
+      // a concurrent booking won the same slot.
+      if (error && typeof error === "object" && "code" in error && error.code === "P2034") {
+        return NextResponse.json({ error: "Aircraft is not available for the selected dates" }, { status: 409 });
+      }
+      throw error;
+    }
+
+    const { booking, created } = result;
+
+    // Dedupe hit — the booking already exists; reuse its stored checkout URL
+    // (or tell the client to hit /pay, which is idempotent).
+    if (!created) {
+      const serialized = { ...booking, totalAmount: Number(booking.totalAmount) };
+      return NextResponse.json({
+        booking: serialized,
+        checkoutUrl: booking.checkoutUrl ?? `/services/private-jet?resume=${booking.id}`,
+      });
+    }
 
     // BigInt isn't JSON-serializable — expose totalAmount as a Number (kobo).
     const serializedBooking = { ...booking, totalAmount: Number(booking.totalAmount) };
@@ -135,15 +188,23 @@ export async function POST(req: Request) {
       }
     });
 
-    // Update booking with the reference we issued
+    const checkoutUrl = paymentResponse.data.authorization_url;
+
+    // Persist the issued reference + checkout URL so a retried booking/pay
+    // call can return the SAME checkout instead of minting a second
+    // Paystack transaction.
     await prisma.jetBooking.update({
       where: { id: booking.id },
-      data: { paymentReference: reference }
+      data: {
+        paymentReference: reference,
+        checkoutUrl,
+        paymentInitiatedAt: new Date(),
+      }
     });
 
     return NextResponse.json({
       booking: serializedBooking,
-      checkoutUrl: paymentResponse.data.authorization_url
+      checkoutUrl,
     });
 
   } catch (error: unknown) {

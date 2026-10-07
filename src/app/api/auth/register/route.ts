@@ -6,7 +6,8 @@ import bcrypt from "bcryptjs";
 import { rateLimit, clientIp } from "@/lib/rate-limit";
 
 const registerSchema = z.object({
-  name: z.string().trim().max(120).optional(),
+  // Strip angle brackets — names never need markup; blocks stored-XSS probes.
+  name: z.string().trim().max(120).transform((v) => v.replace(/[<>]/g, "")).optional(),
   email: z.string().trim().email().max(254),
   // bcrypt only uses the first 72 bytes — cap there to avoid silent truncation
   password: z.string().min(8, "Password must be at least 8 characters").max(72),
@@ -34,20 +35,27 @@ export async function POST(request: NextRequest) {
     const { name, password } = parsed.data;
     const email = parsed.data.email.toLowerCase();
 
+    // Always burn a bcrypt round — otherwise the exists-path returns far
+    // faster than the create-path and response timing reveals whether the
+    // email is registered.
+    const hashedPassword = await bcrypt.hash(password, 12);
+
     const existingUser = await prisma.user.findUnique({
       where: { email },
     });
 
+    // Anti-enumeration: identical status + body whether or not the account
+    // already exists. The client cannot distinguish "created" from "already
+    // registered", and must never auto-sign-in here — a signIn probe after
+    // registration would re-open the oracle (success = email was new).
     if (existingUser) {
       return NextResponse.json(
-        { error: "An account with this email already exists" },
-        { status: 409 }
+        { message: "Registration successful. You can now sign in." },
+        { status: 201 }
       );
     }
 
-    const hashedPassword = await bcrypt.hash(password, 12);
-
-    const user = await prisma.user.create({
+    await prisma.user.create({
       data: {
         name: name ?? null,
         email,
@@ -57,7 +65,7 @@ export async function POST(request: NextRequest) {
     });
 
     return NextResponse.json(
-      { message: "User registered successfully", user: { id: user.id, email: user.email, role: user.role } },
+      { message: "Registration successful. You can now sign in." },
       { status: 201 }
     );
   } catch (error: unknown) {

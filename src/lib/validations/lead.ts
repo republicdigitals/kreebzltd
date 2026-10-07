@@ -4,10 +4,15 @@ import { z } from "zod";
  * Server-side schema for POST /api/leads.
  * Every string is length-capped so oversized payloads can't bloat the DB.
  */
+// Names and phone numbers never legitimately contain HTML markup — strip
+// angle brackets so stored values can't carry tags into any future render
+// context (emails, CSV export, non-React surfaces).
+const noMarkup = (v: string) => v.replace(/[<>]/g, "");
+
 export const createLeadSchema = z.object({
-  name: z.string().trim().min(1).max(120),
+  name: z.string().trim().min(1).max(120).transform(noMarkup),
   email: z.string().trim().email().max(254),
-  phone: z.string().trim().max(40).optional(),
+  phone: z.string().trim().max(40).transform(noMarkup).optional(),
   interest: z.string().trim().min(1).max(60),
   message: z.string().trim().max(5000).optional(),
   propertyId: z.string().trim().max(80).optional(),
