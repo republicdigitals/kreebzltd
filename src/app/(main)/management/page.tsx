@@ -12,8 +12,8 @@ export default function ManagementPage() {
     <div className="bg-obsidian">
       <PageHeader
         eyebrow="Property Management"
-        title="Own it. We'll run it."
-        subtitle="Repairs, staff, compliance, tenants — a named principal handles it all, and you get one number to call."
+        title="Own property in Lagos — live anywhere."
+        subtitle="Repairs, staff, compliance, tenants — a named principal handles it all, reports on schedule, and you get one number to call."
       />
       <ManagementContent />
     </div>

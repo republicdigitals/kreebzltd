@@ -176,6 +176,14 @@ body.nav-menu-open .concierge-fab {
   body.hide-native-cursor * {
     cursor: none !important;
   }
+
+  /* Text entry keeps the native I-beam — custom cursor fades out there */
+  body.hide-native-cursor input,
+  body.hide-native-cursor textarea,
+  body.hide-native-cursor select,
+  body.hide-native-cursor [contenteditable="true"] {
+    cursor: auto !important;
+  }
 }
 
 /* Section theming helpers */

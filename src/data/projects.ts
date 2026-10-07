@@ -5,7 +5,7 @@
  * - Each entry maps a `projectSlug` (set on the Property row) to a project
  *   page URL and its shared site media.
  * - To add a project: add an entry here, create its data file + page under
- *   `src/app/(main)/projects/<slug>/page.tsx`, then set `projectSlug` on any
+ *   `src/app/(main)/developments/<slug>/page.tsx`, then set `projectSlug` on any
  *   Property rows that belong to it.
  */
 
@@ -21,6 +21,11 @@ export interface ProjectRef {
   name: string;
   url: string;
   siteMedia: SiteMedia;
+  location?: string;
+  status?: string;
+  positioning?: string;
+  image?: string;
+  imageLabel?: string;
 }
 
 const registry: Record<string, ProjectRef> = {
@@ -29,6 +34,11 @@ const registry: Record<string, ProjectRef> = {
     name: bourdillon.name,
     url: bourdillon.url,
     siteMedia: bourdillon.siteMedia,
+    location: bourdillon.location,
+    status: bourdillon.status,
+    positioning: bourdillon.positioning,
+    image: bourdillon.heroImage,
+    imageLabel: bourdillon.heroImageLabel,
   },
 };
 

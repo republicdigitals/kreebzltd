@@ -47,7 +47,7 @@ export default async function ThankYouPage({
       <div className="flex flex-col sm:flex-row items-center gap-6">
         {isBourdillon ? (
           <Link
-            href="/projects/bourdillon#progress"
+            href="/developments/bourdillon#progress"
             className="inline-flex items-center gap-2 text-gold hover:text-gold-light transition-colors uppercase tracking-widest text-sm font-medium"
           >
             View project progress

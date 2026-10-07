@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { Heart, ArrowRight } from "lucide-react";
+import { Heart, ArrowRight, ShieldCheck } from "lucide-react";
 import { useSavedProperties } from "@/context/SavedPropertiesContext";
 import type { Property } from "@/data/properties";
 import RichTooltip from "./ui/RichTooltip";
@@ -43,6 +43,12 @@ export default function PropertyCard({
 
           {/* Subtle gradient overlay to darken bottom of image for contrast if needed */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-700" />
+
+          {/* Inspected proof chip */}
+          <span className="absolute bottom-4 left-4 z-10 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/55 backdrop-blur-md border border-white/15 text-[9px] uppercase tracking-[0.16em] text-white/80">
+            <ShieldCheck size={11} strokeWidth={1.5} className="text-gold-light" />
+            Inspected by Kreebz
+          </span>
 
           {/* Favourite heart */}
           <button

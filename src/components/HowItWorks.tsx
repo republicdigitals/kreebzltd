@@ -29,7 +29,7 @@ const journeys = [
   {
     title: "Develop",
     description: "Build with a partner who markets, sells, and manages.",
-    href: "/services",
+    href: "/developments",
     number: "04",
   },
 ];

@@ -6,6 +6,13 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { cn } from "@/lib/utils";
+import {
+  PRINCIPAL_EMAIL,
+  PRINCIPAL_EMAIL_MAILTO,
+  PRINCIPAL_PHONE_DISPLAY,
+  PRINCIPAL_PHONE_TEL,
+  PRINCIPAL_WHATSAPP,
+} from "@/lib/contact";
 import { useRouter } from "next/navigation";
 import { trackEvent } from "@/lib/analytics";
 import Button from "./ui/Button";
@@ -97,8 +104,17 @@ export default function Contact() {
       id="contact"
       className="bg-obsidian flex flex-col justify-center pt-24 lg:pt-32 pb-20 min-h-[60vh]"
     >
-      <div className="max-w-[800px] mx-auto px-6 lg:px-12 w-full">
-        <div className="text-center mb-16">
+      <div className="max-w-[1100px] mx-auto px-6 lg:px-12 w-full">
+        <div className="text-center mb-14">
+          <motion.p
+            initial={{ y: 20, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
+            className="eyebrow text-gold mb-5"
+          >
+            Direct line to the people who decide
+          </motion.p>
           <motion.h2
             initial={{ y: 20, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
@@ -106,42 +122,67 @@ export default function Contact() {
             transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
             className="display-serif text-off-white mb-6"
           >
-            Say hello —{" "}
-            <span className="accent-italic text-gold-light">we actually reply.</span>
+            Talk to a <span className="accent-italic text-gold-light">principal.</span>
           </motion.h2>
-
-          <motion.div
+          <motion.p
             initial={{ y: 20, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
             viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
-            className="flex flex-col items-center"
+            transition={{ duration: 0.8, delay: 0.15, ease: [0.25, 0.1, 0.25, 1] }}
+            className="text-lead text-muted max-w-xl mx-auto"
           >
-            <p className="font-serif text-off-white text-2xl tracking-wide mb-2">The Principals</p>
-            <p className="font-sans text-gold uppercase tracking-[0.2em] text-[10px] mb-6">Executive Board</p>
-            <div className="flex flex-col gap-2 items-center">
-              <a
-                href="mailto:hello@kreebzltd.com"
-                className="font-sans text-muted hover:text-gold transition-colors duration-300 text-sm tracking-widest uppercase"
-              >
-                hello@kreebzltd.com
-              </a>
-              <a
-                href="tel:08069949948"
-                className="font-sans text-muted hover:text-gold transition-colors duration-300 text-sm tracking-widest"
-              >
-                +234 806 994 9948
-              </a>
-            </div>
-            
-            <div className="mt-8 px-4 py-2 border border-gold/20 bg-gold/5 rounded-full">
-              <p className="text-gold text-xs uppercase tracking-widest font-medium flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-gold animate-pulse"></span>
-                A real person replies within one business day
-              </p>
-            </div>
-          </motion.div>
+            No call centre, no ticket queue. Pick whichever suits you —
+            a principal replies within one business day.
+          </motion.p>
         </div>
+
+        {/* Three contact paths */}
+        <motion.div
+          initial={{ y: 24, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
+          className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12"
+        >
+          {[
+            {
+              label: "WhatsApp",
+              value: PRINCIPAL_PHONE_DISPLAY,
+              note: "Fastest — typically same day",
+              href: PRINCIPAL_WHATSAPP,
+              external: true,
+            },
+            {
+              label: "Call",
+              value: PRINCIPAL_PHONE_DISPLAY,
+              note: "Mon–Sat, 9:00–18:00 WAT",
+              href: PRINCIPAL_PHONE_TEL,
+              external: false,
+            },
+            {
+              label: "Email",
+              value: PRINCIPAL_EMAIL,
+              note: "For documents and detail",
+              href: PRINCIPAL_EMAIL_MAILTO,
+              external: false,
+            },
+          ].map((path) => (
+            <a
+              key={path.label}
+              href={path.href}
+              {...(path.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+              className="group bg-surface-2 border border-border rounded-[var(--radius-lg)] p-7 hover:border-gold/40 transition-colors duration-300"
+            >
+              <p className="eyebrow text-gold mb-3">{path.label}</p>
+              <p className="text-off-white text-lg font-medium tracking-tight break-words group-hover:text-gold-light transition-colors">
+                {path.value}
+              </p>
+              <p className="text-muted text-sm mt-2">{path.note}</p>
+            </a>
+          ))}
+        </motion.div>
+
+        <p className="eyebrow text-muted text-center mb-8">or write to us</p>
 
         {/* Contact Form */}
         <motion.div

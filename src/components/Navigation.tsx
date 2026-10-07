@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { Search, Heart, User, ChevronRight, KeyRound, Building2, Tag, Plane, Wrench, Sparkles, Handshake, Landmark, Users, Phone, MessageCircle } from "lucide-react";
+import { Search, Heart, User, ChevronRight, KeyRound, Building2, Tag, Plane, Wrench, Sparkles, Handshake, Landmark, Users, Phone, MessageCircle, MapPin } from "lucide-react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { AnimatePresence, motion } from "framer-motion";
@@ -31,7 +31,8 @@ const menuGroups = [
   {
     title: "Kreebz",
     items: [
-      { label: "Bourdillon", desc: "Our Ikoyi residence", href: "/projects/bourdillon", icon: Landmark },
+      { label: "Developments", desc: "We design, build & manage", href: "/developments", icon: Landmark },
+      { label: "Areas", desc: "Guides to the districts we cover", href: "/areas", icon: MapPin },
       { label: "About", desc: "The team behind the standard", href: "/about", icon: Users },
     ],
   },
@@ -137,6 +138,7 @@ export default function Navigation() {
         {/* Top Tier: Desktop Utilities — secondary pages + account */}
         <div className="hidden md:flex justify-between items-center px-6 lg:px-12 h-10 border-b border-white/10 eyebrow text-[9px] tracking-[0.15em] text-white/60">
           <div className="flex items-center gap-8">
+            <Link href="/areas" className={`whitespace-nowrap hover:text-gold transition-colors ${isLinkActive('/areas') ? 'text-gold' : ''}`}>AREAS</Link>
             <Link href="/partnerships" className={`whitespace-nowrap hover:text-gold transition-colors ${isLinkActive('/partnerships') ? 'text-gold' : ''}`}>PARTNERSHIPS</Link>
             <Link href="/about" className={`whitespace-nowrap hover:text-gold transition-colors ${isLinkActive('/about') ? 'text-gold' : ''}`}>ABOUT</Link>
             <Link href="/contact" className={`whitespace-nowrap hover:text-gold transition-colors ${isLinkActive('/contact') ? 'text-gold' : ''}`}>CONTACT</Link>
@@ -191,6 +193,7 @@ export default function Navigation() {
                 <Link href="/sell" className={`eyebrow text-[10px] tracking-[0.2em] whitespace-nowrap transition-colors duration-300 ${isLinkActive('/sell') ? 'text-gold' : 'text-white/80 hover:text-gold'}`}>SELL</Link>
                 <Link href="/management" className={`eyebrow text-[10px] tracking-[0.2em] whitespace-nowrap transition-colors duration-300 ${isLinkActive('/management') ? 'text-gold' : 'text-white/80 hover:text-gold'}`}>MANAGEMENT</Link>
                 <Link href="/services/private-jet" className={`eyebrow text-[10px] tracking-[0.2em] whitespace-nowrap transition-colors duration-300 ${isLinkActive('/services/private-jet') ? 'text-gold' : 'text-white/80 hover:text-gold'}`}>PRIVATE JET</Link>
+                <Link href="/developments" className={`eyebrow text-[10px] tracking-[0.2em] whitespace-nowrap transition-colors duration-300 ${isLinkActive('/developments') ? 'text-gold' : 'text-white/80 hover:text-gold'}`}>DEVELOPMENTS</Link>
               </div>
             </div>
 
@@ -228,9 +231,9 @@ export default function Navigation() {
                 <Link href="/concierge" className={`eyebrow text-[10px] tracking-[0.2em] whitespace-nowrap transition-colors duration-300 ${isLinkActive('/concierge') ? 'text-gold' : 'text-white/80 hover:text-gold'}`}>CONCIERGE</Link>
                 <Link
                   href="/contact"
-                  className="eyebrow text-[10px] tracking-[0.2em] whitespace-nowrap shrink-0 px-5 py-2.5 border border-white/40 text-white rounded-[var(--radius-pill)] hover:bg-gold hover:border-gold hover:text-ink transition-all duration-300"
+                  className="eyebrow text-[10px] tracking-[0.2em] whitespace-nowrap shrink-0 px-5 py-2.5 bg-gold text-ink-fixed rounded-[var(--radius-pill)] hover:bg-gold-hover transition-all duration-300"
                 >
-                  TALK TO US
+                  TALK TO A PRINCIPAL
                 </Link>
               </div>
             </div>
@@ -310,9 +313,9 @@ export default function Navigation() {
                   <Link
                     href="/contact"
                     onClick={() => setMenuOpen(false)}
-                    className="flex-1 flex items-center justify-center gap-2 bg-gold text-ink rounded-xl py-3.5 text-[11px] uppercase tracking-[0.2em] font-bold active:scale-[0.98] transition-all"
+                    className="flex-1 flex items-center justify-center gap-2 bg-gold text-ink-fixed rounded-xl py-3.5 text-[11px] uppercase tracking-[0.2em] font-bold active:scale-[0.98] transition-all"
                   >
-                    Talk to us
+                    Talk to a principal
                   </Link>
                   <a
                     href="tel:+2348069949948"

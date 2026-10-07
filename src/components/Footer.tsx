@@ -18,7 +18,7 @@ const footerColumns = [
     title: "COMPANY",
     links: [
       { label: "ABOUT US", href: "/about" },
-      { label: "SERVICES", href: "/services" },
+      { label: "DEVELOPMENTS", href: "/developments" },
       { label: "CONTACT US", href: "/contact" },
     ],
   },
@@ -27,18 +27,18 @@ const footerColumns = [
     links: [
       { label: "THE PORTFOLIO", href: "/properties" },
       { label: "PRIVATE JET", href: "/services/private-jet" },
-      { label: "HOW WE WORK", href: "/how-it-works" },
+      { label: "OFF-MARKET SOURCING", href: "/matchmaking" },
     ],
   },
   {
-    title: "PORTFOLIO",
+    title: "AREAS",
     links: [
       { label: "BUY", href: "/properties?intent=buy" },
-      { label: "RENT", href: "/properties?intent=rent" },
-      { label: "SELL", href: "/sell" },
-      { label: "IKOYI", href: "/properties" },
-      { label: "VICTORIA ISLAND", href: "/properties" },
-      { label: "BANANA ISLAND", href: "/properties" },
+      { label: "IKOYI", href: "/areas/ikoyi" },
+      { label: "BANANA ISLAND", href: "/areas/banana-island" },
+      { label: "VICTORIA ISLAND", href: "/areas/victoria-island" },
+      { label: "EKO ATLANTIC", href: "/areas/eko-atlantic" },
+      { label: "LEKKI", href: "/areas/lekki" },
     ],
   },
 ];

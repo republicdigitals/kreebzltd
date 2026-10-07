@@ -4,14 +4,14 @@ import { motion } from "framer-motion";
 
 const stats = [
   {
-    value: "15%",
-    label: "Below Market",
-    desc: "Our last off-market purchase, negotiated below asking",
+    value: "100%",
+    label: "Listings inspected",
+    desc: "Every property on this site has been walked by our team",
   },
   {
-    value: "40%",
-    label: "Higher Retention",
-    desc: "Tenants stay longer in homes we manage",
+    value: "5",
+    label: "Districts covered",
+    desc: "Ground we know street by street — nothing we can't inspect",
   },
   {
     value: "24/7",

@@ -8,14 +8,13 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { Plane, Search, CalendarCheck, Shield, ArrowRight } from "lucide-react";
 
-// TODO: Replace Unsplash URLs with local brand-supplied photography in /public/images/concierge/
 const services = [
   {
     title: "Private Aviation",
     description: "Charter a jet on your schedule. We arrange the aircraft, handle the details, and confirm it end to end.",
     icon: Plane,
     href: "/services/private-jet",
-    image: "https://images.unsplash.com/photo-1540962351504-03099e0a754b?q=80&w=1974&auto=format&fit=crop",
+    image: "/images/concierge/private-aviation.png",
     highlight: true,
   },
   {
@@ -23,21 +22,21 @@ const services = [
     description: "The best properties never get listed. Tell us what you want; we'll find it.",
     icon: Search,
     href: "/matchmaking",
-    image: "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=80&w=2070&auto=format&fit=crop",
+    image: "/images/concierge/off-market.png",
   },
   {
     title: "Day-to-Day",
     description: "Restaurants, events, contractors, staff — one message and it's handled.",
     icon: CalendarCheck,
     href: "/contact",
-    image: "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?q=80&w=2070&auto=format&fit=crop",
+    image: "/images/concierge/day-to-day.png",
   },
   {
     title: "Ongoing Care",
     description: "Maintenance, security, tenants — your property stays in shape without you chasing it.",
     icon: Shield,
     href: "/management",
-    image: "https://images.unsplash.com/photo-1613977257363-707ba9348227?q=80&w=2070&auto=format&fit=crop",
+    image: "/images/concierge/ongoing-care.png",
   }
 ];
 

@@ -111,6 +111,26 @@ export async function getPropertiesByProjectSlug(projectSlug: string): Promise<P
   }
 }
 
+/** Published listings in any of the given neighbourhood names (case-insensitive). */
+export async function getPropertiesByNeighbourhoods(neighbourhoods: string[]): Promise<Property[]> {
+  try {
+    const properties = await prisma.property.findMany({
+      where: {
+        publicationStatus: "PUBLISHED",
+        OR: neighbourhoods.map((n) => ({
+          neighbourhood: { equals: n, mode: "insensitive" },
+        })),
+      },
+      include: { media: true },
+      orderBy: { priceValue: "desc" },
+    });
+    return properties.map(mapPrismaProperty);
+  } catch (error) {
+    console.error("Failed to fetch properties by neighbourhoods", error);
+    return [];
+  }
+}
+
 export async function getAdminProperties(): Promise<Property[]> {
   try {
     const properties = await prisma.property.findMany({

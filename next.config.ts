@@ -56,12 +56,12 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
-      // TODO: Add confirmed legacy URLs requiring 301 redirects to canonical slugs here
-      // {
-      //   source: '/legacy-path/:id',
-      //   destination: '/property/:slug',
-      //   permanent: true,
-      // },
+      // Project pages moved under the Developments hub
+      { source: "/projects/bourdillon", destination: "/developments/bourdillon", permanent: true },
+      { source: "/projects/:path*", destination: "/developments/:path*", permanent: true },
+      // Consolidated pages
+      { source: "/how-it-works", destination: "/matchmaking", permanent: true },
+      { source: "/services", destination: "/concierge", permanent: true },
     ];
   },
   async headers() {

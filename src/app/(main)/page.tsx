@@ -5,6 +5,7 @@ import TrustRows from "@/components/TrustRows";
 import StatsBand from "@/components/StatsBand";
 import FeaturedProject from "@/components/FeaturedProject";
 import ServiceCards from "@/components/ServiceCards";
+import Principals from "@/components/Principals";
 import Testimonials from "@/components/Testimonials";
 import HowItWorks from "@/components/HowItWorks";
 import FAQ from "@/components/FAQ";
@@ -28,6 +29,7 @@ export default async function Home() {
       <StatsBand />
       <FeaturedProject latestProgress={bourdillonContent.progress[0]} />
       <ServiceCards />
+      <Principals />
       <Testimonials />
       <HowItWorks />
       <FAQ />

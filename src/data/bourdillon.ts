@@ -45,7 +45,7 @@ export interface ProjectFeature {
 export const bourdillon = {
   name: "Bourdillon",
   slug: "bourdillon",
-  url: "/projects/bourdillon",
+  url: "/developments/bourdillon",
   location: "Bourdillon, Ikoyi",
   city: "Lagos, Nigeria",
   positioning:

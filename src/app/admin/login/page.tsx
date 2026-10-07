@@ -35,7 +35,7 @@ export default function LoginPage() {
     <div className="fixed inset-0 z-[100] bg-obsidian flex flex-col items-center justify-center p-6">
       <div className="w-full max-w-md bg-surface p-8 rounded-[var(--radius-md)] border border-border shadow-card">
         <div className="flex justify-center mb-8">
-          <Image src="/kreebz-logo.png" alt="Kreebz" width={80} height={80} />
+          <Image src="/kreebz-logo.png" alt="Kreebz" width={80} height={80} priority className="h-20 w-20 object-contain" />
         </div>
         <h1 className="text-2xl font-sans font-semibold tracking-tight text-off-white mb-6 text-center">Principal Access</h1>
 
@@ -46,6 +46,7 @@ export default function LoginPage() {
             <label className="text-xs uppercase tracking-widest text-muted mb-2 block">Email</label>
             <input
               type="email"
+              autoComplete="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full bg-obsidian border border-border-strong rounded-[var(--radius-sm)] px-4 py-3 text-off-white focus:border-off-white outline-none"
@@ -56,6 +57,7 @@ export default function LoginPage() {
             <label className="text-xs uppercase tracking-widest text-muted mb-2 block">Password</label>
             <input
               type="password"
+              autoComplete="current-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="w-full bg-obsidian border border-border-strong rounded-[var(--radius-sm)] px-4 py-3 text-off-white focus:border-off-white outline-none"

@@ -465,29 +465,33 @@ export default function PropertyDetail({ property, nextProperty, projectClips }:
             <div className="flex-1">
               <p className="eyebrow text-gold mb-4">Enquiries</p>
               <h2 className="display-serif-sm text-white mb-3">
-                Interested in {property.address}?
+                Talk to the principal handling {property.address}
               </h2>
               <p className="text-white/60 leading-relaxed max-w-lg">
-                This residence is offered through private enquiry. Detailed plans, specifications,
-                and availability are shared on request.
+                Every Kreebz listing is physically inspected — inspection notes, detailed
+                plans and availability are shared on request.
               </p>
             </div>
             <div className="shrink-0 flex flex-col items-start lg:items-end gap-5">
               <div className="text-left lg:text-right">
                 <p className="font-sans font-semibold text-white">{property.principal.name}</p>
                 <p className="text-white/50 text-sm">{property.principal.title}</p>
+              </div>
+              <div className="flex flex-wrap items-center gap-3">
                 {property.principal.phone && (
                   <a
-                    href={`tel:${property.principal.phone.replace(/\s+/g, "")}`}
-                    className="text-gold-light text-sm hover:text-gold transition-colors"
+                    href={`https://wa.me/${property.principal.phone.replace(/[^\d]/g, "")}?text=${encodeURIComponent(`Hello — I'm interested in ${property.address}.`)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-5 py-3 rounded-[var(--radius-sm)] border border-white/20 text-white text-sm hover:border-gold hover:text-gold transition-colors"
                   >
-                    {property.principal.phone}
+                    WhatsApp
                   </a>
                 )}
+                <Button onClick={() => setIsModalOpen(true)} className="px-8">
+                  Request a private viewing
+                </Button>
               </div>
-              <Button onClick={() => setIsModalOpen(true)} className="px-10">
-                Request Private Viewing
-              </Button>
             </div>
           </motion.div>
 

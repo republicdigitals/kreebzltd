@@ -11,7 +11,25 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1,
     },
     {
-      url: `${baseUrl}/projects/bourdillon`,
+      url: `${baseUrl}/developments`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/areas`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    ...['ikoyi', 'banana-island', 'victoria-island', 'eko-atlantic', 'lekki'].map((slug) => ({
+      url: `${baseUrl}/areas/${slug}`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
+    })),
+    {
+      url: `${baseUrl}/developments/bourdillon`,
       lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 0.9,
@@ -23,10 +41,22 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
     {
-      url: `${baseUrl}/services`,
+      url: `${baseUrl}/concierge`,
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/management`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/matchmaking`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.6,
     },
     {
       url: `${baseUrl}/about`,

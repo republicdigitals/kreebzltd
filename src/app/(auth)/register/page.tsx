@@ -88,6 +88,7 @@ export default function RegisterPage() {
               <label className="block text-sm font-medium text-off-white mb-2">Email Address</label>
               <input
                 type="email"
+                autoComplete="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -100,6 +101,7 @@ export default function RegisterPage() {
               <label className="block text-sm font-medium text-off-white mb-2">Password</label>
               <input
                 type="password"
+                autoComplete="new-password"
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
