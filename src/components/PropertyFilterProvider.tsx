@@ -7,6 +7,7 @@ import {
   useState,
   useCallback,
   useEffect,
+  useRef,
   ReactNode,
 } from "react";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
@@ -111,6 +112,20 @@ export function PropertyFilterProvider({ children, initialProperties }: { childr
   const searchParams = useSearchParams();
   const [filters, setFilters] = useState<PropertyFilters>(() => filtersFromParams(searchParams));
   const [activePropertyId, setActivePropertyId] = useState<string | null>(null);
+  const lastIntent = useRef(searchParams.get("intent"));
+
+  // Nav BUY/RENT links only change ?intent — re-sync status when it changes
+  useEffect(() => {
+    const intent = searchParams.get("intent");
+    if (!intent) {
+      lastIntent.current = null;
+      return;
+    }
+    if (intent !== lastIntent.current) {
+      lastIntent.current = intent;
+      setFilters((prev) => ({ ...prev, status: intentToStatus(intent) }));
+    }
+  }, [searchParams]);
 
   // Sync filter changes to URL query params
   useEffect(() => {

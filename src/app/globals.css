@@ -64,9 +64,9 @@
   /* Single shadow tier — DESIGN.md card hover float / search bar */
   --shadow-card: rgba(0, 0, 0, 0.02) 0 0 0 1px, rgba(0, 0, 0, 0.04) 0 2px 6px, rgba(0, 0, 0, 0.1) 0 4px 8px;
 
-  /* Navigation height — for sticky offsets (DESIGN.md top-nav: 80px) */
-  --nav-height-mobile: 64px;
-  --nav-height-desktop: 80px;
+  /* Navigation height — utility bar (40px) + main bar (72px mobile / 80px desktop) */
+  --nav-height-mobile: 112px;
+  --nav-height-desktop: 120px;
 }
 
 /* ==========================================================================

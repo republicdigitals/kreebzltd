@@ -31,7 +31,7 @@ export default function CookieConsent() {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 100, opacity: 0 }}
           transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
-          className="fixed bottom-4 left-4 right-4 md:left-auto md:right-8 md:w-[400px] z-[100] bg-obsidian border border-border rounded-[var(--radius-md)] shadow-card p-6"
+          className="fixed bottom-4 left-4 right-4 md:left-auto md:right-8 md:w-[400px] z-[65] bg-obsidian border border-border rounded-[var(--radius-md)] shadow-card p-6"
         >
           <button
             onClick={() => setIsVisible(false)}
@@ -49,7 +49,7 @@ export default function CookieConsent() {
           <div className="flex gap-4">
             <button
               onClick={acceptCookies}
-              className="flex-1 bg-gold hover:bg-gold-hover text-ink px-4 py-2.5 rounded-[var(--radius-sm)] text-sm font-medium transition-colors"
+              className="flex-1 bg-gold hover:bg-gold-hover text-ink-fixed px-4 py-2.5 rounded-[var(--radius-sm)] text-sm font-medium transition-colors"
             >
               Accept
             </button>

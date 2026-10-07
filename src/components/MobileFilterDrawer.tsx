@@ -55,7 +55,7 @@ export default function MobileFilterDrawer({ isOpen, onClose }: MobileFilterDraw
             className="fixed inset-y-0 right-0 z-[70] w-full max-w-sm bg-obsidian border-l border-border shadow-2xl flex flex-col lg:hidden"
           >
             <div className="flex items-center justify-between p-6 border-b border-border">
-              <h2 className="font-sans font-semibold text-xl text-off-white">Filters</h2>
+              <h2 className="font-serif font-light text-[24px] text-off-white">Filters</h2>
               <div className="flex items-center gap-4">
                 {activeFilterCount > 0 && (
                   <button
@@ -164,7 +164,7 @@ export default function MobileFilterDrawer({ isOpen, onClose }: MobileFilterDraw
             <div className="p-6 border-t border-border bg-obsidian-light">
               <button
                 onClick={onClose}
-                className="w-full py-4 bg-gold text-ink text-[15px] font-medium rounded-[var(--radius-sm)] hover:bg-gold-hover transition-colors"
+                className="w-full py-4 bg-gold text-ink-fixed text-[15px] font-medium rounded-[var(--radius-pill)] hover:bg-gold-hover transition-colors"
               >
                 View {total} Results
               </button>

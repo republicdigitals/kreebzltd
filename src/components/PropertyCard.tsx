@@ -69,7 +69,7 @@ export default function PropertyCard({
         </div>
 
         {/* Details — Minimal, Quiet Luxury Typography */}
-        <div className="px-6 pt-6 pb-8 flex-1 flex flex-col justify-between">
+        <div className="px-4 sm:px-6 pt-4 sm:pt-6 pb-6 sm:pb-8 flex-1 flex flex-col justify-between">
           <div>
             <div className="flex items-start justify-between gap-3 mb-2">
               <span className="shrink-0 px-3 py-1 text-[10px] uppercase tracking-[0.2em] bg-gold/10 border border-gold/30 rounded-[var(--radius-sm)] text-gold-light backdrop-blur-md">
@@ -81,7 +81,7 @@ export default function PropertyCard({
             </div>
 
             <RichTooltip content="Subject to contract and availability" position="top">
-              <p className="font-serif text-off-white font-light text-[clamp(24px,2.5vw,28px)] leading-[1.1] mt-5">
+              <p className="font-serif text-off-white font-light text-[clamp(24px,2.5vw,28px)] leading-[1.1] mt-4">
                 {property.price}
               </p>
             </RichTooltip>
@@ -94,7 +94,7 @@ export default function PropertyCard({
             </p>
           </div>
 
-          <div className="mt-8 pt-4 border-t border-border/50 flex items-center justify-between">
+          <div className="mt-6 sm:mt-8 pt-4 border-t border-border/50 flex items-center justify-between">
             <p className="uppercase text-[10px] tracking-[0.15em] text-muted">
               {property.beds} Beds &nbsp;|&nbsp; {property.baths} Baths
             </p>
