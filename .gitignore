@@ -44,3 +44,5 @@ yarn-error.log*
 next-env.d.ts
 # Playwright CLI output (may contain credentials)
 .playwright-cli/
+reel-recordings/
+kreebz-reel-*.mp4
