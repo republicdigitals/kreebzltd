@@ -15,7 +15,6 @@ export default function Hero() {
   const ruleRef = useRef<HTMLSpanElement>(null);
   const subRef = useRef<HTMLParagraphElement>(null);
   const buttonRef = useRef<HTMLDivElement>(null);
-  const cueRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   gsap.registerPlugin(ScrollTrigger, useGSAP);
@@ -103,11 +102,7 @@ export default function Hero() {
       y: 16,
       opacity: 0,
       duration: 0.9,
-    }, "-=0.5")
-    .from(cueRef.current, {
-      opacity: 0,
-      duration: 1,
-    }, "-=0.3");
+    }, "-=0.5");
 
   }, { scope: containerRef });
 
@@ -187,19 +182,6 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Scroll cue + coordinates — quiet chrome at the frame's edge */}
-      <div ref={cueRef} className="absolute bottom-[calc(6.5rem+env(safe-area-inset-bottom))] md:bottom-8 left-0 right-0 z-10 px-6 lg:px-12 flex items-end justify-between">
-        <p className="eyebrow text-[9px] tracking-[0.28em] text-white/35 hidden sm:block">
-          6.5244° N — 3.3792° E
-        </p>
-        <div className="flex flex-col items-center gap-3 mx-auto sm:mx-0">
-          <span className="eyebrow text-[9px] tracking-[0.3em] text-white/35">SCROLL</span>
-          <span className="block w-px h-10 bg-gradient-to-b from-white/40 to-transparent" />
-        </div>
-        <p className="eyebrow text-[9px] tracking-[0.28em] text-white/35 hidden sm:block">
-          IKOYI · VI · BANANA ISLAND
-        </p>
-      </div>
     </section>
   );
 }

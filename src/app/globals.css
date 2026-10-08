@@ -66,8 +66,8 @@
 
   /* Navigation height — utility bar (40px) + main bar (72px mobile / 80px desktop)
      + the iOS status bar inset when running as a home-screen app (0 in Safari) */
-  --nav-height-mobile: calc(112px + env(safe-area-inset-top, 0px));
-  --nav-height-desktop: 120px;
+  --nav-height-mobile: calc(72px + env(safe-area-inset-top, 0px));
+  --nav-height-desktop: 80px;
 }
 
 /* ==========================================================================

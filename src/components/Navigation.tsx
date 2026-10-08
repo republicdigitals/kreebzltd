@@ -117,35 +117,7 @@ export default function Navigation() {
             : "bg-panel/95 backdrop-blur-md border-white/10"
         }`}
       >
-        {/* Top Tier: Desktop Utilities — secondary pages + account */}
-        <div className="hidden md:flex justify-between items-center px-6 lg:px-12 h-10 border-b border-white/10 eyebrow text-[9px] tracking-[0.15em] text-white/60">
-          <div className="flex items-center gap-8">
-            <Link href="/areas" className={`whitespace-nowrap hover:text-gold transition-colors ${isLinkActive('/areas') ? 'text-gold' : ''}`}>AREAS</Link>
-            <Link href="/partnerships" className={`whitespace-nowrap hover:text-gold transition-colors ${isLinkActive('/partnerships') ? 'text-gold' : ''}`}>PARTNERSHIPS</Link>
-            <Link href="/about" className={`whitespace-nowrap hover:text-gold transition-colors ${isLinkActive('/about') ? 'text-gold' : ''}`}>ABOUT</Link>
-            <Link href="/contact" className={`whitespace-nowrap hover:text-gold transition-colors ${isLinkActive('/contact') ? 'text-gold' : ''}`}>CONTACT</Link>
-          </div>
-          <div className="flex items-center gap-8">
-            <Link href="/account/saved" className="flex items-center gap-2 whitespace-nowrap hover:text-gold transition-colors">
-              <Heart size={12} strokeWidth={1.5} /> FAVORITES
-            </Link>
-            <Link href={accountLink} className="flex items-center gap-2 whitespace-nowrap hover:text-gold transition-colors">
-              <User size={12} strokeWidth={1.5} /> ACCOUNT
-            </Link>
-          </div>
-        </div>
-
-        {/* Top Tier: Mobile Utilities */}
-        <div className="md:hidden flex justify-between items-center px-6 h-10 border-b border-white/10 eyebrow text-[9px] tracking-[0.15em] text-white/60">
-          <Link href={accountLink} className="flex items-center gap-2 hover:text-gold transition-colors">
-            <User size={12} strokeWidth={1.5} /> ACCOUNT
-          </Link>
-          <Link href="/account/saved" className="flex items-center hover:text-gold transition-colors">
-            <Heart size={14} strokeWidth={1.5} />
-          </Link>
-        </div>
-
-        {/* Bottom Tier: Main Nav */}
+        {/* Main Nav — single row */}
         <div className="max-w-[1400px] w-full mx-auto px-6 lg:px-12 relative z-10">
           <div className="flex items-center justify-between h-[72px] md:h-20">
             {/* Left: Hamburger (Mobile) / Primary Links (Desktop) */}
@@ -200,16 +172,46 @@ export default function Navigation() {
 
             {/* Right: Search (Mobile) / Utilities (Desktop) */}
             <div className="flex justify-end flex-1 items-center gap-8">
-              <Link
-                href="/properties"
-                onClick={() => setMenuOpen(false)}
-                className="md:hidden text-white hover:text-gold active:scale-[0.95] transition-all duration-300"
-                aria-label="Search properties"
-              >
-                <Search size={18} strokeWidth={1.5} />
-              </Link>
+              <div className="md:hidden flex items-center gap-5">
+                <Link
+                  href="/account/saved"
+                  className="text-white hover:text-gold active:scale-[0.95] transition-all duration-300"
+                  aria-label="Saved properties"
+                >
+                  <Heart size={17} strokeWidth={1.5} />
+                </Link>
+                <Link
+                  href={accountLink}
+                  className="text-white hover:text-gold active:scale-[0.95] transition-all duration-300"
+                  aria-label="Account"
+                >
+                  <User size={17} strokeWidth={1.5} />
+                </Link>
+                <Link
+                  href="/properties"
+                  onClick={() => setMenuOpen(false)}
+                  className="text-white hover:text-gold active:scale-[0.95] transition-all duration-300"
+                  aria-label="Search properties"
+                >
+                  <Search size={18} strokeWidth={1.5} />
+                </Link>
+              </div>
 
               <div className="hidden md:flex items-center gap-6 xl:gap-8">
+                <Link
+                  href="/account/saved"
+                  className="text-white/80 hover:text-gold active:scale-[0.95] transition-all duration-300"
+                  aria-label="Saved properties"
+                >
+                  <Heart size={15} strokeWidth={1.5} />
+                </Link>
+                <Link
+                  href={accountLink}
+                  className="text-white/80 hover:text-gold active:scale-[0.95] transition-all duration-300"
+                  aria-label="Account"
+                >
+                  <User size={15} strokeWidth={1.5} />
+                </Link>
                 <Link href="/concierge" className={`eyebrow text-[10px] tracking-[0.2em] whitespace-nowrap transition-colors duration-300 ${isLinkActive('/concierge') ? 'text-gold' : 'text-white/80 hover:text-gold'}`}>CONCIERGE</Link>
                 <Link
                   href="/contact"
@@ -242,7 +244,7 @@ export default function Navigation() {
               animate={{ y: 0 }}
               exit={{ y: "100%" }}
               transition={{ duration: 0.45, ease: [0.32, 0.72, 0, 1] }}
-              className="fixed inset-x-0 bottom-0 top-[calc(4rem+env(safe-area-inset-top))] z-[58] bg-obsidian border-t border-border rounded-t-3xl flex flex-col md:hidden overflow-hidden"
+              className="fixed inset-x-0 bottom-0 top-[calc(4.5rem+env(safe-area-inset-top))] z-[58] bg-obsidian border-t border-border rounded-t-3xl flex flex-col md:hidden overflow-hidden"
             >
               {/* Grab handle */}
               <div className="flex justify-center pt-3 pb-1 shrink-0">

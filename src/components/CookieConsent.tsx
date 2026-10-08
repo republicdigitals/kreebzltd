@@ -31,7 +31,7 @@ export default function CookieConsent() {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 100, opacity: 0 }}
           transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
-          className="fixed bottom-[max(1rem,calc(env(safe-area-inset-bottom)+8px))] left-4 right-4 md:left-auto md:right-8 md:w-[400px] z-[65] bg-obsidian border border-border rounded-[var(--radius-md)] shadow-card p-6"
+          className="fixed bottom-[max(1rem,calc(env(safe-area-inset-bottom)+8px))] left-4 right-4 md:right-auto md:left-8 md:w-[400px] z-[65] bg-obsidian border border-border rounded-[var(--radius-md)] shadow-card p-6"
         >
           <button
             onClick={() => setIsVisible(false)}
