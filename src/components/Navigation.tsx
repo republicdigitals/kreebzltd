@@ -119,12 +119,12 @@ export default function Navigation() {
       >
         {/* Main Nav — single row */}
         <div className="max-w-[1400px] w-full mx-auto px-6 lg:px-12 relative z-10">
-          <div className="flex items-center justify-between h-[72px] md:h-20">
+          <div className="relative flex items-center justify-between h-[72px] lg:h-20">
             {/* Left: Hamburger (Mobile) / Primary Links (Desktop) */}
-            <div className="flex-1 flex items-center gap-6">
+            <div className="flex-1 flex items-center gap-6 min-w-0">
               <button
                 onClick={() => setMenuOpen(!menuOpen)}
-                className="md:hidden group flex items-center gap-4 text-white hover:text-gold active:scale-[0.95] transition-all duration-300 eyebrow"
+                className="lg:hidden group flex items-center gap-4 text-white hover:text-gold active:scale-[0.95] transition-all duration-300 eyebrow"
                 aria-label="Toggle menu"
               >
                 <div className="relative w-6 h-3 flex flex-col justify-between">
@@ -133,7 +133,7 @@ export default function Navigation() {
                 </div>
               </button>
 
-              <div className="hidden md:flex items-center gap-6 xl:gap-8">
+              <div className="hidden lg:flex items-center gap-6 xl:gap-8">
                 <Link
                   href="/properties"
                   onClick={() => setMenuOpen(false)}
@@ -151,8 +151,8 @@ export default function Navigation() {
               </div>
             </div>
 
-            {/* Center: Logo */}
-            <div className="flex justify-center flex-1">
+            {/* Center: Logo — absolutely centered so uneven side clusters can't push it off-axis */}
+            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
               <Link
                 href="/"
                 onClick={() => setMenuOpen(false)}
@@ -165,14 +165,14 @@ export default function Navigation() {
                   width={96}
                   height={88}
                   priority
-                  className="h-10 w-auto md:h-12 object-contain"
+                  className="h-10 w-auto lg:h-12 object-contain"
                 />
               </Link>
             </div>
 
             {/* Right: Search (Mobile) / Utilities (Desktop) */}
-            <div className="flex justify-end flex-1 items-center gap-8">
-              <div className="md:hidden flex items-center gap-5">
+            <div className="flex justify-end flex-1 items-center gap-8 min-w-0">
+              <div className="lg:hidden flex items-center gap-5">
                 <Link
                   href="/account/saved"
                   className="text-white hover:text-gold active:scale-[0.95] transition-all duration-300"
@@ -197,7 +197,7 @@ export default function Navigation() {
                 </Link>
               </div>
 
-              <div className="hidden md:flex items-center gap-6 xl:gap-8">
+              <div className="hidden lg:flex items-center gap-6 xl:gap-8">
                 <Link
                   href="/account/saved"
                   className="text-white/80 hover:text-gold active:scale-[0.95] transition-all duration-300"
@@ -235,7 +235,7 @@ export default function Navigation() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="fixed inset-0 z-[55] bg-black/70 backdrop-blur-sm md:hidden"
+              className="fixed inset-0 z-[55] bg-black/70 backdrop-blur-sm lg:hidden"
               onClick={() => setMenuOpen(false)}
             />
             {/* Bottom sheet */}
@@ -244,7 +244,7 @@ export default function Navigation() {
               animate={{ y: 0 }}
               exit={{ y: "100%" }}
               transition={{ duration: 0.45, ease: [0.32, 0.72, 0, 1] }}
-              className="fixed inset-x-0 bottom-0 top-[calc(4.5rem+env(safe-area-inset-top))] z-[58] bg-obsidian border-t border-border rounded-t-3xl flex flex-col md:hidden overflow-hidden"
+              className="fixed inset-x-0 bottom-0 top-[calc(4.5rem+env(safe-area-inset-top))] z-[58] bg-obsidian border-t border-border rounded-t-3xl flex flex-col lg:hidden overflow-hidden"
             >
               {/* Grab handle */}
               <div className="flex justify-center pt-3 pb-1 shrink-0">
