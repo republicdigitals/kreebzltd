@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { X } from "lucide-react";
+import { usePropertyFilters } from "./PropertyFilterProvider";
 
 interface RecentEntry {
   slug: string;
@@ -17,6 +18,7 @@ const KEY = "kreebz-recently-viewed";
 
 export default function RecentlyViewed() {
   const [entries, setEntries] = useState<RecentEntry[]>([]);
+  const { all } = usePropertyFilters();
 
   useEffect(() => {
     try {
@@ -36,7 +38,20 @@ export default function RecentlyViewed() {
     setEntries([]);
   };
 
-  if (entries.length === 0) return null;
+  // Drop entries whose listings were archived or deleted since the visit —
+  // otherwise the strip links into 404s. Also prune the stored copy.
+  const validSlugs = new Set(all.map((p) => p.slug));
+  const visible = entries.filter((e) => validSlugs.size === 0 || validSlugs.has(e.slug));
+
+  useEffect(() => {
+    if (validSlugs.size > 0 && visible.length !== entries.length) {
+      try {
+        localStorage.setItem(KEY, JSON.stringify(visible));
+      } catch {}
+    }
+  }, [visible.length, entries.length, validSlugs.size]); // eslint-disable-line react-hooks/exhaustive-deps -- prune once when the portfolio loads
+
+  if (visible.length === 0) return null;
 
   return (
     <div className="border-b border-border/20 bg-obsidian">
@@ -53,7 +68,7 @@ export default function RecentlyViewed() {
           </button>
         </div>
         <div className="flex gap-3 overflow-x-auto pb-1 -mx-1 px-1">
-          {entries.map((e) => (
+          {visible.map((e) => (
             <Link
               key={e.slug}
               href={`/property/${e.slug}`}
