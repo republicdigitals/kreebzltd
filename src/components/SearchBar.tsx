@@ -99,7 +99,7 @@ export default function SearchBar({
                 <span className="text-off-white">{total}</span> residence{total === 1 ? "" : "s"}
               </p>
 
-              <div className="flex flex-wrap items-center gap-x-3 gap-y-2 lg:gap-4">
+              <div className="ml-auto flex flex-wrap items-center justify-end gap-x-3 gap-y-2 lg:gap-4">
                 {activeFilterCount > 0 && (
                   <button
                     onClick={clearFilters}
