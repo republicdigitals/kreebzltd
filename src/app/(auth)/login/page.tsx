@@ -36,7 +36,17 @@ function LoginForm() {
       } else {
         // Full document navigation: guarantees the fresh session cookie is
         // sent and avoids stale client-side router cache after sign-in.
-        const target = callbackUrl.startsWith("/") && !callbackUrl.startsWith("//") ? callbackUrl : "/account";
+        // URL-parse the callback so backslash tricks ("/\\evil.com" parses
+        // as protocol-relative) can’t smuggle an external redirect through.
+        let target = "/account";
+        try {
+          const url = new URL(callbackUrl, window.location.origin);
+          if (url.origin === window.location.origin) {
+            target = url.pathname + url.search + url.hash;
+          }
+        } catch {
+          // malformed input — fall through to the default
+        }
         window.location.assign(target);
       }
     } catch {
