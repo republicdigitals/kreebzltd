@@ -9,9 +9,10 @@ interface ViewingModalProps {
   isOpen: boolean;
   onClose: () => void;
   propertyTitle: string;
+  propertyRef?: string;
 }
 
-export default function ViewingModal({ isOpen, onClose, propertyTitle }: ViewingModalProps) {
+export default function ViewingModal({ isOpen, onClose, propertyTitle, propertyRef }: ViewingModalProps) {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [errorMsg, setErrorMsg] = useState("");
 
@@ -28,7 +29,7 @@ export default function ViewingModal({ isOpen, onClose, propertyTitle }: Viewing
     const data = {
       name: formData.get("name"),
       email: formData.get("email"),
-      interest: `Private Viewing Request: ${propertyTitle}`,
+      interest: `Private Viewing Request: ${propertyRef ?? propertyTitle}`,
       website: formData.get("website"), // Honeypot
     };
 

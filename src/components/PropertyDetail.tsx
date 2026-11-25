@@ -60,6 +60,10 @@ export default function PropertyDetail({ property, nextProperty, projectClips }:
   useScrollLock(isLightboxOpen);
 
   const hasFloorPlans = property.floorPlans && property.floorPlans.length > 0;
+  const addressPrivate = property.addressPublic === false;
+  const displayAddress = addressPrivate
+    ? `${property.neighbourhood}, ${property.city}`
+    : property.address;
   const project = getProjectBySlug(property.projectSlug);
   const siteClips = projectClips ?? project?.siteMedia.clips ?? [];
 
@@ -89,14 +93,39 @@ export default function PropertyDetail({ property, nextProperty, projectClips }:
     setIsLightboxOpen(true);
   };
 
+  const formatSqm = (v: number) => `${v.toLocaleString()} m²`;
   const specRows = [
     { icon: Tag, label: "Property Status", value: property.status },
     { icon: Home, label: "Property Type", value: property.type },
-    { icon: BedDouble, label: "Bedrooms", value: `${property.beds}` },
-    { icon: Bath, label: "Bathrooms", value: `${property.baths}` },
+    property.beds > 0 && { icon: BedDouble, label: "Bedrooms", value: `${property.beds}` },
+    property.baths > 0 && { icon: Bath, label: "Bathrooms", value: `${property.baths}` },
+    property.internalSqm && { icon: Maximize2, label: "Internal size", value: formatSqm(property.internalSqm) },
+    property.landSqm && { icon: Maximize2, label: "Land size", value: formatSqm(property.landSqm) },
+    ((property.staffBeds ?? 0) > 0 || (property.staffBaths ?? 0) > 0) && {
+      icon: BedDouble,
+      label: "Staff quarters",
+      value: [
+        (property.staffBeds ?? 0) > 0 ? `${property.staffBeds} bed` : "",
+        (property.staffBaths ?? 0) > 0 ? `${property.staffBaths} bath` : "",
+      ].filter(Boolean).join(" / "),
+    },
+    (((property.parkingCount ?? 0) > 0) || property.parkingType) && {
+      icon: Home,
+      label: "Parking",
+      value: [
+        (property.parkingCount ?? 0) > 0 ? `${property.parkingCount}` : "",
+        property.parkingType || "",
+      ].filter(Boolean).join(" · "),
+    },
+    property.furnishing && { icon: Home, label: "Furnishing", value: property.furnishing },
     { icon: MapPin, label: "Neighbourhood", value: `${property.neighbourhood}, ${property.city}` },
-    { icon: Banknote, label: "Property Price", value: property.price, highlight: true },
-  ];
+    {
+      icon: Banknote,
+      label: property.status === "For Lease" ? "Lease Price" : "Property Price",
+      value: property.priceOnRequest ? "Price on request" : property.price,
+      highlight: true,
+    },
+  ].filter(Boolean) as { icon: typeof Tag; label: string; value: string; highlight?: boolean }[];
 
   return (
     <div className="bg-obsidian">
@@ -105,7 +134,7 @@ export default function PropertyDetail({ property, nextProperty, projectClips }:
         {photoGallery[0] ? (
           <Image
             src={photoGallery[0]}
-            alt={`${property.address} main photo`}
+            alt={`${displayAddress} main photo`}
             fill
             priority
             className="object-cover"
@@ -138,7 +167,7 @@ export default function PropertyDetail({ property, nextProperty, projectClips }:
               <MapPin size={13} strokeWidth={1.5} />
               {property.neighbourhood} &mdash; {property.city}
             </p>
-            <h1 className="display-serif text-white max-w-4xl">{property.address}</h1>
+            <h1 className="display-serif text-white max-w-4xl">{displayAddress}</h1>
           </motion.div>
         </div>
 
@@ -188,7 +217,7 @@ export default function PropertyDetail({ property, nextProperty, projectClips }:
               {photoGallery[1] || property.image ? (
                 <Image
                   src={photoGallery[1] ?? property.image!}
-                  alt={`${property.address} exterior`}
+                  alt={`${displayAddress} exterior`}
                   fill
                   className="object-cover"
                   sizes="(max-width: 1024px) 100vw, 50vw"
@@ -289,6 +318,7 @@ export default function PropertyDetail({ property, nextProperty, projectClips }:
       </section>
 
       {/* ---------- 4. Interior details + floor plans ---------- */}
+      {(property.rooms.length > 0 || hasFloorPlans) && (
       <section className="pb-10 lg:pb-14">
         <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
           <motion.div
@@ -300,6 +330,7 @@ export default function PropertyDetail({ property, nextProperty, projectClips }:
                 <p className="eyebrow text-gold mb-4">Inside The Home</p>
                 <h2 className="display-serif-sm text-off-white">Interior Details</h2>
               </div>
+              {property.rooms.length > 0 && (
               <div className="space-y-10">
                 {property.rooms.map((room) => (
                   <div key={room.heading}>
@@ -313,6 +344,7 @@ export default function PropertyDetail({ property, nextProperty, projectClips }:
                   </div>
                 ))}
               </div>
+              )}
             </div>
 
             {hasFloorPlans && (
@@ -347,6 +379,120 @@ export default function PropertyDetail({ property, nextProperty, projectClips }:
           </motion.div>
         </div>
       </section>
+      )}
+
+      {/* ---------- 4.5 Features, utilities & documentation — renders only for data that exists ---------- */}
+      {(() => {
+        const utilityRows = [
+          property.powerDetails && { label: "Power", value: property.powerDetails },
+          property.waterDetails && { label: "Water", value: property.waterDetails },
+          property.internetDetails && { label: "Internet", value: property.internetDetails },
+          property.securityDetails && { label: "Security", value: property.securityDetails },
+          property.serviceCharge && { label: "Service charge", value: property.serviceCharge },
+        ].filter(Boolean) as { label: string; value: string }[];
+        const legalRows = [
+          property.titleStatus && { label: "Title", value: property.titleStatus },
+          property.tenure && { label: "Tenure", value: property.tenure },
+          property.completionStatus && { label: "Completion", value: property.completionStatus },
+          property.handoverDate && { label: "Handover", value: property.handoverDate },
+          property.availabilityNote && { label: "Availability", value: property.availabilityNote },
+          property.inspectionInfo && { label: "Inspections", value: property.inspectionInfo },
+        ].filter(Boolean) as { label: string; value: string }[];
+        const lists = [
+          property.amenities?.length ? { title: "Amenities", items: property.amenities } : null,
+          property.inclusions?.length ? { title: "Inclusions", items: property.inclusions } : null,
+          property.exclusions?.length ? { title: "Exclusions", items: property.exclusions } : null,
+        ].filter(Boolean) as { title: string; items: string[] }[];
+        if (utilityRows.length === 0 && legalRows.length === 0 && lists.length === 0) return null;
+        return (
+          <section className="pb-10 lg:pb-14">
+            <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
+              <motion.div
+                {...fadeUp}
+                className="bg-surface border border-border rounded-[var(--radius-lg)] p-8 lg:p-12 shadow-[var(--shadow-card)] space-y-12"
+              >
+                {lists.length > 0 && (
+                  <div className={`grid grid-cols-1 gap-8 ${lists.length > 1 ? "md:grid-cols-" + Math.min(lists.length, 3) : ""}`}>
+                    {lists.map((list) => (
+                      <div key={list.title}>
+                        <h3 className="eyebrow text-gold mb-5">{list.title}</h3>
+                        <ul className="space-y-2.5">
+                          {list.items.map((item) => (
+                            <li key={item} className="flex items-start gap-3 text-body text-off-white/85">
+                              <span className="mt-2 w-1.5 h-1.5 rounded-full bg-gold shrink-0" />
+                              {item}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                {utilityRows.length > 0 && (
+                  <div>
+                    <h3 className="eyebrow text-gold mb-5">Utilities & services</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10">
+                      {utilityRows.map((row) => (
+                        <div key={row.label} className="py-3.5 border-b border-border">
+                          <p className="text-xs uppercase tracking-[0.15em] text-muted mb-1">{row.label}</p>
+                          <p className="text-body text-off-white/85">{row.value}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {legalRows.length > 0 && (
+                  <div>
+                    <h3 className="eyebrow text-gold mb-5">Documentation & availability</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10">
+                      {legalRows.map((row) => (
+                        <div key={row.label} className="py-3.5 border-b border-border">
+                          <p className="text-xs uppercase tracking-[0.15em] text-muted mb-1">{row.label}</p>
+                          <p className="text-body text-off-white/85">{row.value}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </motion.div>
+            </div>
+          </section>
+        );
+      })()}
+
+      {/* ---------- 4.6 Lease terms — only for lease listings with lease data ---------- */}
+      {property.status === "For Lease" && (() => {
+        const leaseRows = [
+          property.leaseAnnualRent && { label: "Annual rent", value: property.leaseAnnualRent },
+          property.leaseYearsUpfront != null && { label: "Years upfront", value: `${property.leaseYearsUpfront}` },
+          property.leaseDeposit && { label: "Deposit", value: property.leaseDeposit },
+          property.leaseAgencyFeePct != null && { label: "Agency fee", value: property.leaseAgencyFeePct === 0 ? "Waived" : `${property.leaseAgencyFeePct}%` },
+          property.leaseLegalFeePct != null && { label: "Legal fee", value: property.leaseLegalFeePct === 0 ? "Waived" : `${property.leaseLegalFeePct}%` },
+          property.leaseRenewalTerms && { label: "Renewal", value: property.leaseRenewalTerms },
+        ].filter(Boolean) as { label: string; value: string }[];
+        if (leaseRows.length === 0) return null;
+        return (
+          <section className="pb-10 lg:pb-14">
+            <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
+              <motion.div
+                {...fadeUp}
+                className="bg-obsidian-light rounded-[var(--radius-lg)] p-8 lg:p-12"
+              >
+                <p className="eyebrow text-gold mb-4">Lease Terms</p>
+                <h2 className="display-serif-sm text-off-white mb-8">What the lease looks like</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10">
+                  {leaseRows.map((row) => (
+                    <div key={row.label} className="py-3.5 border-b border-border">
+                      <p className="text-xs uppercase tracking-[0.15em] text-muted mb-1">{row.label}</p>
+                      <p className="text-body text-off-white/85">{row.value}</p>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            </div>
+          </section>
+        );
+      })()}
 
       {/* ---------- 5. Gallery ---------- */}
       {photoCount > 0 && (
@@ -370,7 +516,7 @@ export default function PropertyDetail({ property, nextProperty, projectClips }:
                 >
                   <Image
                     src={src}
-                    alt={`${property.address} — photo ${i + 1}`}
+                    alt={`${displayAddress} — photo ${i + 1}`}
                     fill
                     className="object-cover group-hover:scale-[1.03] transition-transform duration-700"
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
@@ -468,7 +614,7 @@ export default function PropertyDetail({ property, nextProperty, projectClips }:
             <div className="flex-1">
               <p className="eyebrow text-gold mb-4">Enquiries</p>
               <h2 className="display-serif-sm text-white mb-3">
-                Talk to the principal handling {property.address}
+                Talk to the principal handling {displayAddress}
               </h2>
               <p className="text-white/60 leading-relaxed max-w-lg">
                 Every Kreebz listing is physically inspected — inspection notes, detailed
@@ -521,7 +667,8 @@ export default function PropertyDetail({ property, nextProperty, projectClips }:
       <ViewingModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        propertyTitle={property.address}
+        propertyTitle={displayAddress}
+        propertyRef={`${property.address} [${property.slug}]`}
       />
 
       {/* ---------- Lightbox ---------- */}
@@ -563,7 +710,7 @@ export default function PropertyDetail({ property, nextProperty, projectClips }:
                   {photoGallery[currentPhoto] ? (
                     <Image
                       src={photoGallery[currentPhoto]}
-                      alt={`${property.address} — photo ${currentPhoto + 1}`}
+                      alt={`${displayAddress} — photo ${currentPhoto + 1}`}
                       fill
                       quality={100}
                       className="object-contain"
@@ -601,7 +748,7 @@ export default function PropertyDetail({ property, nextProperty, projectClips }:
         <div className="flex flex-col min-w-0">
           <span className="text-[10px] uppercase tracking-[0.15em] text-muted mb-0.5">Price</span>
           <span className="font-sans font-bold text-lg text-off-white leading-none truncate">
-            {property.price}
+            {property.priceOnRequest ? "On request" : property.price}
           </span>
         </div>
         <Button onClick={() => setIsModalOpen(true)} className="px-6 py-3 text-sm shrink-0">

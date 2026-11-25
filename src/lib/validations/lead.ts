@@ -13,7 +13,7 @@ export const createLeadSchema = z.object({
   name: z.string().trim().min(1).max(120).transform(noMarkup),
   email: z.string().trim().email().max(254),
   phone: z.string().trim().max(40).transform(noMarkup).optional(),
-  interest: z.string().trim().min(1).max(60),
+  interest: z.string().trim().min(1).max(200),
   message: z.string().trim().max(5000).optional(),
   propertyId: z.string().trim().max(80).optional(),
 

@@ -39,13 +39,45 @@ const basePropertySchema = z.object({
   floorPlans: z.any().default([]).nullable(),
   principal: z.any().default({}),
   publicationStatus: z.nativeEnum(PublicationStatus).default("DRAFT"),
+  internalSqm: z.number().nonnegative().nullable().optional(),
+  landSqm: z.number().nonnegative().nullable().optional(),
+  staffBeds: z.number().int().nonnegative().nullable().optional(),
+  staffBaths: z.number().int().nonnegative().nullable().optional(),
+  parkingCount: z.number().int().nonnegative().nullable().optional(),
+  parkingType: z.string().nullable().optional(),
+  furnishing: z.string().nullable().optional(),
+  amenities: z.array(z.string()).default([]),
+  inclusions: z.array(z.string()).default([]),
+  exclusions: z.array(z.string()).default([]),
+  powerDetails: z.string().nullable().optional(),
+  waterDetails: z.string().nullable().optional(),
+  internetDetails: z.string().nullable().optional(),
+  securityDetails: z.string().nullable().optional(),
+  serviceCharge: z.string().nullable().optional(),
+  priceCurrency: z.string().nullable().optional(),
+  priceNegotiable: z.boolean().default(false),
+  priceOnRequest: z.boolean().default(false),
+  priceVerifiedAt: z.coerce.date().nullable().optional(),
+  availabilityNote: z.string().nullable().optional(),
+  inspectionInfo: z.string().nullable().optional(),
+  titleStatus: z.string().nullable().optional(),
+  tenure: z.string().nullable().optional(),
+  completionStatus: z.string().nullable().optional(),
+  handoverDate: z.string().nullable().optional(),
+  addressPublic: z.boolean().default(true),
+  leaseAnnualRent: z.string().nullable().optional(),
+  leaseYearsUpfront: z.number().int().nonnegative().nullable().optional(),
+  leaseDeposit: z.string().nullable().optional(),
+  leaseAgencyFeePct: z.number().nonnegative().nullable().optional(),
+  leaseLegalFeePct: z.number().nonnegative().nullable().optional(),
+  leaseRenewalTerms: z.string().nullable().optional(),
   media: z.array(mediaMutationSchema).optional()
 });
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const publicationRefinement = (data: any, ctx: z.RefinementCtx) => {
   if (data.publicationStatus === "PUBLISHED") {
-    if (!data.price || data.price.trim() === "") {
+    if (!data.priceOnRequest && (!data.price || data.price.trim() === "")) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: "Price is required to publish",
