@@ -30,7 +30,6 @@ export default function SearchBar({
     activeFilterCount,
   } = usePropertyFilters();
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
-  const [showChip, setShowChip] = useState(true);
   const searchRef = useRef<HTMLInputElement>(null);
   const [localQuery, setLocalQuery] = useState(filters.query);
 
@@ -50,10 +49,6 @@ export default function SearchBar({
     }
   }, [filters.query, localQuery]);
 
-  useEffect(() => {
-    if (!showChip) searchRef.current?.focus();
-  }, [showChip]);
-
   const toggle = (name: string) => {
     setOpenDropdown((current) => (current === name ? null : name));
   };
@@ -65,18 +60,6 @@ export default function SearchBar({
           {/* Row 1: search field + meta controls */}
           <div className="flex flex-col lg:flex-row lg:items-center gap-3 lg:gap-8">
             <div className="flex items-center gap-3 px-4 lg:px-5 py-3 flex-1 max-w-xl bg-obsidian-light border border-border rounded-full focus-within:border-gold/50 transition-colors duration-300">
-              {showChip && (
-                <span className="hidden lg:inline-flex items-center gap-2 px-3 py-1 shrink-0 bg-obsidian border border-gold/30 rounded-full text-gold-light uppercase text-[11px] tracking-[0.1em]">
-                  Lagos, Nigeria
-                  <button
-                    onClick={() => setShowChip(false)}
-                    aria-label="Remove location filter"
-                    className="hover:text-gold transition-colors"
-                  >
-                    <X size={13} />
-                  </button>
-                </span>
-              )}
               <input
                 ref={searchRef}
                 type="text"

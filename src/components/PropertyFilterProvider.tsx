@@ -7,7 +7,6 @@ import {
   useState,
   useCallback,
   useEffect,
-  useRef,
   ReactNode,
 } from "react";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
@@ -112,19 +111,18 @@ export function PropertyFilterProvider({ children, initialProperties }: { childr
   const searchParams = useSearchParams();
   const [filters, setFilters] = useState<PropertyFilters>(() => filtersFromParams(searchParams));
   const [activePropertyId, setActivePropertyId] = useState<string | null>(null);
-  const lastIntent = useRef(searchParams.get("intent"));
 
-  // Nav BUY/RENT links only change ?intent — re-sync status when it changes
+  // The URL is the single source of truth: re-sync state whenever the
+  // params change — nav clicks, manual filtering, AND browser Back/Forward.
+  // Manual filtering writes its params into the URL, so a bare /properties
+  // can only come from explicit portfolio navigation and resets to defaults.
   useEffect(() => {
-    const intent = searchParams.get("intent");
-    if (!intent) {
-      lastIntent.current = null;
-      return;
-    }
-    if (intent !== lastIntent.current) {
-      lastIntent.current = intent;
-      setFilters((prev) => ({ ...prev, status: intentToStatus(intent) }));
-    }
+    const urlFilters = filtersFromParams(searchParams);
+    setFilters((prev) => {
+      const keys = Object.keys(defaultFilters) as (keyof PropertyFilters)[];
+      const unchanged = keys.every((k) => prev[k] === urlFilters[k]);
+      return unchanged ? prev : urlFilters;
+    });
   }, [searchParams]);
 
   // Sync filter changes to URL query params

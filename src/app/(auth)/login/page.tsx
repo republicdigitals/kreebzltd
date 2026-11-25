@@ -2,39 +2,56 @@
 
 import { useState } from "react";
 import { signIn } from "next-auth/react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Navigation from "@/components/Navigation";
 import { Suspense } from "react";
+import { Loader2 } from "lucide-react";
 
 function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
   const searchParams = useSearchParams();
   const justRegistered = searchParams.get("registered") === "1";
+  const callbackUrl = searchParams.get("callbackUrl") ?? "/account";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (loading) return;
     setLoading(true);
     setError("");
 
-    const result = await signIn("credentials", {
-      redirect: false,
-      email,
-      password,
-    });
+    try {
+      const result = await signIn("credentials", {
+        redirect: false,
+        email,
+        password,
+      });
 
-    if (result?.error) {
-      setError("Invalid email or password");
+      if (result?.error) {
+        setError("Invalid email or password");
+        setLoading(false);
+      } else {
+        // Full document navigation: guarantees the fresh session cookie is
+        // sent and avoids stale client-side router cache after sign-in.
+        // URL-parse the callback so backslash tricks ("/\\evil.com" parses
+        // as protocol-relative) can’t smuggle an external redirect through.
+        let target = "/account";
+        try {
+          const url = new URL(callbackUrl, window.location.origin);
+          if (url.origin === window.location.origin) {
+            target = url.pathname + url.search + url.hash;
+          }
+        } catch {
+          // malformed input — fall through to the default
+        }
+        window.location.assign(target);
+      }
+    } catch {
+      setError("Sign-in failed. Check your connection and try again.");
       setLoading(false);
-    } else {
-      // Refresh the router to let Next.js re-fetch the session
-      router.refresh();
-      // Route directly to the user's account dashboard
-      router.push("/account");
     }
   };
 
@@ -68,6 +85,7 @@ function LoginForm() {
               <input
                 type="email"
                 autoComplete="email"
+                disabled={loading}
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -81,6 +99,7 @@ function LoginForm() {
               <input
                 type="password"
                 autoComplete="current-password"
+                disabled={loading}
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -94,6 +113,7 @@ function LoginForm() {
               disabled={loading}
               className="w-full bg-gold hover:bg-gold-hover text-ink font-medium py-3 px-4 rounded-[var(--radius-sm)] transition-colors flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed mt-4"
             >
+              {loading && <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />}
               {loading ? "Signing in..." : "Sign In"}
             </button>
           </form>
