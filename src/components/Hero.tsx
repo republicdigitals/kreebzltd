@@ -34,7 +34,7 @@ export default function Hero() {
             Kreebz Ltd <span aria-hidden="true">*</span> Lagos
           </motion.p>
 
-          <div className="my-14 max-w-[680px] lg:my-0">
+          <div className="my-10 max-w-[680px] lg:my-0">
             <motion.h1
               initial={reduceMotion ? false : { opacity: 0, y: 22 }}
               animate={{ opacity: 1, y: 0 }}
