@@ -8,6 +8,7 @@ import PropertyListings from "./PropertyListings";
 import MapPlaceholder from "./MapPlaceholder";
 import FilterSidebar from "./FilterSidebar";
 import MobileFilterDrawer from "./MobileFilterDrawer";
+import RecentlyViewed from "./RecentlyViewed";
 
 type ViewMode = "list" | "split";
 
@@ -56,6 +57,8 @@ export default function PropertiesClient() {
           onOpenFilters={() => setIsMobileFiltersOpen(true)}
         />
       </div>
+
+      <RecentlyViewed />
 
       {/* Content area: list or split */}
       <div className="flex-1 flex max-w-[1600px] mx-auto w-full">

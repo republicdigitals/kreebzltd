@@ -1,5 +1,6 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import PasswordChangeForm from "@/components/account/PasswordChangeForm";
 
 export const metadata = {
   title: "Profile | Kreebz",
@@ -39,6 +40,8 @@ export default async function AccountPage() {
           </p>
         </div>
       </div>
+
+      <PasswordChangeForm />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-4">
         <a href="/management" className="group block bg-surface/30 border border-border/20 p-6 rounded-xl hover:border-gold/30 transition-all">

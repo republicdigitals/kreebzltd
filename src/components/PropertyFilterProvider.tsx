@@ -29,6 +29,8 @@ export interface PropertyFilters {
 interface FilterContextValue {
   filters: PropertyFilters;
   filtered: Property[];
+  /** The full unfiltered portfolio — e.g. for validating recently-viewed slugs. */
+  all: Property[];
   total: number;
   activeFilterCount: number;
   setFilter: <K extends keyof PropertyFilters>(key: K, value: PropertyFilters[K]) => void;
@@ -212,6 +214,7 @@ export function PropertyFilterProvider({ children, initialProperties }: { childr
     () => ({
       filters,
       filtered,
+      all: initialProperties,
       total: filtered.length,
       activeFilterCount,
       setFilter,
@@ -224,6 +227,7 @@ export function PropertyFilterProvider({ children, initialProperties }: { childr
     [
       filters,
       filtered,
+      initialProperties,
       activeFilterCount,
       setFilter,
       clearFilters,

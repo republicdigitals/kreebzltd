@@ -1007,3 +1007,29 @@ select:focus-visible {
     border-color: #ffffff;
   }
 }
+
+/* ---------- Print: clean spec sheet for property pages ---------- */
+@media print {
+  header,
+  footer,
+  nav,
+  [class*="sticky"],
+  button,
+  .print-hidden {
+    display: none !important;
+  }
+  body {
+    background: #fff !important;
+    color: #111 !important;
+  }
+  section,
+  div {
+    box-shadow: none !important;
+  }
+  /* framer-motion starts sections at opacity: 0 until scrolled into view;
+     printing before scrolling would otherwise produce blank pages */
+  [style] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
