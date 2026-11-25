@@ -60,6 +60,10 @@ export default function PropertyDetail({ property, nextProperty, projectClips }:
   useScrollLock(isLightboxOpen);
 
   const hasFloorPlans = property.floorPlans && property.floorPlans.length > 0;
+  const addressPrivate = property.addressPublic === false;
+  const displayAddress = addressPrivate
+    ? `${property.neighbourhood}, ${property.city}`
+    : property.address;
   const project = getProjectBySlug(property.projectSlug);
   const siteClips = projectClips ?? project?.siteMedia.clips ?? [];
 
@@ -97,15 +101,21 @@ export default function PropertyDetail({ property, nextProperty, projectClips }:
     property.baths > 0 && { icon: Bath, label: "Bathrooms", value: `${property.baths}` },
     property.internalSqm && { icon: Maximize2, label: "Internal size", value: formatSqm(property.internalSqm) },
     property.landSqm && { icon: Maximize2, label: "Land size", value: formatSqm(property.landSqm) },
-    property.staffBeds != null && property.staffBeds > 0 && {
+    ((property.staffBeds ?? 0) > 0 || (property.staffBaths ?? 0) > 0) && {
       icon: BedDouble,
       label: "Staff quarters",
-      value: property.staffBaths ? `${property.staffBeds} bed / ${property.staffBaths} bath` : `${property.staffBeds}`,
+      value: [
+        (property.staffBeds ?? 0) > 0 ? `${property.staffBeds} bed` : "",
+        (property.staffBaths ?? 0) > 0 ? `${property.staffBaths} bath` : "",
+      ].filter(Boolean).join(" / "),
     },
-    property.parkingCount != null && property.parkingCount > 0 && {
+    (((property.parkingCount ?? 0) > 0) || property.parkingType) && {
       icon: Home,
       label: "Parking",
-      value: `${property.parkingCount}${property.parkingType ? ` · ${property.parkingType}` : ""}`,
+      value: [
+        (property.parkingCount ?? 0) > 0 ? `${property.parkingCount}` : "",
+        property.parkingType || "",
+      ].filter(Boolean).join(" · "),
     },
     property.furnishing && { icon: Home, label: "Furnishing", value: property.furnishing },
     { icon: MapPin, label: "Neighbourhood", value: `${property.neighbourhood}, ${property.city}` },
@@ -124,7 +134,7 @@ export default function PropertyDetail({ property, nextProperty, projectClips }:
         {photoGallery[0] ? (
           <Image
             src={photoGallery[0]}
-            alt={`${property.address} main photo`}
+            alt={`${displayAddress} main photo`}
             fill
             priority
             className="object-cover"
@@ -157,7 +167,7 @@ export default function PropertyDetail({ property, nextProperty, projectClips }:
               <MapPin size={13} strokeWidth={1.5} />
               {property.neighbourhood} &mdash; {property.city}
             </p>
-            <h1 className="display-serif text-white max-w-4xl">{property.address}</h1>
+            <h1 className="display-serif text-white max-w-4xl">{displayAddress}</h1>
           </motion.div>
         </div>
 
@@ -207,7 +217,7 @@ export default function PropertyDetail({ property, nextProperty, projectClips }:
               {photoGallery[1] || property.image ? (
                 <Image
                   src={photoGallery[1] ?? property.image!}
-                  alt={`${property.address} exterior`}
+                  alt={`${displayAddress} exterior`}
                   fill
                   className="object-cover"
                   sizes="(max-width: 1024px) 100vw, 50vw"
@@ -454,10 +464,10 @@ export default function PropertyDetail({ property, nextProperty, projectClips }:
       {property.status === "For Lease" && (() => {
         const leaseRows = [
           property.leaseAnnualRent && { label: "Annual rent", value: property.leaseAnnualRent },
-          property.leaseYearsUpfront && { label: "Years upfront", value: `${property.leaseYearsUpfront}` },
+          property.leaseYearsUpfront != null && { label: "Years upfront", value: `${property.leaseYearsUpfront}` },
           property.leaseDeposit && { label: "Deposit", value: property.leaseDeposit },
-          property.leaseAgencyFeePct && { label: "Agency fee", value: `${property.leaseAgencyFeePct}%` },
-          property.leaseLegalFeePct && { label: "Legal fee", value: `${property.leaseLegalFeePct}%` },
+          property.leaseAgencyFeePct != null && { label: "Agency fee", value: property.leaseAgencyFeePct === 0 ? "Waived" : `${property.leaseAgencyFeePct}%` },
+          property.leaseLegalFeePct != null && { label: "Legal fee", value: property.leaseLegalFeePct === 0 ? "Waived" : `${property.leaseLegalFeePct}%` },
           property.leaseRenewalTerms && { label: "Renewal", value: property.leaseRenewalTerms },
         ].filter(Boolean) as { label: string; value: string }[];
         if (leaseRows.length === 0) return null;
@@ -506,7 +516,7 @@ export default function PropertyDetail({ property, nextProperty, projectClips }:
                 >
                   <Image
                     src={src}
-                    alt={`${property.address} — photo ${i + 1}`}
+                    alt={`${displayAddress} — photo ${i + 1}`}
                     fill
                     className="object-cover group-hover:scale-[1.03] transition-transform duration-700"
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
@@ -604,7 +614,7 @@ export default function PropertyDetail({ property, nextProperty, projectClips }:
             <div className="flex-1">
               <p className="eyebrow text-gold mb-4">Enquiries</p>
               <h2 className="display-serif-sm text-white mb-3">
-                Talk to the principal handling {property.address}
+                Talk to the principal handling {displayAddress}
               </h2>
               <p className="text-white/60 leading-relaxed max-w-lg">
                 Every Kreebz listing is physically inspected — inspection notes, detailed
@@ -657,7 +667,7 @@ export default function PropertyDetail({ property, nextProperty, projectClips }:
       <ViewingModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        propertyTitle={property.address}
+        propertyTitle={displayAddress}
       />
 
       {/* ---------- Lightbox ---------- */}
@@ -699,7 +709,7 @@ export default function PropertyDetail({ property, nextProperty, projectClips }:
                   {photoGallery[currentPhoto] ? (
                     <Image
                       src={photoGallery[currentPhoto]}
-                      alt={`${property.address} — photo ${currentPhoto + 1}`}
+                      alt={`${displayAddress} — photo ${currentPhoto + 1}`}
                       fill
                       quality={100}
                       className="object-contain"
@@ -737,7 +747,7 @@ export default function PropertyDetail({ property, nextProperty, projectClips }:
         <div className="flex flex-col min-w-0">
           <span className="text-[10px] uppercase tracking-[0.15em] text-muted mb-0.5">Price</span>
           <span className="font-sans font-bold text-lg text-off-white leading-none truncate">
-            {property.price}
+            {property.priceOnRequest ? "On request" : property.price}
           </span>
         </div>
         <Button onClick={() => setIsModalOpen(true)} className="px-6 py-3 text-sm shrink-0">

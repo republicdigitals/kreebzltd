@@ -92,7 +92,7 @@ export default function PropertyIndexRow({ property, index }: PropertyIndexRowPr
           </p>
 
           <p className="font-serif text-gold-light text-[clamp(20px,2.2cqw,26px)] mt-7">
-            {property.price}
+            {property.priceOnRequest ? "Price on request" : property.price}
           </p>
 
           <div className="mt-7 pt-6 border-t border-border/40 flex items-center justify-between gap-4">

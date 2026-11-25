@@ -81,7 +81,10 @@ export default async function PropertyPage({
   const idx = all.findIndex((p) => p.id === property.id);
   const next = all.length > 1 ? all[(idx + 1) % all.length] : undefined;
   const nextProperty = next && next.id !== property.id
-    ? { slug: next.slug, address: next.address }
+    ? {
+        slug: next.slug,
+        address: next.addressPublic === false ? `${next.neighbourhood}, ${next.city}` : next.address,
+      }
     : undefined;
 
   const structuredData = {
@@ -93,7 +96,7 @@ export default async function PropertyPage({
     "image": property.image,
     "address": {
       "@type": "PostalAddress",
-      "streetAddress": property.address,
+      "streetAddress": property.addressPublic === false ? undefined : property.address,
       "addressLocality": property.city,
       "addressRegion": "LA",
       "addressCountry": "NG"
@@ -102,7 +105,7 @@ export default async function PropertyPage({
     "offers": {
       "@type": "Offer",
       "priceCurrency": "NGN", // Assuming NGN or USD based on site context, price string has formatting
-      "price": property.priceValue > 0 ? property.priceValue : undefined,
+      "price": !property.priceOnRequest && property.priceValue > 0 ? property.priceValue : undefined,
       "url": `https://kreebzltd.com/property/${property.slug}`
     }
   };
