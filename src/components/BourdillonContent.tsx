@@ -64,6 +64,7 @@ export default function BourdillonContent({
   siteMedia = bourdillon.siteMedia,
 }: BourdillonContentProps) {
   const proofPoints = getApprovedProofPoints();
+  const representativeResidence = residences.find((residence) => residence.slug === "townhouse-ibj");
 
   useEffect(() => {
     trackEvent("view_project", { project: "bourdillon" });
@@ -87,9 +88,9 @@ export default function BourdillonContent({
       {/* ---------- 1. Hero / above-the-fold ---------- */}
       <section className="bd-hero-grid relative overflow-hidden border-b border-black bg-white">
         <div className="grid min-h-[calc(100svh-var(--nav-height-mobile))] md:min-h-[calc(100svh-var(--nav-height-desktop))] lg:grid-cols-[5fr_7fr]">
-          <div className="relative flex min-h-[58svh] flex-col justify-between bg-black p-6 text-white sm:p-10 lg:min-h-0 lg:p-12">
+          <div className="relative flex min-h-[58svh] flex-col justify-between border-b border-black bg-white p-6 text-black sm:p-10 lg:min-h-0 lg:border-b-0 lg:border-r lg:p-12">
             <div className="flex items-start justify-between gap-8">
-              <p className="text-[11px] font-bold uppercase tracking-[0.18em]">Kreebz Ltd</p>
+              <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#f96300]">Kreebz Ltd</p>
               <span className="bd-asterisk" aria-hidden="true" />
             </div>
 
@@ -104,17 +105,17 @@ export default function BourdillonContent({
                 <br />
                 12 homes
               </h1>
-              <p className="mt-7 max-w-md text-base leading-relaxed text-white/72">
+              <p className="mt-7 max-w-md text-base leading-relaxed text-black/72">
                 A private off-plan compound of six-floor homes on Bourdillon Road, Ikoyi.
               </p>
             </motion.div>
 
             <div className="space-y-7">
               <div className="flex flex-wrap items-center gap-3">
-                <span className="border border-white/25 px-3 py-2 text-[10px] font-bold uppercase tracking-[0.16em] text-white/78">
+                <span className="border border-black/25 px-3 py-2 text-[10px] font-bold uppercase tracking-[0.16em] text-black/78">
                   {bourdillon.statusLabel}: {bourdillon.status}
                 </span>
-                <span className="border border-white/25 px-3 py-2 text-[10px] font-bold uppercase tracking-[0.16em] text-white/78">
+                <span className="border border-black/25 px-3 py-2 text-[10px] font-bold uppercase tracking-[0.16em] text-black/78">
                   {bourdillon.location}
                 </span>
               </div>
@@ -123,7 +124,7 @@ export default function BourdillonContent({
                   Request the brochure
                   <ArrowRight size={16} strokeWidth={1.8} />
                 </button>
-                <a href="#residence-explorer" className="bd-secondary-button bd-secondary-button-inverse border-white bg-black text-white">
+                <a href="#residence-explorer" className="bd-secondary-button bd-secondary-button-inverse border-black bg-black text-white">
                   Explore the homes
                 </a>
               </div>
@@ -204,7 +205,7 @@ export default function BourdillonContent({
         </div>
       </section>
 
-      <BourdillonExplorer />
+      <BourdillonExplorer representativeHref={representativeResidence ? `/property/${representativeResidence.slug}` : undefined} />
 
       {/* ---------- 3. Project overview card ---------- */}
       <section className="pb-10 lg:pb-14">

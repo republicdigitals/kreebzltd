@@ -41,7 +41,11 @@ function homePosition(home: BourdillonHome) {
   return `${home.row === "north" ? "North" : "South"} ${home.column}`;
 }
 
-export default function BourdillonExplorer() {
+interface BourdillonExplorerProps {
+  representativeHref?: string;
+}
+
+export default function BourdillonExplorer({ representativeHref }: BourdillonExplorerProps) {
   const [selectedHomeId, setSelectedHomeId] = useState("south-2");
   const [selectedFloorId, setSelectedFloorId] = useState("ground");
   const [viewIndex, setViewIndex] = useState(0);
@@ -171,6 +175,7 @@ export default function BourdillonExplorer() {
                     index === viewIndex ? "opacity-100" : "opacity-0"
                   )}
                   sizes="(max-width: 1280px) 100vw, 58vw"
+                  draggable={false}
                 />
               ))}
               <span className="bd-render-badge">
@@ -294,7 +299,7 @@ export default function BourdillonExplorer() {
                 <li>Internal lift connecting all floors</li>
                 <li>Private swimming pool and expansive pool deck</li>
                 <li>Cinema, family lounge and rooftop wellness deck</li>
-                <li>Rooftop jacuzzi, sauna and gym</li>
+                <li>Rooftop pool, gym and outdoor lounge{selectedHome.type === "B" ? " with spa, sauna and shower" : ""}</li>
               </ul>
               <p className="text-xs text-[#737373] leading-relaxed mt-5">
                 Final specification, release status and pricing are confirmed through the approved
@@ -307,9 +312,11 @@ export default function BourdillonExplorer() {
                 Request this home type
                 <ArrowRight size={16} strokeWidth={1.8} />
               </button>
-              <Link href="/property/townhouse-ibj" className="bd-secondary-button">
-                View representative residence details
-              </Link>
+              {representativeHref && (
+                <Link href={representativeHref} className="bd-secondary-button">
+                  View representative residence details
+                </Link>
+              )}
             </div>
           </aside>
         </div>

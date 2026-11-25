@@ -160,7 +160,7 @@ export default function Navigation() {
                 aria-label="Kreebz — home"
               >
                 <Image
-                  src="/kreebz-logo.png"
+                  src="/kreebz-logo-orange.png"
                   alt="Kreebz"
                   width={96}
                   height={88}

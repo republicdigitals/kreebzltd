@@ -136,7 +136,7 @@ export default function EnquiryForm({
           nextStep: data.nextStep,
           timeframe: data.timeframe || undefined,
           preferredContact: data.preferredContact || undefined,
-          message: [homeInterest, data.message].filter(Boolean).join("\n\n") || undefined,
+          message: [data.project === "bourdillon" ? homeInterest : null, data.message].filter(Boolean).join("\n\n") || undefined,
           consent: data.consent,
           website: data.website,
           ...readAttribution(),
