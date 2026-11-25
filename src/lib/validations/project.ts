@@ -19,6 +19,7 @@ export const siteMediaSchema = z.object({
 });
 
 export const updateProjectSchema = z.object({
+  name: z.string().min(1, "Project name is required").optional(),
   progress: z.array(progressUpdateSchema).default([]),
   siteMedia: siteMediaSchema,
 });

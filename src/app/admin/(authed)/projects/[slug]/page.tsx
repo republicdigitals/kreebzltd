@@ -140,6 +140,59 @@ function MediaEditor({
   );
 }
 
+function ProgressImageUpload({ value, onChange }: { value: string; onChange: (url: string) => void }) {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const { upload, isUploading, error } = useUploader();
+  const [showManual, setShowManual] = useState(false);
+
+  const handleFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const url = await upload(file);
+    if (url) onChange(url);
+    if (inputRef.current) inputRef.current.value = "";
+  };
+
+  return (
+    <div className="space-y-2">
+      <input ref={inputRef} type="file" accept="image/*" className="hidden" onChange={handleFile} />
+      <div className="flex items-center gap-3">
+        {value ? (
+          <div className="relative w-20 h-14 rounded-md overflow-hidden bg-neutral-200 shrink-0">
+            <Image src={value} alt="Progress photo" fill className="object-cover" sizes="80px" />
+          </div>
+        ) : null}
+        <button
+          type="button"
+          onClick={() => inputRef.current?.click()}
+          disabled={isUploading}
+          className="flex items-center gap-2 bg-white border border-neutral-300 text-neutral-700 px-3 py-2 rounded-md hover:border-neutral-900 transition-colors text-sm disabled:opacity-50"
+        >
+          {isUploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
+          {value ? "Replace photo" : "Upload photo"}
+        </button>
+        {value && (
+          <button type="button" onClick={() => onChange("")} className="text-xs text-red-500 hover:underline">
+            Remove
+          </button>
+        )}
+        <button type="button" onClick={() => setShowManual(!showManual)} className="text-xs text-neutral-400 hover:underline ml-auto">
+          {showManual ? "Hide URL" : "Paste URL"}
+        </button>
+      </div>
+      {error && <p className="text-xs text-red-500">{error}</p>}
+      {showManual && (
+        <input
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          placeholder="/images/… or uploaded URL"
+          className="w-full bg-white border border-neutral-300 focus:border-neutral-900 rounded-lg px-4 py-2.5 text-neutral-900 text-sm transition-colors"
+        />
+      )}
+    </div>
+  );
+}
+
 export default function ProjectEditorPage() {
   const params = useParams();
   const slug = params.slug as string;
@@ -178,7 +231,7 @@ export default function ProjectEditorPage() {
       const res = await fetch(`/api/projects/${slug}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ progress: data.progress, siteMedia: data.siteMedia }),
+        body: JSON.stringify({ name: data.name, progress: data.progress, siteMedia: data.siteMedia }),
       });
       if (!res.ok) {
         const err = await res.json().catch(() => ({}));
@@ -204,8 +257,13 @@ export default function ProjectEditorPage() {
         <Link href="/admin/projects" className="p-2 bg-white border border-neutral-200 rounded-lg text-neutral-500 hover:text-neutral-900 transition-colors">
           <ArrowLeft className="w-5 h-5" />
         </Link>
-        <div>
-          <h1 className="text-3xl font-bold text-neutral-900 tracking-tight">{data.name}</h1>
+        <div className="flex-1">
+          <label className="text-xs uppercase tracking-wider text-neutral-400">Project name</label>
+          <input
+            value={data.name}
+            onChange={(e) => setData({ ...data, name: e.target.value })}
+            className="w-full text-3xl font-bold text-neutral-900 tracking-tight bg-transparent border-b border-transparent hover:border-neutral-300 focus:border-neutral-900 focus:outline-none transition-colors"
+          />
           <p className="text-neutral-500 mt-1">
             Edit construction progress and site media — publishes to{" "}
             <Link href={data.url} className="underline hover:text-neutral-900" target="_blank">{data.url}</Link>{" "}
@@ -276,11 +334,9 @@ export default function ProjectEditorPage() {
                 className={inputCls + " resize-none"}
               />
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                <input
+                <ProgressImageUpload
                   value={row.image ?? ""}
-                  onChange={(e) => setProgress(data.progress.map((r, j) => (j === i ? { ...r, image: e.target.value } : r)))}
-                  placeholder="Image path — /images/… or uploaded URL"
-                  className={inputCls}
+                  onChange={(url) => setProgress(data.progress.map((r, j) => (j === i ? { ...r, image: url } : r)))}
                 />
                 <input
                   value={row.imageLabel ?? ""}

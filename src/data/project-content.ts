@@ -18,6 +18,7 @@ export async function getProjectContent(slug: string): Promise<ProjectContent> {
     const dbProgress = row.progress as unknown as ProjectContent["progress"];
     const dbMedia = row.siteMedia as unknown as ProjectContent["siteMedia"];
     return {
+      name: row.name,
       progress: Array.isArray(dbProgress) && dbProgress.length > 0 ? dbProgress : fallback.progress,
       siteMedia:
         dbMedia && (dbMedia.clips?.length || dbMedia.photos?.length)

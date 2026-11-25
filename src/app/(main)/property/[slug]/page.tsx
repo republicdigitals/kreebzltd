@@ -116,7 +116,8 @@ export default async function PropertyPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData).replace(/</g, "\\u003c") }}
       />
-      <PropertyDetail property={property} nextProperty={nextProperty} projectClips={projectContent?.siteMedia.clips} />
+      <PropertyDetail property={property} nextProperty={nextProperty} projectClips={projectContent?.siteMedia.clips}
+        projectName={projectContent?.name} />
     </div>
   );
 }

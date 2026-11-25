@@ -59,6 +59,8 @@ export function getAllProjects(): ProjectRef[] {
 }
 
 export interface ProjectContent {
+  /** DB-backed display name override — absent when only file defaults exist. */
+  name?: string;
   progress: ProgressUpdate[];
   siteMedia: SiteMedia;
 }
