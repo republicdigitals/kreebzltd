@@ -1026,4 +1026,10 @@ select:focus-visible {
   div {
     box-shadow: none !important;
   }
+  /* framer-motion starts sections at opacity: 0 until scrolled into view;
+     printing before scrolling would otherwise produce blank pages */
+  [style] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }
