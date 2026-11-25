@@ -77,18 +77,18 @@
    without rewrites. Hardcoded bg-white/text-neutral-* still need audit.
    ========================================================================== */
 [data-theme="dark"] {
-  --obsidian: #0c0b09;          /* canvas — warm near-black */
-  --obsidian-light: #14120f;    /* surface-soft */
-  --surface: #171512;           /* card */
-  --surface-2: #221e18;         /* raised / hover fill */
+  --obsidian: #f1f1f1;          /* canvas — editorial light */
+  --obsidian-light: #ffffff;    /* surface-soft */
+  --surface: #ffffff;           /* card */
+  --surface-2: #e8e8e8;         /* raised / hover fill */
 
-  --off-white: #f2ede4;         /* warm paper ink */
-  --muted: #9a9184;             /* warm grey */
+  --off-white: #000000;         /* ink */
+  --muted: #737373;             /* grey */
 
-  --panel: #12100d;             /* dark chrome — nav, footer */
+  --panel: #000000;             /* black chrome — nav, footer */
 
-  --border: rgba(242, 237, 228, 0.10);   /* hairline */
-  --border-strong: rgba(242, 237, 228, 0.24);
+  --border: rgba(0, 0, 0, 0.14);   /* hairline */
+  --border-strong: rgba(0, 0, 0, 0.34);
 
   --gold: #f96300;
   --gold-hover: #000000;        /* inverse hover */
