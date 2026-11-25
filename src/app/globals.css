@@ -788,6 +788,12 @@ select:focus-visible {
   }
 }
 
+.bd-compound-scroll {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+}
+
 .bd-compound-plan {
   display: grid;
   grid-template-columns: 18px 1fr;
@@ -971,6 +977,10 @@ select:focus-visible {
 }
 
 @media (max-width: 640px) {
+  .bd-compound-plan {
+    min-width: 320px;
+  }
+
   .bd-render-stage {
     aspect-ratio: 4 / 3;
   }

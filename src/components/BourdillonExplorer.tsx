@@ -209,6 +209,7 @@ export default function BourdillonExplorer({ representativeHref }: BourdillonExp
                 </p>
               </div>
 
+              <div className="bd-compound-scroll">
               <div className="bd-compound-plan" role="group" aria-label="Select a Bourdillon home position">
                 {(["north", "south"] as const).map((row) => (
                   <div key={row} className="contents">
@@ -244,6 +245,7 @@ export default function BourdillonExplorer({ representativeHref }: BourdillonExp
                     )}
                   </div>
                 ))}
+              </div>
               </div>
 
               <div className="grid grid-cols-2 sm:grid-cols-4 border border-white/20 border-t-0">
