@@ -42,6 +42,49 @@ model Property {
   principal        Json
 
   publicationStatus PublicationStatus @default(DRAFT)
+
+  // Specification
+  internalSqm      Float?
+  landSqm          Float?
+  staffBeds        Int?
+  staffBaths       Int?
+  parkingCount     Int?
+  parkingType      String?
+  furnishing       String?
+  amenities        String[] @default([])
+  inclusions       String[] @default([])
+  exclusions       String[] @default([])
+
+  // Utilities & services
+  powerDetails     String?
+  waterDetails     String?
+  internetDetails  String?
+  securityDetails  String?
+  serviceCharge    String?
+
+  // Pricing & availability
+  priceCurrency    String?
+  priceNegotiable  Boolean  @default(false)
+  priceOnRequest   Boolean  @default(false)
+  priceVerifiedAt  DateTime?
+  availabilityNote String?
+  inspectionInfo   String?
+
+  // Legal & completion
+  titleStatus      String?
+  tenure           String?
+  completionStatus String?
+  handoverDate     String?
+  addressPublic    Boolean  @default(true)
+
+  // Lease terms
+  leaseAnnualRent   String?
+  leaseYearsUpfront Int?
+  leaseDeposit      String?
+  leaseAgencyFeePct Float?
+  leaseLegalFeePct  Float?
+  leaseRenewalTerms String?
+
   media             PropertyMedia[]
   savedBy           SavedProperty[]
 }
