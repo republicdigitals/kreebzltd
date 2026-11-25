@@ -66,7 +66,7 @@ export default function PropertyDetail({ property, nextProperty, projectClips, p
     try {
       const key = "kreebz-recently-viewed";
       const raw = localStorage.getItem(key);
-      const list: { slug: string; address: string; cover?: string; price?: number | null; type?: string }[] = raw ? JSON.parse(raw) : [];
+      const list: { slug: string; address: string; cover?: string; price?: number | null; priceCurrency?: string | null; type?: string }[] = raw ? JSON.parse(raw) : [];
       const cover = property.media?.find((m) => m.isCover)?.url || property.media?.[0]?.url;
       const safeAddress = property.addressPublic === false
         ? `${property.neighbourhood}, ${property.city}`
@@ -76,12 +76,13 @@ export default function PropertyDetail({ property, nextProperty, projectClips, p
         address: safeAddress,
         cover,
         price: property.priceOnRequest ? null : (property.priceValue ?? null),
+        priceCurrency: property.priceCurrency ?? null,
         type: property.type,
       };
       const next = [entry, ...list.filter((e) => e.slug !== property.slug)].slice(0, 6);
       localStorage.setItem(key, JSON.stringify(next));
     } catch {}
-  }, [property.slug, property.address, property.addressPublic, property.neighbourhood, property.city, property.media, property.priceValue, property.priceOnRequest, property.type]);
+  }, [property.slug, property.address, property.addressPublic, property.neighbourhood, property.city, property.media, property.priceValue, property.priceCurrency, property.priceOnRequest, property.type]);
 
   useScrollLock(isLightboxOpen);
 
@@ -169,7 +170,7 @@ export default function PropertyDetail({ property, nextProperty, projectClips, p
     {
       icon: Banknote,
       label: property.status === "For Lease" ? "Lease Price" : "Property Price",
-      value: property.priceOnRequest ? "Price on request" : displayPrice(property.priceValue, property.price),
+      value: property.priceOnRequest ? "Price on request" : displayPrice(property.priceValue, property.price, property.priceCurrency),
       highlight: true,
     },
   ].filter(Boolean) as { icon: typeof Tag; label: string; value: string; highlight?: boolean }[];
@@ -801,7 +802,7 @@ export default function PropertyDetail({ property, nextProperty, projectClips, p
         <div className="flex flex-col min-w-0">
           <span className="text-[10px] uppercase tracking-[0.15em] text-muted mb-0.5">Price</span>
           <span className="font-sans font-bold text-lg text-off-white leading-none truncate">
-            {property.priceOnRequest ? "On request" : displayPrice(property.priceValue, property.price)}
+            {property.priceOnRequest ? "On request" : displayPrice(property.priceValue, property.price, property.priceCurrency)}
           </span>
         </div>
         <Button onClick={() => setIsModalOpen(true)} className="px-6 py-3 text-sm shrink-0">

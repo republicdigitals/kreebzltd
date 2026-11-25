@@ -87,7 +87,7 @@ export default function PropertyCard({
 
             <RichTooltip content="Subject to contract and availability" position="top">
               <p className="font-serif text-off-white font-light text-[clamp(24px,2.5vw,28px)] leading-[1.1] mt-4">
-                {property.priceOnRequest ? property.price : displayPrice(property.priceValue, property.price)}
+                {property.priceOnRequest ? property.price : displayPrice(property.priceValue, property.price, property.priceCurrency)}
               </p>
             </RichTooltip>
 

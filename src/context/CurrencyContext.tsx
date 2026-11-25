@@ -7,7 +7,7 @@ interface CurrencyContextValue {
   currency: Currency;
   setCurrency: (c: Currency) => void;
   /** Converted display price when a numeric USD value exists; otherwise the original string. */
-  displayPrice: (priceValue: number | null | undefined, fallback: string) => string;
+  displayPrice: (priceValue: number | null | undefined, fallback: string, listingCurrency?: string | null) => string;
 }
 
 const CurrencyContext = createContext<CurrencyContextValue>({
@@ -39,9 +39,9 @@ export function CurrencyProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const displayPrice = useCallback(
-    (priceValue: number | null | undefined, fallback: string) => {
+    (priceValue: number | null | undefined, fallback: string, listingCurrency?: string | null) => {
       if (priceValue != null && priceValue > 0) {
-        return formatConvertedPrice(priceValue, currency);
+        return formatConvertedPrice(priceValue, currency, listingCurrency);
       }
       return fallback;
     },

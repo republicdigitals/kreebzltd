@@ -12,6 +12,7 @@ interface RecentEntry {
   address: string;
   cover?: string;
   price?: number | null;
+  priceCurrency?: string | null;
   type?: string;
 }
 
@@ -89,7 +90,7 @@ export default function RecentlyViewed() {
                 </p>
                 {e.price != null && (
                   <p className="text-gold text-[11px] font-sans mt-0.5">
-                    {displayPrice(e.price, `$${e.price.toLocaleString()}`)}
+                    {displayPrice(e.price, `$${e.price.toLocaleString()}`, e.priceCurrency)}
                   </p>
                 )}
               </div>
