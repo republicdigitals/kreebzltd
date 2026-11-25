@@ -60,7 +60,7 @@ export default function ConciergeUX() {
           <Button
             variant="fab"
             onClick={() => setIsOpen(true)}
-            className="flex items-center justify-center gap-3 group"
+            className="flex items-center justify-center gap-2.5 px-5 py-3 text-sm group"
           >
             <Sparkles size={16} className="relative z-10" />
             <span className="relative z-10">Private Concierge</span>
