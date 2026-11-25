@@ -47,6 +47,17 @@ function LoginForm() {
         } catch {
           // malformed input — fall through to the default
         }
+        // Admins land on the admin dashboard regardless of where they started;
+        // everyone else continues to their account or original destination.
+        try {
+          const sessionRes = await fetch("/api/auth/session");
+          const session = await sessionRes.json();
+          if (session?.user?.role === "ADMIN") {
+            target = "/admin";
+          }
+        } catch {
+          // session lookup failed — keep the default target
+        }
         window.location.assign(target);
       }
     } catch {
