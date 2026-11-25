@@ -180,6 +180,16 @@ body {
   padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
+/* Short embedded/landscape viewports still need a reachable consent close/action. */
+@media (max-height: 520px) {
+  .cookie-consent {
+    bottom: 1rem;
+    max-height: calc(100dvh - 2rem);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+}
+
 /* Hide the concierge FAB while the mobile nav menu is open (it's z-[90], above the menu) */
 body.nav-menu-open .concierge-fab {
   opacity: 0;
