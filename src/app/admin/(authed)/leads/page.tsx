@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { Search, Mail, Phone, Calendar, User, Trash2, RefreshCw } from "lucide-react";
+import LeadDetailSheet from "@/components/admin/LeadDetailSheet";
 
 type Lead = {
   id: string;
@@ -24,6 +25,7 @@ type Lead = {
   landingPage: string | null;
   assignedTo: string | null;
   firstResponseAt: string | null;
+  notes?: string | null;
 };
 
 const STATUS_OPTIONS = [
@@ -64,6 +66,7 @@ export default function LeadsPage() {
   const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState("");
   const [updatingId, setUpdatingId] = useState<string | null>(null);
+  const [selectedLeadId, setSelectedLeadId] = useState<string | null>(null);
 
   const loadLeads = useCallback(async () => {
     try {
@@ -127,8 +130,7 @@ export default function LeadsPage() {
     }
   };
 
-  const deleteLead = async (id: string) => {
-    if (!confirm("Permanently delete this lead?")) return;
+  const deleteLeadApi = async (id: string) => {
     try {
       const res = await fetch(`/api/leads/${id}`, {
         method: "DELETE",
@@ -139,6 +141,11 @@ export default function LeadsPage() {
     } catch {
       setError("Failed to delete lead.");
     }
+  };
+
+  const deleteLead = async (id: string) => {
+    if (!confirm("Permanently delete this lead?")) return;
+    await deleteLeadApi(id);
   };
 
   const filtered = leads.filter((l) => {
@@ -223,7 +230,11 @@ export default function LeadsPage() {
                   </thead>
                   <tbody className="divide-y divide-border">
                     {filtered.map((lead) => (
-                      <tr key={lead.id} className="hover:bg-obsidian transition-colors">
+                      <tr
+                        key={lead.id}
+                        onClick={() => setSelectedLeadId(lead.id)}
+                        className="hover:bg-obsidian transition-colors cursor-pointer"
+                      >
                         <td className="px-6 py-4 font-medium text-off-white whitespace-nowrap">
                           <div className="flex items-center gap-3">
                             <div className="w-8 h-8 rounded-full bg-neutral-100 flex items-center justify-center text-neutral-500 shrink-0">
@@ -235,7 +246,7 @@ export default function LeadsPage() {
                               </div>
                             </div>
                           </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
+                          <td className="px-6 py-4 whitespace-nowrap" onClick={(e) => e.stopPropagation()}>
                             <div className="flex flex-col gap-1 text-xs">
                               <a href={`mailto:${lead.email}`} className="flex items-center gap-2 hover:text-off-white transition-colors">
                                 <Mail className="w-3 h-3 text-muted shrink-0" />
@@ -293,7 +304,7 @@ export default function LeadsPage() {
                               })}
                             </div>
                           </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
+                          <td className="px-6 py-4 whitespace-nowrap" onClick={(e) => e.stopPropagation()}>
                             <select
                               value={lead.status}
                               disabled={updatingId === lead.id}
@@ -307,7 +318,7 @@ export default function LeadsPage() {
                               ))}
                             </select>
                           </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-right">
+                          <td className="px-6 py-4 whitespace-nowrap text-right" onClick={(e) => e.stopPropagation()}>
                             <button
                               onClick={() => deleteLead(lead.id)}
                               className="p-2 text-muted hover:text-red-400 hover:bg-obsidian rounded-none transition-colors"
@@ -326,7 +337,11 @@ export default function LeadsPage() {
                 {/* Mobile Card View */}
                 <div className="block md:hidden divide-y divide-border">
                   {filtered.map((lead) => (
-                    <div key={lead.id} className="p-4 space-y-4 hover:bg-obsidian transition-colors">
+                    <div
+                      key={lead.id}
+                      onClick={() => setSelectedLeadId(lead.id)}
+                      className="p-4 space-y-4 hover:bg-obsidian transition-colors cursor-pointer"
+                    >
                       <div className="flex items-start justify-between gap-4">
                         <div className="flex items-center gap-3">
                           <div className="w-10 h-10 rounded-full bg-obsidian-light border border-border flex items-center justify-center text-muted shrink-0">
@@ -340,6 +355,7 @@ export default function LeadsPage() {
                       <select
                         value={lead.status}
                         disabled={updatingId === lead.id}
+                        onClick={(e) => e.stopPropagation()}
                         onChange={(e) => updateStatus(lead.id, e.target.value)}
                         className={`text-[10px] px-2 py-1 rounded-none font-medium border-0 focus:outline-none cursor-pointer disabled:opacity-50 ${statusClass(lead.status)}`}
                       >
@@ -351,7 +367,7 @@ export default function LeadsPage() {
                       </select>
                     </div>
 
-                    <div className="flex flex-col gap-1 text-xs">
+                    <div className="flex flex-col gap-1 text-xs" onClick={(e) => e.stopPropagation()}>
                       <a href={`mailto:${lead.email}`} className="flex items-center gap-2 text-muted hover:text-off-white transition-colors">
                         <Mail className="w-3 h-3 shrink-0" />
                         {lead.email}
@@ -407,7 +423,10 @@ export default function LeadsPage() {
                         })}
                       </div>
                       <button
-                        onClick={() => deleteLead(lead.id)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          deleteLead(lead.id);
+                        }}
                         className="p-2 text-muted hover:text-red-400 hover:bg-obsidian rounded-none transition-colors"
                         title="Delete lead"
                         aria-label={`Delete lead from ${lead.name}`}
@@ -422,6 +441,22 @@ export default function LeadsPage() {
           )}
         </div>
       </div>
+
+      {selectedLeadId && (() => {
+        const lead = leads.find((l) => l.id === selectedLeadId);
+        if (!lead) return null;
+        return (
+          <LeadDetailSheet
+            key={lead.id}
+            lead={lead}
+            onClose={() => setSelectedLeadId(null)}
+            onUpdated={(updated) =>
+              setLeads((prev) => prev.map((l) => (l.id === updated.id ? { ...l, ...updated } : l)))
+            }
+            onDelete={(id) => deleteLeadApi(id)}
+          />
+        );
+      })()}
     </div>
   );
 }

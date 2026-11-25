@@ -17,7 +17,7 @@ export async function PATCH(
 
     const { id } = await params;
     const body = await request.json();
-    const { status } = body;
+    const { status, notes } = body;
 
     const validStatuses = [
       "New",
@@ -41,6 +41,7 @@ export async function PATCH(
       where: { id },
       data: {
         ...(status && { status }),
+        ...(notes !== undefined && { notes: typeof notes === "string" ? notes.slice(0, 5000) : null }),
       },
     });
 

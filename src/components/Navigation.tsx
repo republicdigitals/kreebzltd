@@ -6,6 +6,7 @@ import Image from "next/image";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { Search, Heart, User, ChevronRight, KeyRound, Building2, Tag, Plane, Wrench, Sparkles, Handshake, Landmark, Users, Phone, MessageCircle, MapPin } from "lucide-react";
+import CurrencyToggle from "./CurrencyToggle";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { AnimatePresence, motion } from "framer-motion";
@@ -157,6 +158,7 @@ export default function Navigation() {
             {/* Right: Search (Mobile) / Utilities (Desktop) */}
             <div className="flex justify-end flex-1 items-center gap-8 min-w-0">
               <div className="lg:hidden flex items-center gap-5">
+                <CurrencyToggle />
                 <Link
                   href="/account/saved"
                   className="text-white hover:text-gold active:scale-[0.95] transition-all duration-300"
@@ -182,6 +184,7 @@ export default function Navigation() {
               </div>
 
               <div className="hidden lg:flex items-center gap-6 xl:gap-8">
+                <CurrencyToggle />
                 <Link
                   href="/account/saved"
                   className="text-white/80 hover:text-gold active:scale-[0.95] transition-all duration-300"

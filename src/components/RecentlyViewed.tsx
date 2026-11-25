@@ -5,12 +5,14 @@ import Link from "next/link";
 import Image from "next/image";
 import { X } from "lucide-react";
 import { usePropertyFilters } from "./PropertyFilterProvider";
+import { useCurrency } from "@/context/CurrencyContext";
 
 interface RecentEntry {
   slug: string;
   address: string;
   cover?: string;
   price?: number | null;
+  priceCurrency?: string | null;
   type?: string;
 }
 
@@ -19,6 +21,7 @@ const KEY = "kreebz-recently-viewed";
 export default function RecentlyViewed() {
   const [entries, setEntries] = useState<RecentEntry[]>([]);
   const { all } = usePropertyFilters();
+  const { displayPrice } = useCurrency();
 
   useEffect(() => {
     try {
@@ -87,7 +90,7 @@ export default function RecentlyViewed() {
                 </p>
                 {e.price != null && (
                   <p className="text-gold text-[11px] font-sans mt-0.5">
-                    ${e.price.toLocaleString()}
+                    {displayPrice(e.price, `$${e.price.toLocaleString()}`, e.priceCurrency)}
                   </p>
                 )}
               </div>
