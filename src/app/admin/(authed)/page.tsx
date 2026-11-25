@@ -2,6 +2,7 @@ import { getAdminProperties, Property } from "@/data/properties";
 import { ArrowUpRight, Building2, TrendingUp, Users, Plane, Clock } from "lucide-react";
 import prisma from "@/lib/prisma";
 import Link from "next/link";
+import { requireAdminPage } from "@/lib/auth-guard";
 
 export const dynamic = "force-dynamic";
 
@@ -19,6 +20,7 @@ function monthStart(offset = 0) {
 }
 
 export default async function AdminDashboard() {
+  await requireAdminPage();
   const thisMonth = monthStart(0);
   const lastMonth = monthStart(-1);
 

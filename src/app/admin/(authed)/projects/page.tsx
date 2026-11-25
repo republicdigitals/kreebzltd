@@ -1,10 +1,12 @@
 import Link from "next/link";
 import { getAllProjects } from "@/data/projects";
 import { Landmark, ArrowRight } from "lucide-react";
+import { requireAdminPage } from "@/lib/auth-guard";
 
 export const dynamic = "force-dynamic";
 
-export default function AdminProjectsPage() {
+export default async function AdminProjectsPage() {
+  await requireAdminPage();
   const projects = getAllProjects();
 
   return (
