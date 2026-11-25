@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { Search, RefreshCw, Plane, Calendar, User as UserIcon } from "lucide-react";
+import { Search, RefreshCw, Plane, Calendar, User as UserIcon, AlertTriangle } from "lucide-react";
 
 type Booking = {
   id: string;
@@ -97,6 +97,25 @@ export default function BookingsPage() {
     }
   };
 
+  // Overlap detection: same jet, both active (Pending/Confirmed), overlapping dates.
+  const conflictingIds = new Set<string>();
+  const active = bookings.filter((b) => b.status === "Pending" || b.status === "Confirmed");
+  for (let i = 0; i < active.length; i++) {
+    for (let j = i + 1; j < active.length; j++) {
+      const a = active[i];
+      const b = active[j];
+      if (a.jet.tailNumber !== b.jet.tailNumber) continue;
+      const aStart = new Date(a.startDate).getTime();
+      const aEnd = new Date(a.endDate).getTime();
+      const bStart = new Date(b.startDate).getTime();
+      const bEnd = new Date(b.endDate).getTime();
+      if (aStart < bEnd && bStart < aEnd) {
+        conflictingIds.add(a.id);
+        conflictingIds.add(b.id);
+      }
+    }
+  }
+
   const filtered = bookings.filter((b) => {
     if (filter !== "all" && b.status !== filter) return false;
     const q = search.toLowerCase();
@@ -133,6 +152,13 @@ export default function BookingsPage() {
 
       {error && (
         <div className="px-4 py-3 bg-red-500/10 border border-red-500/20 rounded-lg text-red-400 text-sm">{error}</div>
+      )}
+
+      {conflictingIds.size > 0 && (
+        <div className="px-4 py-3 bg-gold/10 border border-gold/30 rounded-lg text-gold-light text-sm flex items-center gap-2">
+          <AlertTriangle className="w-4 h-4 shrink-0" />
+          {conflictingIds.size} booking{conflictingIds.size !== 1 ? "s" : ""} overlap on the same aircraft — review the rows marked below.
+        </div>
       )}
 
       {/* Filter pills */}
@@ -180,7 +206,14 @@ export default function BookingsPage() {
                 <div key={b.id} className="p-4 space-y-3">
                   <div className="flex justify-between items-start gap-3">
                     <div className="min-w-0">
-                      <p className="text-off-white font-medium truncate">{b.jet.name}</p>
+                      <p className="text-off-white font-medium truncate flex items-center gap-2">
+                        {b.jet.name}
+                        {conflictingIds.has(b.id) && (
+                          <span className="inline-flex items-center gap-1 text-[9px] uppercase tracking-wider text-gold bg-gold/10 border border-gold/30 rounded-full px-2 py-0.5" title="Overlaps another active booking on this aircraft">
+                            <AlertTriangle size={9} /> Conflict
+                          </span>
+                        )}
+                      </p>
                       <p className="text-muted text-xs mt-0.5">{b.jet.class} · {b.jet.tailNumber}</p>
                     </div>
                     <p className="font-serif text-gold-light text-lg shrink-0">{formatNaira(b.totalAmount)}</p>
@@ -231,7 +264,14 @@ export default function BookingsPage() {
                   {filtered.map((b) => (
                     <tr key={b.id} className="hover:bg-black/[0.03] transition-colors">
                       <td className="px-4 py-3">
-                        <p className="text-off-white font-medium">{b.jet.name}</p>
+                        <p className="text-off-white font-medium flex items-center gap-2">
+                          {b.jet.name}
+                          {conflictingIds.has(b.id) && (
+                            <span className="inline-flex items-center gap-1 text-[9px] uppercase tracking-wider text-gold bg-gold/10 border border-gold/30 rounded-full px-2 py-0.5" title="Overlaps another active booking on this aircraft">
+                              <AlertTriangle size={9} /> Conflict
+                            </span>
+                          )}
+                        </p>
                         <p className="text-muted text-xs">{b.jet.class}</p>
                       </td>
                       <td className="px-4 py-3">

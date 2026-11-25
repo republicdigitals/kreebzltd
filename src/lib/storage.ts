@@ -95,3 +95,45 @@ export async function deleteMedia(path: string): Promise<{ error: string | null 
     return { error: "Internal server error during deletion" };
   }
 }
+
+export interface StoredMediaItem {
+  name: string;
+  url: string;
+  createdAt: string | null;
+  size: number | null;
+}
+
+/** Lists objects in the media bucket, newest first. */
+export async function listMedia(limit = 200, offset = 0): Promise<{ items: StoredMediaItem[]; error: string | null }> {
+  try {
+    const supabase = await getStorageClient();
+    const { data, error } = await supabase.storage
+      .from(STORAGE_BUCKET)
+      .list("", {
+        limit,
+        offset,
+        sortBy: { column: "created_at", order: "desc" },
+      });
+
+    if (error) {
+      console.error("Supabase list error:", error);
+      return { items: [], error: error.message };
+    }
+
+    const items = (data ?? [])
+      .filter((o) => o.name && !o.name.endsWith("/"))
+      .map((o) => {
+        const { data: urlData } = supabase.storage.from(STORAGE_BUCKET).getPublicUrl(o.name);
+        return {
+          name: o.name,
+          url: urlData.publicUrl,
+          createdAt: o.created_at ?? null,
+          size: o.metadata?.size ?? null,
+        };
+      });
+    return { items, error: null };
+  } catch (error) {
+    console.error("Storage list exception:", error);
+    return { items: [], error: error instanceof Error ? error.message : "Internal server error during listing" };
+  }
+}

@@ -1,5 +1,6 @@
 import { getAdminProperties, Property } from "@/data/properties";
-import { ArrowUpRight, Building2, TrendingUp, Users, Plane, Clock } from "lucide-react";
+import { ArrowUpRight, Building2, TrendingUp, Users, Plane, Clock, AlertTriangle, ChevronRight } from "lucide-react";
+import { propertyCompleteness } from "@/lib/property-completeness";
 import prisma from "@/lib/prisma";
 import Link from "next/link";
 import { requireAdminPage } from "@/lib/auth-guard";
@@ -33,6 +34,7 @@ export default async function AdminDashboard() {
     pendingBookings,
     totalBookings,
     recentBookings,
+    newLeads,
   ] = await Promise.all([
     getAdminProperties(),
     prisma.lead.count(),
@@ -46,12 +48,57 @@ export default async function AdminDashboard() {
       take: 5,
       include: { user: { select: { email: true, name: true } }, jet: { select: { name: true } } },
     }),
+    prisma.lead.findMany({
+      where: { status: "New" },
+      orderBy: { createdAt: "desc" },
+      take: 5,
+      select: { id: true, name: true, interest: true, createdAt: true },
+    }),
   ]);
 
   const activeProperties = properties.filter((p: Property) => p.publicationStatus !== "ARCHIVED");
   const totalProperties = activeProperties.length;
   const revenue = paidAgg._sum.totalAmount ?? BigInt(0);
   const leadsDelta = leadsThisMonth - leadsLastMonth;
+
+  // Actionable alerts — each links straight to the thing that needs attention.
+  const incompleteListings = activeProperties
+    .map((p: Property) => ({ property: p, result: propertyCompleteness(p) }))
+    .filter(({ result }: { result: { score: number; total: number } }) => result.score / result.total < 0.6)
+    .map(({ property: p, result }: { property: Property; result: { score: number; total: number; missing: string[] } }) => ({
+      id: p.id,
+      slug: p.slug,
+      address: p.address,
+      score: result.score,
+      total: result.total,
+      missing: result.missing.slice(0, 3),
+    }));
+
+  const alerts: { href: string; tone: "warn" | "info"; title: string; detail: string }[] = [];
+  if (newLeads.length > 0) {
+    alerts.push({
+      href: "/admin/leads",
+      tone: "warn",
+      title: `${newLeads.length} new lead${newLeads.length !== 1 ? "s" : ""} awaiting first response`,
+      detail: `Latest: ${newLeads[0].name} — ${newLeads[0].interest.replace(/-/g, " ")}`,
+    });
+  }
+  if (pendingBookings > 0) {
+    alerts.push({
+      href: "/admin/bookings",
+      tone: "warn",
+      title: `${pendingBookings} booking${pendingBookings !== 1 ? "s" : ""} pending confirmation`,
+      detail: "Confirm or cancel so clients know where they stand.",
+    });
+  }
+  for (const l of incompleteListings.slice(0, 3)) {
+    alerts.push({
+      href: `/admin/properties/${l.id}`,
+      tone: "info",
+      title: `${l.address} is ${l.score}/${l.total} complete`,
+      detail: `Missing: ${l.missing.join(", ")}${l.missing.length >= 3 ? "…" : ""}`,
+    });
+  }
 
   return (
     <div className="p-4 md:p-8 space-y-8">
@@ -123,6 +170,29 @@ export default async function AdminDashboard() {
           </div>
         </div>
       </div>
+
+      {/* Needs attention */}
+      {alerts.length > 0 && (
+        <div className="bg-obsidian-light border border-border rounded-xl overflow-hidden">
+          <div className="flex items-center gap-2 p-5 border-b border-border">
+            <AlertTriangle size={16} className="text-gold" />
+            <h2 className="text-off-white font-medium">Needs attention</h2>
+          </div>
+          <div className="divide-y divide-black/5">
+            {alerts.map((a, i) => (
+              <Link key={i} href={a.href} className="flex items-center justify-between gap-4 p-4 md:px-5 hover:bg-obsidian/50 transition-colors group">
+                <div className="min-w-0">
+                  <p className={`text-sm font-medium truncate ${a.tone === "warn" ? "text-gold-light" : "text-off-white"}`}>
+                    {a.title}
+                  </p>
+                  <p className="text-muted text-xs mt-0.5 truncate">{a.detail}</p>
+                </div>
+                <ChevronRight size={16} className="text-muted group-hover:text-gold transition-colors shrink-0" />
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Recent bookings */}
       <div className="bg-obsidian-light border border-border rounded-xl overflow-hidden">
