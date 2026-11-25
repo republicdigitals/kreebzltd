@@ -8,6 +8,7 @@ import * as z from "zod";
 import { ArrowLeft, Save, Loader2, Plus, Trash2 } from "lucide-react";
 import Link from "next/link";
 import MediaUploader, { MediaItem } from "@/components/admin/MediaUploader";
+import FloorPlanUploader, { FloorPlanRow as FPR } from "@/components/admin/FloorPlanUploader";
 
 const nullableNumber = z.preprocess(
   (v) => (v === "" || v === null || v === undefined ? null : Number(v)),
@@ -93,7 +94,7 @@ interface ProjectOption {
 
 const propertySchema = basePropertySchema.superRefine((data, ctx) => {
   if (data.publicationStatus === "PUBLISHED") {
-    if (!data.price || data.price.trim() === "") {
+    if (!data.priceOnRequest && (!data.price || data.price.trim() === "")) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: "Price is required to publish",
@@ -725,49 +726,22 @@ export default function PropertyEditor() {
 
         {/* Floor plans */}
         <div className="pt-6 border-t border-neutral-200">
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <h3 className="text-lg font-medium text-off-white">Architectural Plans</h3>
-              <p className="text-sm text-neutral-500">One entry per floor — image path (upload via Media above and copy its URL, or use /images/…).</p>
-            </div>
-            <button
-              type="button"
-              onClick={() => setFloorPlans([...floorPlans, { title: "", image: "" }])}
-              className="flex items-center gap-2 bg-white border border-neutral-300 text-neutral-700 px-4 py-2 rounded-md hover:border-neutral-900 transition-colors text-sm"
-            >
-              <Plus className="w-4 h-4" /> Add plan
-            </button>
-          </div>
-          <div className="space-y-3">
-            {floorPlans.map((plan, i) => (
-              <div key={i} className="flex items-center gap-3 border border-neutral-200 rounded-lg p-4 bg-neutral-50">
-                <input
-                  value={plan.title}
-                  onChange={(e) => setFloorPlans(floorPlans.map((f, j) => j === i ? { ...f, title: e.target.value } : f))}
-                  placeholder="Plan title (e.g. Ground Floor)"
-                  className="w-56 bg-white border border-neutral-300 focus:border-neutral-900 rounded-lg px-4 py-2.5 text-neutral-900 text-sm transition-colors"
-                />
-                <input
-                  value={plan.image}
-                  onChange={(e) => setFloorPlans(floorPlans.map((f, j) => j === i ? { ...f, image: e.target.value } : f))}
-                  placeholder="/images/plan.webp or uploaded media URL"
-                  className="flex-1 bg-white border border-neutral-300 focus:border-neutral-900 rounded-lg px-4 py-2.5 text-neutral-900 text-sm transition-colors"
-                />
-                <button
-                  type="button"
-                  onClick={() => setFloorPlans(floorPlans.filter((_, j) => j !== i))}
-                  className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors shrink-0"
-                  title="Remove plan"
-                >
-                  <Trash2 className="w-4 h-4" />
-                </button>
-              </div>
-            ))}
-            {floorPlans.length === 0 && (
-              <p className="text-sm text-neutral-400 italic">No floor plans — the plans viewer will be hidden on the page.</p>
-            )}
-          </div>
+          <FloorPlanUploader
+            value={floorPlans}
+            onChange={(plans: FPR[]) => setFloorPlans(plans.map(pl => ({ title: pl.title, image: pl.image })))}
+          />
         </div>
+
+        {Object.keys(errors).length > 0 && (
+          <div className="bg-red-50 border border-red-200 rounded-lg px-4 py-3 space-y-1">
+            <p className="text-sm font-medium text-red-600">Some fields need attention before saving:</p>
+            <ul className="list-disc pl-5 text-sm text-red-500">
+              {Object.entries(errors).map(([key, err]) => (
+                <li key={key}>{(err as { message?: string })?.message || key}</li>
+              ))}
+            </ul>
+          </div>
+        )}
 
         <div className="flex justify-end pt-4 border-t border-neutral-200">
           <button
