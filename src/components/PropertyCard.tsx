@@ -6,12 +6,14 @@ import { Heart, ArrowRight, ShieldCheck } from "lucide-react";
 import { useSavedProperties } from "@/context/SavedPropertiesContext";
 import type { Property } from "@/data/properties";
 import RichTooltip from "./ui/RichTooltip";
+import { useCurrency } from "@/context/CurrencyContext";
 
 export default function PropertyCard({
   property,
 }: {
   property: Property;
 }) {
+  const { displayPrice } = useCurrency();
   const { savedIds, toggleSave } = useSavedProperties();
   const favourited = savedIds.has(property.id);
   return (
@@ -85,7 +87,7 @@ export default function PropertyCard({
 
             <RichTooltip content="Subject to contract and availability" position="top">
               <p className="font-serif text-off-white font-light text-[clamp(24px,2.5vw,28px)] leading-[1.1] mt-4">
-                {property.price}
+                {property.priceOnRequest ? property.price : displayPrice(property.priceValue, property.price)}
               </p>
             </RichTooltip>
 
