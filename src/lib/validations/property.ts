@@ -77,7 +77,7 @@ const basePropertySchema = z.object({
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const publicationRefinement = (data: any, ctx: z.RefinementCtx) => {
   if (data.publicationStatus === "PUBLISHED") {
-    if (!data.price || data.price.trim() === "") {
+    if (!data.priceOnRequest && (!data.price || data.price.trim() === "")) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: "Price is required to publish",
