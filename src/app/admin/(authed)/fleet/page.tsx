@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { Plus, Pencil, Trash2, RefreshCw, X, Plane } from "lucide-react";
 
 type Jet = {
@@ -42,6 +42,32 @@ export default function FleetPage() {
   const [form, setForm] = useState(emptyForm);
   const [saving, setSaving] = useState(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const fileRef = useRef<HTMLInputElement>(null);
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+
+  const handleImageFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    setUploadError(null);
+    try {
+      const fd = new FormData();
+      fd.append("file", file);
+      const res = await fetch("/api/upload", { method: "POST", body: fd });
+      if (!res.ok) {
+        const d = await res.json().catch(() => ({}));
+        throw new Error(d.error || "Upload failed");
+      }
+      const d = await res.json();
+      setForm((f) => ({ ...f, image: d.url }));
+    } catch (err) {
+      setUploadError(err instanceof Error ? err.message : "Upload failed");
+    } finally {
+      setUploading(false);
+      if (fileRef.current) fileRef.current.value = "";
+    }
+  };
 
   const fetchJets = useCallback(async () => {
     try {
@@ -262,7 +288,30 @@ export default function FleetPage() {
               </div>
               <div>
                 <label className={labelCls}>Image URL (optional)</label>
-                <input value={form.image} onChange={(e) => setForm({ ...form, image: e.target.value })} className={inputCls} placeholder="/images/jets/light.jpg" />
+                <div className="space-y-2">
+                  <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={handleImageFile} />
+                  <div className="flex items-center gap-3">
+                    {form.image ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={form.image} alt="Aircraft" className="w-24 h-16 object-cover rounded-lg border border-border" />
+                    ) : null}
+                    <button
+                      type="button"
+                      onClick={() => fileRef.current?.click()}
+                      disabled={uploading}
+                      className="flex items-center gap-2 px-3 py-2 text-xs border border-border text-muted hover:text-off-white hover:border-gold rounded-lg transition-colors disabled:opacity-50"
+                    >
+                      {uploading ? <RefreshCw size={13} className="animate-spin" /> : <Plus size={13} />}
+                      {form.image ? "Replace image" : "Upload image"}
+                    </button>
+                    {form.image && (
+                      <button type="button" onClick={() => setForm({ ...form, image: "" })} className="text-xs text-red-400 hover:underline">
+                        Remove
+                      </button>
+                    )}
+                  </div>
+                  {uploadError && <p className="text-xs text-red-400">{uploadError}</p>}
+                </div>
               </div>
               <div>
                 <label className={labelCls}>Status</label>
