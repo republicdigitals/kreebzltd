@@ -212,6 +212,7 @@ export default function LeadDetailSheet({
               id="lead-notes"
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
+              maxLength={5000}
               rows={5}
               placeholder="Conversation history, follow-ups, context — only your team sees this."
               className="w-full bg-obsidian border border-border px-3 py-2 text-sm text-off-white focus:outline-none focus:border-gold transition-colors placeholder:text-muted/50 resize-y"
