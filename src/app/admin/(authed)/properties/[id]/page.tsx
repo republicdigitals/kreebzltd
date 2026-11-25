@@ -127,6 +127,7 @@ export default function PropertyEditor() {
   const isNew = params.id === "new";
   const [loadingData, setLoadingData] = useState(!isNew);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [planUploading, setPlanUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [media, setMedia] = useState<MediaItem[]>([]);
   const [rooms, setRooms] = useState<RoomRow[]>([]);
@@ -728,7 +729,8 @@ export default function PropertyEditor() {
         <div className="pt-6 border-t border-neutral-200">
           <FloorPlanUploader
             value={floorPlans}
-            onChange={(plans: FPR[]) => setFloorPlans(plans.map(pl => ({ title: pl.title, image: pl.image })))}
+            onChange={(update) => setFloorPlans((prev) => (typeof update === "function" ? (update as (p: FPR[]) => FPR[])(prev) : update))}
+            onUploadingChange={setPlanUploading}
           />
         </div>
 
@@ -746,7 +748,8 @@ export default function PropertyEditor() {
         <div className="flex justify-end pt-4 border-t border-neutral-200">
           <button
             type="submit"
-            disabled={isSubmitting}
+            disabled={isSubmitting || planUploading}
+            title={planUploading ? "Wait for the floor plan upload to finish" : undefined}
             className="bg-neutral-900 text-white px-6 py-3 rounded-lg font-medium hover:bg-neutral-700 transition-colors flex items-center gap-2 disabled:opacity-70"
           >
             {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />}

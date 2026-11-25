@@ -11,7 +11,8 @@ export interface FloorPlanRow {
 
 interface FloorPlanUploaderProps {
   value: FloorPlanRow[];
-  onChange: (plans: FloorPlanRow[]) => void;
+  onChange: (plans: FloorPlanRow[] | ((prev: FloorPlanRow[]) => FloorPlanRow[])) => void;
+  onUploadingChange?: (uploading: boolean) => void;
 }
 
 const FLOOR_NAMES = [
@@ -29,7 +30,7 @@ function suggestName(count: number) {
   return count < FLOOR_NAMES.length ? FLOOR_NAMES[count] : `Floor ${count + 1}`;
 }
 
-export default function FloorPlanUploader({ value, onChange }: FloorPlanUploaderProps) {
+export default function FloorPlanUploader({ value, onChange, onUploadingChange }: FloorPlanUploaderProps) {
   const [uploadingIndex, setUploadingIndex] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -52,6 +53,7 @@ export default function FloorPlanUploader({ value, onChange }: FloorPlanUploader
     }
 
     setUploadingIndex(index);
+    onUploadingChange?.(true);
     setError(null);
 
     try {
@@ -63,11 +65,12 @@ export default function FloorPlanUploader({ value, onChange }: FloorPlanUploader
         throw new Error(data.error || `Upload failed (${res.status})`);
       }
       const data = await res.json();
-      onChange(value.map((f, j) => (j === index ? { ...f, image: data.url } : f)));
+      onChange((prev) => prev.map((f, j) => (j === index ? { ...f, image: data.url } : f)));
     } catch (err) {
       setError(err instanceof Error ? err.message : "Upload failed — please try again.");
     } finally {
       setUploadingIndex(null);
+      onUploadingChange?.(false);
       if (fileInputRef.current) fileInputRef.current.value = "";
       pendingIndexRef.current = null;
     }
