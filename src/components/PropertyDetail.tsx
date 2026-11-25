@@ -66,11 +66,20 @@ export default function PropertyDetail({ property, nextProperty, projectClips, p
       const raw = localStorage.getItem(key);
       const list: { slug: string; address: string; cover?: string; price?: number | null; type?: string }[] = raw ? JSON.parse(raw) : [];
       const cover = property.media?.find((m) => m.isCover)?.url || property.media?.[0]?.url;
-      const entry = { slug: property.slug, address: property.address, cover, price: property.price ?? null, type: property.type };
+      const safeAddress = property.addressPublic === false
+        ? `${property.neighbourhood}, ${property.city}`
+        : property.address;
+      const entry = {
+        slug: property.slug,
+        address: safeAddress,
+        cover,
+        price: property.priceOnRequest ? null : (property.priceValue ?? null),
+        type: property.type,
+      };
       const next = [entry, ...list.filter((e) => e.slug !== property.slug)].slice(0, 6);
       localStorage.setItem(key, JSON.stringify(next));
     } catch {}
-  }, [property.slug, property.address, property.media, property.price, property.type]);
+  }, [property.slug, property.address, property.addressPublic, property.neighbourhood, property.city, property.media, property.priceValue, property.priceOnRequest, property.type]);
 
   useScrollLock(isLightboxOpen);
 
