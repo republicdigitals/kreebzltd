@@ -58,6 +58,19 @@ export default function PropertyDetail({ property, nextProperty, projectClips, p
   const [currentPhoto, setCurrentPhoto] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+  const [shared, setShared] = useState(false);
+
+  useEffect(() => {
+    try {
+      const key = "kreebz-recently-viewed";
+      const raw = localStorage.getItem(key);
+      const list: { slug: string; address: string; cover?: string; price?: number | null; type?: string }[] = raw ? JSON.parse(raw) : [];
+      const cover = property.media?.find((m) => m.isCover)?.url || property.media?.[0]?.url;
+      const entry = { slug: property.slug, address: property.address, cover, price: property.price ?? null, type: property.type };
+      const next = [entry, ...list.filter((e) => e.slug !== property.slug)].slice(0, 6);
+      localStorage.setItem(key, JSON.stringify(next));
+    } catch {}
+  }, [property.slug, property.address, property.media, property.price, property.type]);
 
   useScrollLock(isLightboxOpen);
 
@@ -94,6 +107,27 @@ export default function PropertyDetail({ property, nextProperty, projectClips, p
     setCurrentPhoto(index);
     setIsLightboxOpen(true);
   };
+
+  const handleShare = async () => {
+    const url = window.location.href;
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: displayAddress, text: `${displayAddress} — Kreebz`, url });
+        return;
+      }
+      throw new Error("no native share");
+    } catch {
+      try {
+        await navigator.clipboard.writeText(url);
+        setShared(true);
+        setTimeout(() => setShared(false), 2000);
+      } catch {
+        window.prompt("Copy this link:", url);
+      }
+    }
+  };
+
+  const handlePrint = () => window.print();
 
   const formatSqm = (v: number) => `${v.toLocaleString()} m²`;
   const specRows = [
@@ -271,10 +305,16 @@ export default function PropertyDetail({ property, nextProperty, projectClips, p
                   />
                   {favourited ? "Saved" : "Save"}
                 </button>
-                <button className="inline-flex items-center gap-2 px-4 py-2.5 border border-border rounded-full text-xs font-medium text-muted hover:border-gold hover:text-gold transition-colors">
-                  <Share2 size={14} strokeWidth={1.5} /> Share
+                <button
+                  onClick={handleShare}
+                  className="inline-flex items-center gap-2 px-4 py-2.5 border border-border rounded-full text-xs font-medium text-muted hover:border-gold hover:text-gold transition-colors"
+                >
+                  <Share2 size={14} strokeWidth={1.5} /> {shared ? "Link copied" : "Share"}
                 </button>
-                <button className="inline-flex items-center gap-2 px-4 py-2.5 border border-border rounded-full text-xs font-medium text-muted hover:border-gold hover:text-gold transition-colors">
+                <button
+                  onClick={handlePrint}
+                  className="inline-flex items-center gap-2 px-4 py-2.5 border border-border rounded-full text-xs font-medium text-muted hover:border-gold hover:text-gold transition-colors"
+                >
                   <Printer size={14} strokeWidth={1.5} /> Print
                 </button>
               </div>

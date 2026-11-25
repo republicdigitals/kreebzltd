@@ -1007,3 +1007,23 @@ select:focus-visible {
     border-color: #ffffff;
   }
 }
+
+/* ---------- Print: clean spec sheet for property pages ---------- */
+@media print {
+  header,
+  footer,
+  nav,
+  [class*="sticky"],
+  button,
+  .print-hidden {
+    display: none !important;
+  }
+  body {
+    background: #fff !important;
+    color: #111 !important;
+  }
+  section,
+  div {
+    box-shadow: none !important;
+  }
+}
