@@ -1,26 +1,24 @@
 import Hero from "@/components/Hero";
 import Manifesto from "@/components/Manifesto";
 import FeaturedProperties from "@/components/FeaturedProperties";
-import FeaturedProject from "@/components/FeaturedProject";
+import FeaturedDevelopments from "@/components/FeaturedDevelopments";
 import ServiceCards from "@/components/ServiceCards";
 import FAQ from "@/components/FAQ";
 import { getPublishedProperties } from "@/data/properties";
-import { getProjectContent } from "@/data/project-content";
+import { getAllProjects } from "@/data/projects";
 
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const [properties, bourdillonContent] = await Promise.all([
-    getPublishedProperties(),
-    getProjectContent("bourdillon"),
-  ]);
+  const properties = await getPublishedProperties();
+  const projects = getAllProjects();
 
   return (
     <div className="bg-obsidian">
       <Hero />
       <Manifesto />
       <FeaturedProperties properties={properties} />
-      <FeaturedProject latestProgress={bourdillonContent.progress[0]} />
+      <FeaturedDevelopments projects={projects} />
       <ServiceCards />
       <FAQ />
     </div>
