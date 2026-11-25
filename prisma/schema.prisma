@@ -150,6 +150,12 @@ model Lead {
   updatedAt  DateTime @updatedAt
 }
 
+model ServerConfig {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
+}
+
 model AgencySettings {
   id             String   @id @default("singleton")
   agencyName     String   @default("Kreebz Ltd")
