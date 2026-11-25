@@ -31,7 +31,7 @@ export default function CookieConsent() {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 100, opacity: 0 }}
           transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
-          className="fixed bottom-[calc(76px+env(safe-area-inset-bottom))] left-4 right-4 md:bottom-8 md:right-auto md:left-8 md:w-[400px] z-[65] bg-black border border-white/10 rounded-none shadow-card p-6 text-white"
+          className="fixed bottom-[calc(76px+env(safe-area-inset-bottom))] left-4 right-4 md:bottom-8 md:left-1/2 md:right-auto md:-translate-x-1/2 md:w-[360px] z-[65] bg-black border border-white/10 rounded-none shadow-card p-5 text-white"
         >
           <button
             onClick={() => setIsVisible(false)}
@@ -42,8 +42,8 @@ export default function CookieConsent() {
           </button>
 
           <h3 className="font-sans font-semibold text-white text-lg mb-2">We value your privacy</h3>
-          <p className="text-white/62 text-sm leading-relaxed mb-6">
-            We use cookies to enhance your browsing experience, serve personalized content, and analyze our traffic. By clicking &quot;Accept&quot;, you consent to our use of cookies as described in our <Link href="/privacy" className="text-gold hover:underline">Privacy Policy</Link>.
+          <p className="text-white/62 text-sm leading-relaxed mb-5">
+            We use cookies to improve your experience and analyse traffic. See our <Link href="/privacy" className="text-gold hover:underline">Privacy Policy</Link>.
           </p>
           
           <div className="flex gap-4">
