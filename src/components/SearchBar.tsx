@@ -94,12 +94,12 @@ export default function SearchBar({
             </div>
 
             {/* Meta: count · filters · sort — single compact row on mobile too */}
-            <div className="flex items-center justify-between lg:justify-end gap-4 lg:gap-6 lg:ml-auto">
+            <div className="flex flex-wrap items-center justify-between lg:justify-end gap-x-4 gap-y-2 lg:gap-6 lg:ml-auto">
               <p className="eyebrow text-muted whitespace-nowrap">
                 <span className="text-off-white">{total}</span> residence{total === 1 ? "" : "s"}
               </p>
 
-              <div className="flex items-center gap-3 lg:gap-4">
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-2 lg:gap-4">
                 {activeFilterCount > 0 && (
                   <button
                     onClick={clearFilters}
