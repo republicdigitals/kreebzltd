@@ -68,7 +68,7 @@ export default function DevelopmentsPage() {
                       </span>
                     )}
                   </div>
-                  <h2 className="display-serif text-off-white mb-5 group-hover:text-gold-light transition-colors">
+                  <h2 className="display-serif-sm text-off-white mb-5 group-hover:text-gold-light transition-colors">
                     {project.name}
                   </h2>
                   {project.positioning && (
