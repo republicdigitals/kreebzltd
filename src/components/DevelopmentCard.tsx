@@ -52,31 +52,10 @@ export default function DevelopmentCard({ project, priority = false }: Developme
               alt={`${project.name} — ${project.location ?? "Kreebz development"}`}
               fill
               priority={priority}
-              className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03] lg:hidden"
-              sizes="100vw"
+              className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+              sizes="(max-width: 1024px) 100vw, 50vw"
             />
           )}
-          {project.video ? (
-            <video
-              src={project.video}
-              poster={project.videoPoster}
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="metadata"
-              className="absolute inset-0 hidden h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03] lg:block"
-            />
-          ) : project.image ? (
-            <Image
-              src={project.image}
-              alt=""
-              fill
-              priority={priority}
-              className="hidden object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03] lg:block"
-              sizes="50vw"
-            />
-          ) : null}
           {project.imageLabel && (
             <span className="absolute left-4 top-4 max-w-[calc(100%-2rem)] bg-black/68 px-3 py-2 text-[9px] uppercase tracking-[0.16em] text-white/82 backdrop-blur-sm sm:left-5 sm:top-5">
               {project.imageLabel}
