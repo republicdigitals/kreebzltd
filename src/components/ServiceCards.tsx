@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowRight, KeyRound, Wrench, Handshake } from "lucide-react";
+import { ArrowRight, KeyRound, Wrench, Handshake, Plane } from "lucide-react";
 
 const services = [
   {
@@ -26,6 +26,13 @@ const services = [
     href: "/partnerships",
     cta: "Partner with us",
   },
+  {
+    icon: Plane,
+    title: "Private Aviation",
+    desc: "Charter on your schedule — aircraft, crew and ground movement arranged through one principal.",
+    href: "/services/private-jet",
+    cta: "Charter a jet",
+  },
 ];
 
 export default function ServiceCards() {
@@ -42,7 +49,7 @@ export default function ServiceCards() {
           <p className="text-muted text-lead">Everything you need in one place</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
           {services.map((service, i) => (
             <motion.div
               key={service.title}

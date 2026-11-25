@@ -41,7 +41,6 @@ const menuGroups = [
 
 export default function Navigation() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
 
   const headerRef = useRef<HTMLElement>(null);
   
@@ -72,16 +71,6 @@ export default function Navigation() {
   const searchParams = useSearchParams();
   const { data: session } = useSession();
 
-  // Transparent over the homepage hero; solid dark chrome elsewhere/scrolled
-  const isHome = pathname === "/";
-
-  useEffect(() => {
-    const onScroll = () => setIsScrolled(window.scrollY > 24);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
   const accountLink = session ? "/account" : "/login";
 
   const isLinkActive = (href: string) => {
@@ -111,11 +100,7 @@ export default function Navigation() {
     <>
       <header
         ref={headerRef}
-        className={`fixed top-0 left-0 right-0 z-[60] pt-[env(safe-area-inset-top)] transition-all duration-700 flex flex-col border-b ${
-          isHome && !isScrolled && !menuOpen
-            ? "bg-transparent border-transparent"
-            : "bg-panel/95 backdrop-blur-md border-white/10"
-        }`}
+        className="fixed top-0 left-0 right-0 z-[60] pt-[env(safe-area-inset-top)] transition-all duration-700 flex flex-col border-b bg-panel/95 backdrop-blur-md border-white/10"
       >
         {/* Main Nav — single row */}
         <div className="max-w-[1400px] w-full mx-auto px-6 lg:px-12 relative z-10">
@@ -133,7 +118,7 @@ export default function Navigation() {
                 </div>
               </button>
 
-              <div className="hidden lg:flex items-center gap-6 xl:gap-8">
+              <div className="hidden lg:flex items-center gap-5 xl:gap-7 lg:pl-14 xl:pl-16">
                 <Link
                   href="/properties"
                   onClick={() => setMenuOpen(false)}
@@ -143,7 +128,6 @@ export default function Navigation() {
                   <Search size={16} strokeWidth={1.5} />
                 </Link>
                 <Link href="/properties?intent=buy" className={`eyebrow text-[10px] tracking-[0.2em] whitespace-nowrap transition-colors duration-300 ${isLinkActive('/properties?intent=buy') ? 'text-gold' : 'text-white/80 hover:text-gold'}`}>BUY</Link>
-                <Link href="/properties?intent=rent" className={`eyebrow text-[10px] tracking-[0.2em] whitespace-nowrap transition-colors duration-300 ${isLinkActive('/properties?intent=rent') ? 'text-gold' : 'text-white/80 hover:text-gold'}`}>RENT</Link>
                 <Link href="/sell" className={`eyebrow text-[10px] tracking-[0.2em] whitespace-nowrap transition-colors duration-300 ${isLinkActive('/sell') ? 'text-gold' : 'text-white/80 hover:text-gold'}`}>SELL</Link>
                 <Link href="/management" className={`eyebrow text-[10px] tracking-[0.2em] whitespace-nowrap transition-colors duration-300 ${isLinkActive('/management') ? 'text-gold' : 'text-white/80 hover:text-gold'}`}>MANAGEMENT</Link>
                 <Link href="/services/private-jet" className={`eyebrow text-[10px] tracking-[0.2em] whitespace-nowrap transition-colors duration-300 ${isLinkActive('/services/private-jet') ? 'text-gold' : 'text-white/80 hover:text-gold'}`}>PRIVATE JET</Link>
@@ -151,8 +135,8 @@ export default function Navigation() {
               </div>
             </div>
 
-            {/* Center: Logo — absolutely centered so uneven side clusters can't push it off-axis */}
-            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+            {/* Logo — centered on mobile, editorial left mark on desktop */}
+            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 lg:left-0 lg:translate-x-0">
               <Link
                 href="/"
                 onClick={() => setMenuOpen(false)}
@@ -160,12 +144,12 @@ export default function Navigation() {
                 aria-label="Kreebz — home"
               >
                 <Image
-                  src="/kreebz-logo.png"
+                  src="/kreebz-logo-orange.png"
                   alt="Kreebz"
                   width={96}
                   height={88}
                   priority
-                  className="h-10 w-auto lg:h-12 object-contain"
+                  className="h-9 w-auto lg:h-10 object-contain"
                 />
               </Link>
             </div>
@@ -212,10 +196,9 @@ export default function Navigation() {
                 >
                   <User size={15} strokeWidth={1.5} />
                 </Link>
-                <Link href="/concierge" className={`eyebrow text-[10px] tracking-[0.2em] whitespace-nowrap transition-colors duration-300 ${isLinkActive('/concierge') ? 'text-gold' : 'text-white/80 hover:text-gold'}`}>CONCIERGE</Link>
                 <Link
                   href="/contact"
-                  className="eyebrow text-[10px] tracking-[0.2em] whitespace-nowrap shrink-0 px-5 py-2.5 bg-gold text-ink-fixed rounded-[var(--radius-pill)] hover:bg-gold-hover transition-all duration-300"
+                  className="eyebrow text-[10px] tracking-[0.2em] whitespace-nowrap shrink-0 px-5 py-2.5 bg-gold text-ink-fixed rounded-[var(--radius-sharp)] hover:bg-gold-hover transition-all duration-300"
                 >
                   TALK TO A PRINCIPAL
                 </Link>

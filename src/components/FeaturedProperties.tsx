@@ -16,9 +16,10 @@ import Button from "./ui/Button";
 const AUTOPLAY_MS = 6000;
 
 export default function FeaturedProperties({ properties }: { properties: Property[] }) {
-  const featured = properties.slice(0, 4);
+  const featured = properties.filter((property) => property.image).slice(0, 4);
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: 'start' });
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [canScroll, setCanScroll] = useState(false);
   const [paused, setPaused] = useState(false);
   
   const containerRef = useRef<HTMLElement>(null);
@@ -32,13 +33,16 @@ export default function FeaturedProperties({ properties }: { properties: Propert
   const onSelect = useCallback(() => {
     if (!emblaApi) return;
     setSelectedIndex(emblaApi.selectedScrollSnap());
+    setCanScroll(emblaApi.scrollSnapList().length > 1);
   }, [emblaApi, setSelectedIndex]);
 
   useEffect(() => {
     if (!emblaApi) return;
+    const frame = window.requestAnimationFrame(onSelect);
     emblaApi.on("select", onSelect);
     emblaApi.on("reInit", onSelect);
     return () => {
+      window.cancelAnimationFrame(frame);
       emblaApi.off("select", onSelect);
       emblaApi.off("reInit", onSelect);
     };
@@ -46,7 +50,7 @@ export default function FeaturedProperties({ properties }: { properties: Propert
 
   // Autoplay
   useEffect(() => {
-    if (!emblaApi || paused) return;
+    if (!emblaApi || paused || !canScroll) return;
     const intervalId = setInterval(() => {
       if (emblaApi.canScrollNext()) {
         emblaApi.scrollNext();
@@ -55,7 +59,7 @@ export default function FeaturedProperties({ properties }: { properties: Propert
       }
     }, AUTOPLAY_MS);
     return () => clearInterval(intervalId);
-  }, [emblaApi, paused]);
+  }, [emblaApi, paused, canScroll]);
   
   useGSAP(() => {
     // Cinematic scroll reveal
@@ -176,6 +180,7 @@ export default function FeaturedProperties({ properties }: { properties: Propert
             </div>
             
             {/* Arrows (desktop only) */}
+            {canScroll && (
             <button
               onClick={scrollPrev}
               aria-label="Previous property"
@@ -183,6 +188,8 @@ export default function FeaturedProperties({ properties }: { properties: Propert
             >
               <ArrowLeft size={18} strokeWidth={1.5} />
             </button>
+            )}
+            {canScroll && (
             <button
               onClick={scrollNext}
               aria-label="Next property"
@@ -190,9 +197,11 @@ export default function FeaturedProperties({ properties }: { properties: Propert
             >
               <ArrowRight size={18} strokeWidth={1.5} />
             </button>
+            )}
           </div>
 
           {/* Controls row: counter + dots */}
+          {canScroll && (
           <div className="flex items-center justify-between mt-8">
             <span className="text-off-white/80 text-sm tracking-[0.15em] font-medium">
               {String(selectedIndex + 1).padStart(2, "0")}
@@ -217,6 +226,7 @@ export default function FeaturedProperties({ properties }: { properties: Propert
               ))}
             </div>
           </div>
+          )}
         </div>
 
         {/* View all CTA */}

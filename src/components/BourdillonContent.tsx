@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
@@ -18,15 +18,12 @@ import {
   TreePine,
   Navigation,
 } from "lucide-react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useGSAP } from "@gsap/react";
 import { bourdillon, getApprovedProofPoints, type FeatureStatus, type ProgressUpdate } from "@/data/bourdillon";
 import type { SiteMedia } from "@/data/projects";
 import type { Property } from "@/data/properties";
 import { trackEvent } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
-import Button from "./ui/Button";
+import BourdillonExplorer from "./BourdillonExplorer";
 import PropertyCard from "./PropertyCard";
 import ProofLibrary from "./ProofLibrary";
 import FAQ from "./FAQ";
@@ -66,27 +63,12 @@ export default function BourdillonContent({
   progress = bourdillon.progress,
   siteMedia = bourdillon.siteMedia,
 }: BourdillonContentProps) {
-  const heroRef = useRef<HTMLElement>(null);
   const proofPoints = getApprovedProofPoints();
-
-  gsap.registerPlugin(ScrollTrigger, useGSAP);
+  const representativeResidence = residences.find((residence) => residence.slug === "townhouse-ibj");
 
   useEffect(() => {
     trackEvent("view_project", { project: "bourdillon" });
   }, []);
-
-  useGSAP(() => {
-    gsap.to(".bd-hero-img", {
-      scrollTrigger: {
-        trigger: heroRef.current,
-        start: "top top",
-        end: "bottom top",
-        scrub: true,
-      },
-      y: "20%",
-      ease: "none",
-    });
-  }, { scope: heroRef });
 
   const scrollToEnquiry = (location: string) => {
     trackEvent("click_brochure_cta", { project: "bourdillon", location });
@@ -95,75 +77,79 @@ export default function BourdillonContent({
 
   const specRows = [
     { icon: Tag, label: "Current Status", value: bourdillon.status },
-    { icon: Home, label: "Project Type", value: "Private residence" },
+    { icon: Home, label: "Project Type", value: "12-home compound" },
     { icon: MapPin, label: "Location", value: "Bourdillon Road, Ikoyi" },
     { icon: CalendarCheck, label: "Completion", value: "Confirmed on enquiry" },
     { icon: Banknote, label: "Pricing", value: "Private enquiry", highlight: true },
   ];
 
   return (
-    <div className="bg-obsidian">
+    <div className="bg-obsidian bourdillon-editorial">
       {/* ---------- 1. Hero / above-the-fold ---------- */}
-      <section ref={heroRef} className="relative min-h-dvh w-full overflow-hidden flex items-end">
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="bd-hero-img absolute inset-0 w-full h-[120%] -top-[10%]">
-            <video
-              src="/videos/morphix/bourdillon-site-film.mp4"
-              poster="/videos/morphix/bourdillon-site-film-poster.jpg"
-              autoPlay
-              muted
-              loop
-              playsInline
-              className="w-full h-full object-cover object-center"
-            />
+      <section className="bd-hero-grid relative overflow-hidden border-b border-black bg-white">
+        <div className="grid min-h-[calc(100svh-var(--nav-height-mobile))] md:min-h-[calc(100svh-var(--nav-height-desktop))] lg:grid-cols-[5fr_7fr]">
+          <div className="relative flex min-h-[58svh] flex-col justify-between border-b border-black bg-white p-6 text-black sm:p-10 lg:min-h-0 lg:border-b-0 lg:border-r lg:p-12">
+            <div className="flex items-start justify-between gap-8">
+              <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#f96300]">Kreebz Ltd</p>
+              <span className="bd-asterisk" aria-hidden="true" />
+            </div>
+
+            <motion.div
+              initial={{ y: 22, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.65, delay: 0.15, ease: [0.23, 1, 0.32, 1] }}
+              className="py-14 lg:py-10"
+            >
+              <h1 className="max-w-[10ch] text-[clamp(52px,8vw,112px)] font-black uppercase leading-[0.86] tracking-[-0.06em]">
+                Bourdillon
+                <br />
+                12 homes
+              </h1>
+              <p className="mt-7 max-w-md text-base leading-relaxed text-black/72">
+                A private off-plan compound of six-floor homes on Bourdillon Road, Ikoyi.
+              </p>
+            </motion.div>
+
+            <div className="space-y-7">
+              <div className="flex flex-wrap items-center gap-3">
+                <span className="border border-black/25 px-3 py-2 text-[10px] font-bold uppercase tracking-[0.16em] text-black/78">
+                  {bourdillon.statusLabel}: {bourdillon.status}
+                </span>
+                <span className="border border-black/25 px-3 py-2 text-[10px] font-bold uppercase tracking-[0.16em] text-black/78">
+                  {bourdillon.location}
+                </span>
+              </div>
+              <div className="flex flex-col gap-3 sm:flex-row">
+                <button type="button" onClick={() => scrollToEnquiry("hero")} className="bd-primary-button">
+                  Request the brochure
+                  <ArrowRight size={16} strokeWidth={1.8} />
+                </button>
+                <a href="#residence-explorer" className="bd-secondary-button bd-secondary-button-inverse border-black bg-black text-white">
+                  Explore the homes
+                </a>
+              </div>
+            </div>
           </div>
-          <div className="absolute inset-0 z-10 bg-gradient-to-b from-black/70 via-black/30 to-black/70" />
-        </div>
 
-        {/* Render label — must stay visible on mobile */}
-        <p className="absolute top-28 right-6 lg:right-12 z-20 text-[9px] uppercase tracking-[0.2em] text-white/90 bg-black/50 backdrop-blur-sm px-3 py-1.5 rounded-full max-w-[220px] text-right">
-          {bourdillon.heroImageLabel}
-        </p>
-
-        <div className="relative z-10 w-full max-w-[1400px] mx-auto px-6 lg:px-12 pb-24 pt-48">
-          <motion.div
-            initial={{ y: 30, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 1, delay: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-            className="max-w-3xl"
-          >
-            <p className="eyebrow text-gold-light mb-6 flex items-center gap-3">
-              <MapPin size={12} strokeWidth={1.5} />
-              {bourdillon.location}
-            </p>
-
-            <h1 className="display-serif text-white mb-6">{bourdillon.name}</h1>
-
-            <p className="text-lead text-white/85 max-w-xl mb-8">
-              {bourdillon.positioning}
-            </p>
-
-            <div className="inline-flex items-center gap-2 px-4 py-2 border border-gold/30 bg-gold/10 backdrop-blur-sm rounded-full mb-10">
-              <span className="w-2 h-2 rounded-full bg-gold animate-pulse" aria-hidden="true" />
-              <span className="text-gold text-xs uppercase tracking-widest font-medium">
-                {bourdillon.statusLabel}: {bourdillon.status}
-              </span>
+          <div className="relative min-h-[42svh] overflow-hidden lg:min-h-0">
+            <Image
+              src={bourdillon.heroImage}
+              alt={bourdillon.heroImageAlt}
+              fill
+              priority
+              className="object-cover"
+              sizes="(max-width: 1024px) 100vw, 58vw"
+            />
+            <div className="absolute bottom-0 left-0 max-w-[360px] bg-black p-5 text-white sm:p-6">
+              <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-white/60">
+                Concept render
+              </p>
+              <p className="mt-2 text-sm font-bold uppercase leading-snug tracking-[0.08em]">
+                {bourdillon.heroImageLabel}
+              </p>
             </div>
-
-            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
-              <Button onClick={() => scrollToEnquiry("hero")} className="px-10">
-                Request the project brochure
-              </Button>
-              <a
-                href="#progress"
-                onClick={() => trackEvent("click_primary_cta", { project: "bourdillon", target: "progress" })}
-                className="text-white/70 hover:text-gold text-xs uppercase tracking-[0.2em] transition-colors inline-flex items-center gap-2"
-              >
-                View project progress
-                <ArrowRight size={14} strokeWidth={1.5} />
-              </a>
-            </div>
-          </motion.div>
+            <div className="bd-slash-motif absolute right-6 top-6 invert" aria-hidden="true" />
+          </div>
         </div>
       </section>
 
@@ -219,6 +205,8 @@ export default function BourdillonContent({
         </div>
       </section>
 
+      <BourdillonExplorer representativeHref={representativeResidence ? `/property/${representativeResidence.slug}` : undefined} />
+
       {/* ---------- 3. Project overview card ---------- */}
       <section className="pb-10 lg:pb-14">
         <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
@@ -240,7 +228,7 @@ export default function BourdillonContent({
                 </p>
                 <div className="flex flex-wrap gap-3 mt-8">
                   <span className="inline-flex items-center gap-2 px-4 py-2 bg-obsidian-light rounded-full text-sm font-medium text-off-white">
-                    <Home size={15} strokeWidth={1.5} className="text-gold" /> Private residence
+                    <Home size={15} strokeWidth={1.5} className="text-gold" /> 12-home compound
                   </span>
                   <span className="inline-flex items-center gap-2 px-4 py-2 bg-obsidian-light rounded-full text-sm font-medium text-off-white">
                     <Building2 size={15} strokeWidth={1.5} className="text-gold" /> Multi-floor with lift
@@ -262,7 +250,7 @@ export default function BourdillonContent({
             <motion.div {...fadeUp} className="flex items-end justify-between mb-8">
               <div>
                 <p className="eyebrow text-gold mb-4">Within this development</p>
-                <h2 className="display-serif-sm text-off-white">Available residences</h2>
+                <h2 className="display-serif-sm text-off-white">Representative residence</h2>
               </div>
               <Link
                 href="/properties"
@@ -271,6 +259,10 @@ export default function BourdillonContent({
                 All properties <ArrowRight size={14} strokeWidth={1.5} />
               </Link>
             </motion.div>
+            <p className="text-sm text-muted leading-relaxed max-w-2xl mb-8">
+              The published residence record shows the detailed home specification. The compound
+              explorer above explains how the 12 positions and four home types fit together.
+            </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {residences.map((property) => (
                 <motion.div key={property.id} {...fadeUp}>

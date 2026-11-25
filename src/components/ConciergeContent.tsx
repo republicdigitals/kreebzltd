@@ -180,7 +180,7 @@ export default function ConciergeContent() {
                     sizes="(min-width: 768px) 50vw, 100vw"
                     className="object-cover opacity-60 group-hover:opacity-80 group-hover:scale-105 transition-all duration-700"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-obsidian via-obsidian/40 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
 
                   <span className="absolute top-6 left-6 font-serif text-gold-light/40 text-[28px] leading-none">
                     {service.n}
