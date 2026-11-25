@@ -130,8 +130,7 @@ export default function LeadsPage() {
     }
   };
 
-  const deleteLead = async (id: string) => {
-    if (!confirm("Permanently delete this lead?")) return;
+  const deleteLeadApi = async (id: string) => {
     try {
       const res = await fetch(`/api/leads/${id}`, {
         method: "DELETE",
@@ -142,6 +141,11 @@ export default function LeadsPage() {
     } catch {
       setError("Failed to delete lead.");
     }
+  };
+
+  const deleteLead = async (id: string) => {
+    if (!confirm("Permanently delete this lead?")) return;
+    await deleteLeadApi(id);
   };
 
   const filtered = leads.filter((l) => {
@@ -449,7 +453,7 @@ export default function LeadsPage() {
             onUpdated={(updated) =>
               setLeads((prev) => prev.map((l) => (l.id === updated.id ? { ...l, ...updated } : l)))
             }
-            onDelete={(id) => setLeads((prev) => prev.filter((l) => l.id !== id))}
+            onDelete={(id) => deleteLeadApi(id)}
           />
         );
       })()}
