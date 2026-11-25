@@ -37,12 +37,16 @@ export default function PropertyIndexRow({ property, index }: PropertyIndexRowPr
               />
             ) : (
               <div
-                className="absolute inset-0 flex items-center justify-center bg-obsidian-light"
+                className="absolute inset-0 flex flex-col justify-between bg-black p-6 text-white"
                 aria-hidden="true"
               >
-                <span className="uppercase text-[10px] text-muted tracking-[0.3em]">
-                  {property.imagePlaceholder || "IMAGE PENDING"}
-                </span>
+                <span className="text-[28px] leading-none text-gold">*</span>
+                <div>
+                  <p className="eyebrow text-white/55">Visuals held privately</p>
+                  <p className="mt-3 max-w-[240px] text-sm leading-relaxed text-white/78">
+                    Inspection media is shared with qualified enquiries.
+                  </p>
+                </div>
               </div>
             )}
 
