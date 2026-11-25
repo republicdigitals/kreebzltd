@@ -5,6 +5,7 @@ import Link from "next/link";
 import { type Property } from "@/data/properties";
 import { Plus, Search, Pencil, Trash2 } from "lucide-react";
 import Image from "next/image";
+import { propertyCompleteness } from "@/lib/property-completeness";
 
 export default function AdminPropertiesList() {
   const [properties, setProperties] = useState<Property[]>([]);
@@ -88,6 +89,7 @@ export default function AdminPropertiesList() {
                     <th className="px-6 py-4 whitespace-nowrap">Status</th>
                     <th className="px-6 py-4 whitespace-nowrap">Price</th>
                     <th className="px-6 py-4 whitespace-nowrap">Location</th>
+                    <th className="px-6 py-4 whitespace-nowrap">Completeness</th>
                     <th className="px-6 py-4 whitespace-nowrap text-right">Actions</th>
                   </tr>
                 </thead>
@@ -120,6 +122,28 @@ export default function AdminPropertiesList() {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">{property.price}</td>
                       <td className="px-6 py-4 whitespace-nowrap">{property.neighbourhood}</td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        {(() => {
+                          const c = propertyCompleteness(property);
+                          const pct = Math.round((c.score / c.total) * 100);
+                          return (
+                            <div className="space-y-1" title={c.missing.length ? "Missing: " + c.missing.join(", ") : "Complete"}>
+                              <div className="flex items-center gap-2">
+                                <div className="w-16 h-1.5 bg-obsidian rounded-full overflow-hidden">
+                                  <div
+                                    className={`h-full rounded-full ${pct === 100 ? "bg-emerald-500" : pct >= 60 ? "bg-gold" : "bg-red-500"}`}
+                                    style={{ width: `${pct}%` }}
+                                  />
+                                </div>
+                                <span className="text-xs text-muted">{c.score}/{c.total}</span>
+                              </div>
+                              {c.missing.length > 0 && (
+                                <p className="text-[10px] text-muted/70">missing: {c.missing.slice(0, 2).join(", ")}{c.missing.length > 2 ? ` +${c.missing.length - 2}` : ""}</p>
+                              )}
+                            </div>
+                          );
+                        })()}
+                      </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right">
                         <div className="flex items-center justify-end gap-2">
                           <Link href={`/admin/properties/${property.id}`} className="p-2 text-muted hover:text-off-white hover:bg-obsidian rounded-none transition-colors">
@@ -169,6 +193,11 @@ export default function AdminPropertiesList() {
                     <div className="space-y-1">
                       <div className="text-sm font-medium text-off-white">{property.price}</div>
                       <div className="text-xs text-muted">{property.neighbourhood}</div>
+                      {(() => {
+                        const c = propertyCompleteness(property);
+                        if (c.missing.length === 0) return null;
+                        return <div className="text-[10px] text-gold/80">{c.score}/{c.total} — missing {c.missing.slice(0, 2).join(", ")}{c.missing.length > 2 ? ` +${c.missing.length - 2}` : ""}</div>;
+                      })()}
                     </div>
                     <div className="flex items-center gap-2">
                       <Link href={`/admin/properties/${property.id}`} className="p-2 text-muted hover:text-off-white hover:bg-obsidian rounded-none transition-colors">

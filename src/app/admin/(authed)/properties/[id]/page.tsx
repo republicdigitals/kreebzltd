@@ -9,6 +9,15 @@ import { ArrowLeft, Save, Loader2, Plus, Trash2 } from "lucide-react";
 import Link from "next/link";
 import MediaUploader, { MediaItem } from "@/components/admin/MediaUploader";
 
+const nullableNumber = z.preprocess(
+  (v) => (v === "" || v === null || v === undefined ? null : Number(v)),
+  z.number().nonnegative().nullable()
+);
+const nullableInt = z.preprocess(
+  (v) => (v === "" || v === null || v === undefined ? null : Number(v)),
+  z.number().int().nonnegative().nullable()
+);
+
 const basePropertySchema = z.object({
   id: z.string().min(3, "ID must be at least 3 characters"),
   price: z.string(),
@@ -36,6 +45,34 @@ const basePropertySchema = z.object({
   publicationStatus: z.enum(["DRAFT", "PUBLISHED", "ARCHIVED"], {
     message: "Please select a valid publication status",
   }),
+  internalSqm: nullableNumber,
+  landSqm: nullableNumber,
+  staffBeds: nullableInt,
+  staffBaths: nullableInt,
+  parkingCount: nullableInt,
+  parkingType: z.string().nullable().optional(),
+  furnishing: z.string().nullable().optional(),
+  powerDetails: z.string().nullable().optional(),
+  waterDetails: z.string().nullable().optional(),
+  internetDetails: z.string().nullable().optional(),
+  securityDetails: z.string().nullable().optional(),
+  serviceCharge: z.string().nullable().optional(),
+  priceCurrency: z.string().nullable().optional(),
+  priceNegotiable: z.boolean().default(false),
+  priceOnRequest: z.boolean().default(false),
+  availabilityNote: z.string().nullable().optional(),
+  inspectionInfo: z.string().nullable().optional(),
+  titleStatus: z.string().nullable().optional(),
+  tenure: z.string().nullable().optional(),
+  completionStatus: z.string().nullable().optional(),
+  handoverDate: z.string().nullable().optional(),
+  addressPublic: z.boolean().default(true),
+  leaseAnnualRent: z.string().nullable().optional(),
+  leaseYearsUpfront: nullableInt,
+  leaseDeposit: z.string().nullable().optional(),
+  leaseAgencyFeePct: nullableNumber,
+  leaseLegalFeePct: nullableNumber,
+  leaseRenewalTerms: z.string().nullable().optional(),
 });
 
 interface RoomRow {
@@ -93,6 +130,9 @@ export default function PropertyEditor() {
   const [media, setMedia] = useState<MediaItem[]>([]);
   const [rooms, setRooms] = useState<RoomRow[]>([]);
   const [floorPlans, setFloorPlans] = useState<FloorPlanRow[]>([]);
+  const [amenitiesText, setAmenitiesText] = useState("");
+  const [inclusionsText, setInclusionsText] = useState("");
+  const [exclusionsText, setExclusionsText] = useState("");
   const [projects, setProjects] = useState<ProjectOption[]>([]);
 
   const {
@@ -144,6 +184,9 @@ export default function PropertyEditor() {
             if (Array.isArray(data.floorPlans)) {
               setFloorPlans(data.floorPlans);
             }
+            if (Array.isArray(data.amenities)) setAmenitiesText(data.amenities.join("\n"));
+            if (Array.isArray(data.inclusions)) setInclusionsText(data.inclusions.join("\n"));
+            if (Array.isArray(data.exclusions)) setExclusionsText(data.exclusions.join("\n"));
           } else {
             setError("Property not found");
           }
@@ -175,10 +218,17 @@ export default function PropertyEditor() {
       const coverImage = activeMedia.find(m => m.isCover)?.url || activeMedia[0]?.url || null;
 
       const cleanRooms = rooms.filter(r => r.heading.trim() || r.body.trim());
+      const toLines = (t: string) => t.split("\n").map(l => l.trim()).filter(Boolean);
+      const listData = {
+        amenities: toLines(amenitiesText),
+        inclusions: toLines(inclusionsText),
+        exclusions: toLines(exclusionsText),
+      };
       const cleanFloorPlans = floorPlans.filter(f => f.title.trim() || f.image.trim());
 
       const payload = isNew ? {
         ...data,
+        ...listData,
         projectSlug: data.projectSlug || null,
         imagePlaceholder: "property-placeholder.jpg",
         image: coverImage,
@@ -189,6 +239,7 @@ export default function PropertyEditor() {
         media: activeMedia,
       } : {
         ...data,
+        ...listData,
         projectSlug: data.projectSlug || null,
         media: activeMedia,
         image: coverImage,
@@ -435,6 +486,187 @@ export default function PropertyEditor() {
               className={`w-full bg-white border ${errors.description ? 'border-red-500' : 'border-neutral-300 focus:border-neutral-900'} rounded-lg px-4 py-3 text-neutral-900 transition-colors resize-none`} 
             />
             {errors.description && <p className="text-sm text-red-500">{errors.description.message}</p>}
+          </div>
+        </div>
+
+        <div className="pt-6 border-t border-neutral-200 space-y-4">
+          <div>
+            <h3 className="text-lg font-medium text-neutral-900">Specification</h3>
+            <p className="text-sm text-neutral-500">Sizes, staff quarters, parking and furnishing — buyers ask for these first.</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-neutral-700">Internal size (m²)</label>
+              <input type="number" step="any" {...register("internalSqm")} className="w-full bg-white border border-neutral-300 focus:border-neutral-900 rounded-lg px-4 py-3 text-neutral-900 transition-colors" placeholder="e.g. 800" />
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-neutral-700">Land size (m²)</label>
+              <input type="number" step="any" {...register("landSqm")} className="w-full bg-white border border-neutral-300 focus:border-neutral-900 rounded-lg px-4 py-3 text-neutral-900 transition-colors" placeholder="e.g. 1200" />
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-neutral-700">Staff bedrooms</label>
+              <input type="number" {...register("staffBeds")} className="w-full bg-white border border-neutral-300 focus:border-neutral-900 rounded-lg px-4 py-3 text-neutral-900 transition-colors" />
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-neutral-700">Staff bathrooms</label>
+              <input type="number" {...register("staffBaths")} className="w-full bg-white border border-neutral-300 focus:border-neutral-900 rounded-lg px-4 py-3 text-neutral-900 transition-colors" />
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-neutral-700">Parking spaces</label>
+              <input type="number" {...register("parkingCount")} className="w-full bg-white border border-neutral-300 focus:border-neutral-900 rounded-lg px-4 py-3 text-neutral-900 transition-colors" />
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-neutral-700">Parking type</label>
+              <select {...register("parkingType")} className="w-full bg-white border border-neutral-300 focus:border-neutral-900 rounded-lg px-4 py-3 text-neutral-900 transition-colors"><option value="">Not specified</option><option value="garage">Garage</option><option value="carport">Carport</option><option value="driveway">Driveway</option><option value="street">Street</option></select>
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-neutral-700">Furnishing</label>
+              <select {...register("furnishing")} className="w-full bg-white border border-neutral-300 focus:border-neutral-900 rounded-lg px-4 py-3 text-neutral-900 transition-colors"><option value="">Not specified</option><option value="shell">Shell</option><option value="serviced">Serviced</option><option value="furnished">Furnished</option><option value="semi-furnished">Semi-furnished</option><option value="unfurnished">Unfurnished</option></select>
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-neutral-700">Completion status</label>
+              <select {...register("completionStatus")} className="w-full bg-white border border-neutral-300 focus:border-neutral-900 rounded-lg px-4 py-3 text-neutral-900 transition-colors"><option value="">Not specified</option><option value="completed">Completed</option><option value="off-plan">Off-plan</option><option value="under-construction">Under construction</option></select>
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-neutral-700">Handover date</label>
+              <input {...register("handoverDate")} className="w-full bg-white border border-neutral-300 focus:border-neutral-900 rounded-lg px-4 py-3 text-neutral-900 transition-colors" placeholder="e.g. Q4 2027 or Dec 2027" />
+            </div>
+          </div>
+        </div>
+
+        <div className="pt-6 border-t border-neutral-200 space-y-4">
+          <div>
+            <h3 className="text-lg font-medium text-neutral-900">Utilities & services</h3>
+            <p className="text-sm text-neutral-500">Power, water, internet, security and service charge transparency.</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-2 md:col-span-2">
+              <label className="text-sm font-medium text-neutral-700">Power details</label>
+              <textarea {...register("powerDetails")} rows={2} className="w-full bg-white border border-neutral-300 focus:border-neutral-900 rounded-lg px-4 py-3 text-neutral-900 transition-colors resize-none" placeholder="e.g. 2 x 30kVA generators, inverter backup, estate power" />
+            </div>
+            <div className="space-y-2 md:col-span-2">
+              <label className="text-sm font-medium text-neutral-700">Water details</label>
+              <textarea {...register("waterDetails")} rows={2} className="w-full bg-white border border-neutral-300 focus:border-neutral-900 rounded-lg px-4 py-3 text-neutral-900 transition-colors resize-none" placeholder="e.g. Borehole + treatment plant" />
+            </div>
+            <div className="space-y-2 md:col-span-2">
+              <label className="text-sm font-medium text-neutral-700">Internet details</label>
+              <textarea {...register("internetDetails")} rows={2} className="w-full bg-white border border-neutral-300 focus:border-neutral-900 rounded-lg px-4 py-3 text-neutral-900 transition-colors resize-none" placeholder="e.g. Fibre-ready, estate-wide coverage" />
+            </div>
+            <div className="space-y-2 md:col-span-2">
+              <label className="text-sm font-medium text-neutral-700">Security details</label>
+              <textarea {...register("securityDetails")} rows={2} className="w-full bg-white border border-neutral-300 focus:border-neutral-900 rounded-lg px-4 py-3 text-neutral-900 transition-colors resize-none" placeholder="e.g. Gated estate, CCTV, access control, 24/7 personnel" />
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-neutral-700">Service charge</label>
+              <input {...register("serviceCharge")} className="w-full bg-white border border-neutral-300 focus:border-neutral-900 rounded-lg px-4 py-3 text-neutral-900 transition-colors" placeholder="e.g. ₦5m/year or included" />
+            </div>
+          </div>
+        </div>
+
+        <div className="pt-6 border-t border-neutral-200 space-y-4">
+          <div>
+            <h3 className="text-lg font-medium text-neutral-900">Pricing & availability</h3>
+            <p className="text-sm text-neutral-500">Currency, negotiability, and how buyers can inspect.</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-neutral-700">Price currency</label>
+              <select {...register("priceCurrency")} className="w-full bg-white border border-neutral-300 focus:border-neutral-900 rounded-lg px-4 py-3 text-neutral-900 transition-colors"><option value="">Not specified</option><option value="USD">USD</option><option value="NGN">NGN</option></select>
+            </div>
+            <label className="flex items-start gap-3 pt-6">
+              <input type="checkbox" {...register("priceOnRequest")} className="mt-1 h-4 w-4 accent-neutral-900" />
+              <span className="text-sm text-neutral-700">Price on request — hide the price publicly</span>
+            </label>
+            <label className="flex items-start gap-3 pt-6">
+              <input type="checkbox" {...register("priceNegotiable")} className="mt-1 h-4 w-4 accent-neutral-900" />
+              <span className="text-sm text-neutral-700">Price is negotiable</span>
+            </label>
+            <label className="flex items-start gap-3 pt-6">
+              <input type="checkbox" {...register("addressPublic")} className="mt-1 h-4 w-4 accent-neutral-900" />
+              <span className="text-sm text-neutral-700">Exact address is public (off = revealed after qualified enquiry)</span>
+            </label>
+            <div className="space-y-2 md:col-span-2">
+              <label className="text-sm font-medium text-neutral-700">Availability note</label>
+              <textarea {...register("availabilityNote")} rows={2} className="w-full bg-white border border-neutral-300 focus:border-neutral-900 rounded-lg px-4 py-3 text-neutral-900 transition-colors resize-none" placeholder="e.g. Available now, or under offer" />
+            </div>
+            <div className="space-y-2 md:col-span-2">
+              <label className="text-sm font-medium text-neutral-700">Inspection info</label>
+              <textarea {...register("inspectionInfo")} rows={2} className="w-full bg-white border border-neutral-300 focus:border-neutral-900 rounded-lg px-4 py-3 text-neutral-900 transition-colors resize-none" placeholder="e.g. Weekday inspections by appointment" />
+            </div>
+          </div>
+        </div>
+
+        <div className="pt-6 border-t border-neutral-200 space-y-4">
+          <div>
+            <h3 className="text-lg font-medium text-neutral-900">Legal & completion</h3>
+            <p className="text-sm text-neutral-500">Title and tenure in plain language — the top trust blocker for remote buyers.</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-2 md:col-span-2">
+              <label className="text-sm font-medium text-neutral-700">Title status</label>
+              <textarea {...register("titleStatus")} rows={2} className="w-full bg-white border border-neutral-300 focus:border-neutral-900 rounded-lg px-4 py-3 text-neutral-900 transition-colors resize-none" placeholder="e.g. C of O issued and verified" />
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-neutral-700">Tenure</label>
+              <select {...register("tenure")} className="w-full bg-white border border-neutral-300 focus:border-neutral-900 rounded-lg px-4 py-3 text-neutral-900 transition-colors"><option value="">Not specified</option><option value="freehold">Freehold</option><option value="leasehold">Leasehold</option><option value="assignment">Assignment</option><option value="governors-consent">Governors consent</option><option value="c-of-o">Certificate of occupancy</option></select>
+            </div>
+          </div>
+        </div>
+
+        <div className="pt-6 border-t border-neutral-200 space-y-4">
+          <div>
+            <h3 className="text-lg font-medium text-neutral-900">Lease terms</h3>
+            <p className="text-sm text-neutral-500">Only relevant for lease listings — rent structure, fees and renewal.</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-neutral-700">Annual rent</label>
+              <input {...register("leaseAnnualRent")} className="w-full bg-white border border-neutral-300 focus:border-neutral-900 rounded-lg px-4 py-3 text-neutral-900 transition-colors" placeholder="e.g. ₦250m/year" />
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-neutral-700">Years required upfront</label>
+              <input type="number" {...register("leaseYearsUpfront")} className="w-full bg-white border border-neutral-300 focus:border-neutral-900 rounded-lg px-4 py-3 text-neutral-900 transition-colors" />
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-neutral-700">Deposit</label>
+              <input {...register("leaseDeposit")} className="w-full bg-white border border-neutral-300 focus:border-neutral-900 rounded-lg px-4 py-3 text-neutral-900 transition-colors" placeholder="e.g. 10% refundable" />
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-neutral-700">Agency fee (%)</label>
+              <input type="number" step="any" {...register("leaseAgencyFeePct")} className="w-full bg-white border border-neutral-300 focus:border-neutral-900 rounded-lg px-4 py-3 text-neutral-900 transition-colors" />
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-neutral-700">Legal fee (%)</label>
+              <input type="number" step="any" {...register("leaseLegalFeePct")} className="w-full bg-white border border-neutral-300 focus:border-neutral-900 rounded-lg px-4 py-3 text-neutral-900 transition-colors" />
+            </div>
+            <div className="space-y-2 md:col-span-2">
+              <label className="text-sm font-medium text-neutral-700">Renewal terms</label>
+              <textarea {...register("leaseRenewalTerms")} rows={2} className="w-full bg-white border border-neutral-300 focus:border-neutral-900 rounded-lg px-4 py-3 text-neutral-900 transition-colors resize-none" placeholder="e.g. Annual renewal with 90-day notice" />
+            </div>
+          </div>
+        </div>
+
+        <div className="pt-6 border-t border-neutral-200 space-y-4">
+          <div>
+            <h3 className="text-lg font-medium text-neutral-900">Amenities & inclusions</h3>
+            <p className="text-sm text-neutral-500">What the home comes with — and what it does not.</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-neutral-700">Amenities</label>
+              <textarea value={amenitiesText} onChange={(e) => setAmenitiesText(e.target.value)} rows={4} className="w-full bg-white border border-neutral-300 focus:border-neutral-900 rounded-lg px-4 py-3 text-neutral-900 transition-colors resize-none" placeholder="Pool&#10;Gym&#10;Smart home" />
+              <p className="text-xs text-neutral-400">One item per line.</p>
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-neutral-700">Inclusions</label>
+              <textarea value={inclusionsText} onChange={(e) => setInclusionsText(e.target.value)} rows={4} className="w-full bg-white border border-neutral-300 focus:border-neutral-900 rounded-lg px-4 py-3 text-neutral-900 transition-colors resize-none" placeholder="Kitchen appliances&#10;Generator" />
+              <p className="text-xs text-neutral-400">One item per line.</p>
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-neutral-700">Exclusions</label>
+              <textarea value={exclusionsText} onChange={(e) => setExclusionsText(e.target.value)} rows={4} className="w-full bg-white border border-neutral-300 focus:border-neutral-900 rounded-lg px-4 py-3 text-neutral-900 transition-colors resize-none" placeholder="Furniture package&#10;Artwork" />
+              <p className="text-xs text-neutral-400">One item per line.</p>
+            </div>
           </div>
         </div>
 
