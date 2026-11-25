@@ -59,7 +59,7 @@ export default function DevelopmentsPage() {
                     </span>
                   )}
                 </div>
-                <div className="p-8 lg:p-14 flex flex-col justify-center">
+                <div className="p-5 sm:p-8 lg:p-14 flex flex-col justify-center">
                   <div className="flex items-center gap-4 mb-6">
                     <p className="eyebrow text-gold">{project.location}</p>
                     {project.status && (

@@ -233,7 +233,7 @@ body.nav-menu-open .concierge-fab {
   line-height: 0.92;
   letter-spacing: -0.055em;
   text-transform: uppercase;
-  font-size: clamp(42px, 7.5vw, 104px);
+  font-size: clamp(32px, 7.5vw, 104px);
 }
 
 .display-serif-sm {
