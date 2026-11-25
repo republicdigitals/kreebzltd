@@ -26,10 +26,10 @@ export default function Button({
   const variantClasses = {
     // Coral solid — the primary CTA (hero, contact, partnerships)
     primary:
-      "bg-gold text-ink-fixed px-8 py-4 rounded-[var(--radius-pill)] hover:bg-gold-hover hover:text-gold active:translate-y-px",
+      "bg-gold text-ink-fixed px-8 py-4 rounded-[var(--radius-sharp)] hover:bg-gold-hover hover:text-gold active:translate-y-px",
     // Secondary — white fill, ink outline (legible over imagery too)
     secondary:
-      "bg-obsidian border border-off-white text-off-white px-8 py-4 rounded-[var(--radius-pill)] hover:bg-obsidian-light",
+      "bg-obsidian border border-off-white text-off-white px-8 py-4 rounded-[var(--radius-sharp)] hover:bg-obsidian-light",
     // Floating action button — ink pill (concierge FAB)
     fab:
       "bg-off-white text-white px-6 py-4 rounded-[var(--radius-pill)] hover:bg-gold shadow-card",

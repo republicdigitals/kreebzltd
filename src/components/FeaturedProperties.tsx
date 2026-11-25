@@ -16,7 +16,7 @@ import Button from "./ui/Button";
 const AUTOPLAY_MS = 6000;
 
 export default function FeaturedProperties({ properties }: { properties: Property[] }) {
-  const featured = properties.slice(0, 4);
+  const featured = properties.filter((property) => property.image).slice(0, 4);
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: 'start' });
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [paused, setPaused] = useState(false);

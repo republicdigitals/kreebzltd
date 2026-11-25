@@ -1,5 +1,5 @@
-@import url('https://api.fontshare.com/v2/css?f[]=satoshi@500,700,900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,100..900;1,100..900&family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&display=swap');
+@import url('https://api.fontshare.com/v2/css?f[]=satoshi@300,500,700,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,100..900;1,100..900&display=swap');
 @import "tailwindcss";
 
 @source not "./dist/**/*";
@@ -54,11 +54,11 @@
   --tracking-eyebrow: 0.14em;
   --tracking-wide: 0.15em;
 
-  /* Radius scale — rounded: sm 8 / md 14 / lg 24 / pill */
+  /* Radius scale — sharp editorial corners; pill reserved for small badges and FABs */
   --radius-sharp: 0px;
-  --radius-sm: 8px;
-  --radius-md: 14px;
-  --radius-lg: 24px;
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
   --radius-pill: 9999px;
 
   /* Single shadow tier — DESIGN.md card hover float / search bar */
@@ -143,10 +143,10 @@
   --color-surface-strong: var(--surface-2);
   --color-error: var(--error);
 
-  /* Satoshi (Fontshare) — UI/body; Fraunces (variable optical-size
-     serif) — display voice for the dark cinematic world */
+  /* Satoshi (Fontshare) — UI, body and display voice. The legacy serif
+     alias intentionally resolves to the same editorial sans. */
   --font-sans: 'Satoshi', 'Inter', -apple-system, system-ui, Roboto, 'Helvetica Neue', sans-serif;
-  --font-serif: 'Fraunces', 'Georgia', serif;
+  --font-serif: 'Satoshi', 'Inter', -apple-system, system-ui, Roboto, 'Helvetica Neue', sans-serif;
   --font-accent: var(--font-serif);
 
   --radius-sharp: var(--radius-sharp);
@@ -218,30 +218,30 @@ body.nav-menu-open .concierge-fab {
   line-height: 1;
 }
 
-/* Italic accent — serif italic for em-phrases in the dark world */
+/* Accent phrases — bold editorial emphasis */
 .accent-italic {
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-weight: 400;
+  font-family: var(--font-sans);
+  font-style: normal;
+  font-weight: 700;
   letter-spacing: 0;
 }
 
-/* Display serif — Zodiak-style editorial headlines */
+/* Display editorial — brochure-style uppercase headlines */
 .display-serif {
-  font-family: var(--font-serif);
-  font-variation-settings: 'opsz' 144;
-  font-weight: 400;
-  line-height: 1.02;
-  letter-spacing: -0.01em;
+  font-family: var(--font-sans);
+  font-weight: 900;
+  line-height: 0.92;
+  letter-spacing: -0.055em;
+  text-transform: uppercase;
   font-size: clamp(42px, 7.5vw, 104px);
 }
 
 .display-serif-sm {
-  font-family: var(--font-serif);
-  font-variation-settings: 'opsz' 100;
-  font-weight: 400;
-  line-height: 1.08;
-  letter-spacing: -0.01em;
+  font-family: var(--font-sans);
+  font-weight: 900;
+  line-height: 0.96;
+  letter-spacing: -0.045em;
+  text-transform: uppercase;
   font-size: clamp(30px, 4.6vw, 56px);
 }
 
@@ -521,7 +521,7 @@ select:focus-visible {
 /* Cinematic grade for listing photography — unifies mixed-quality photos
    into the site's dusk palette. Lifts on hover to reveal the true photo. */
 .listing-grade img {
-  filter: saturate(0.8) contrast(1.06) brightness(0.9);
+  filter: saturate(0.96) contrast(1.02);
   transition: filter 0.9s ease;
 }
 
@@ -531,8 +531,7 @@ select:focus-visible {
   inset: 0;
   pointer-events: none;
   background:
-    linear-gradient(180deg, rgba(214, 178, 94, 0.07) 0%, transparent 45%),
-    linear-gradient(0deg, rgba(8, 7, 5, 0.42) 0%, transparent 55%);
+    linear-gradient(0deg, rgba(0, 0, 0, 0.2) 0%, transparent 42%);
   mix-blend-mode: multiply;
   transition: opacity 0.9s ease;
 }

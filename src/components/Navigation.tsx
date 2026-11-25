@@ -41,7 +41,6 @@ const menuGroups = [
 
 export default function Navigation() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
 
   const headerRef = useRef<HTMLElement>(null);
   
@@ -72,16 +71,6 @@ export default function Navigation() {
   const searchParams = useSearchParams();
   const { data: session } = useSession();
 
-  // Transparent over the homepage hero; solid dark chrome elsewhere/scrolled
-  const isHome = pathname === "/";
-
-  useEffect(() => {
-    const onScroll = () => setIsScrolled(window.scrollY > 24);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
   const accountLink = session ? "/account" : "/login";
 
   const isLinkActive = (href: string) => {
@@ -111,11 +100,7 @@ export default function Navigation() {
     <>
       <header
         ref={headerRef}
-        className={`fixed top-0 left-0 right-0 z-[60] pt-[env(safe-area-inset-top)] transition-all duration-700 flex flex-col border-b ${
-          isHome && !isScrolled && !menuOpen
-            ? "bg-transparent border-transparent"
-            : "bg-panel/95 backdrop-blur-md border-white/10"
-        }`}
+        className="fixed top-0 left-0 right-0 z-[60] pt-[env(safe-area-inset-top)] transition-all duration-700 flex flex-col border-b bg-panel/95 backdrop-blur-md border-white/10"
       >
         {/* Main Nav — single row */}
         <div className="max-w-[1400px] w-full mx-auto px-6 lg:px-12 relative z-10">
