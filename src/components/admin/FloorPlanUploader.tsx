@@ -65,7 +65,11 @@ export default function FloorPlanUploader({ value, onChange, onUploadingChange }
         throw new Error(data.error || `Upload failed (${res.status})`);
       }
       const data = await res.json();
-      onChange((prev) => prev.map((f, j) => (j === index ? { ...f, image: data.url } : f)));
+      onChange((prev) =>
+        index < prev.length
+          ? prev.map((f, j) => (j === index ? { ...f, image: data.url } : f))
+          : prev
+      );
     } catch (err) {
       setError(err instanceof Error ? err.message : "Upload failed — please try again.");
     } finally {
@@ -141,8 +145,9 @@ export default function FloorPlanUploader({ value, onChange, onUploadingChange }
             <button
               type="button"
               onClick={() => onChange(value.filter((_, j) => j !== i))}
-              className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors shrink-0"
-              title="Remove floor"
+              disabled={uploadingIndex != null}
+              className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors shrink-0 disabled:opacity-40"
+              title={uploadingIndex != null ? "Wait for the upload to finish" : "Remove floor"}
             >
               <Trash2 className="w-4 h-4" />
             </button>
