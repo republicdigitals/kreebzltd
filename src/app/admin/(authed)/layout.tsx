@@ -2,6 +2,7 @@ import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { authOptions } from "@/lib/auth";
 import AdminSidebar from "@/components/AdminSidebar";
+import AdminNavProgress from "@/components/admin/AdminNavProgress";
 
 export const dynamic = "force-dynamic";
 
@@ -25,7 +26,11 @@ export default async function AdminLayout({
         body, * { cursor: auto !important; }
         a, button, [role="button"], input, select, textarea { cursor: pointer !important; }
         input[type="text"], input[type="email"], input[type="password"], textarea { cursor: text !important; }
+        a, button { transition: transform .12s ease, opacity .12s ease, background-color .15s ease, color .15s ease, border-color .15s ease; }
+        a:active, button:active { transform: scale(0.97); }
+        tr, [class*="hover:"] { transition-property: background-color, color, border-color, transform; transition-duration: .15s; }
       `}} />
+      <AdminNavProgress />
       <AdminSidebar />
 
       {/* Main Content */}
