@@ -2,32 +2,40 @@
 
 import { signIn } from "next-auth/react";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { Loader2 } from "lucide-react";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (loading) return;
     setLoading(true);
     setError("");
 
-    const res = await signIn("credentials", {
-      email,
-      password,
-      redirect: false,
-    });
+    try {
+      const res = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+      });
 
-    if (res?.error) {
-      setError("Invalid credentials or rate limit exceeded");
+      if (res?.error) {
+        setError("Invalid credentials or rate limit exceeded");
+        setLoading(false);
+      } else {
+        // Full document navigation: the session cookie is guaranteed to
+        // accompany the request, and no stale client-side cache of the
+        // login page or admin redirects can interfere.
+        window.location.assign("/admin");
+      }
+    } catch {
+      setError("Sign-in failed. Check your connection and try again.");
       setLoading(false);
-    } else {
-      router.push("/admin");
     }
   };
 
@@ -47,6 +55,7 @@ export default function LoginPage() {
             <input
               type="email"
               autoComplete="email"
+              disabled={loading}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full bg-obsidian border border-border-strong rounded-[var(--radius-sm)] px-4 py-3 text-off-white focus:border-off-white outline-none"
@@ -58,6 +67,7 @@ export default function LoginPage() {
             <input
               type="password"
               autoComplete="current-password"
+              disabled={loading}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="w-full bg-obsidian border border-border-strong rounded-[var(--radius-sm)] px-4 py-3 text-off-white focus:border-off-white outline-none"
@@ -67,8 +77,9 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-gold hover:bg-gold-hover text-ink font-medium py-3 rounded-[var(--radius-sm)] transition-colors mt-4"
+            className="w-full bg-gold hover:bg-gold-hover text-ink font-medium py-3 rounded-[var(--radius-sm)] transition-colors mt-4 flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:bg-gold"
           >
+            {loading && <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />}
             {loading ? "Authenticating..." : "Sign In"}
           </button>
         </form>

@@ -15,7 +15,7 @@ const menuGroups = [
   {
     title: "Property",
     items: [
-      { label: "Buy", desc: "Vetted homes & investments", href: "/properties?intent=buy", icon: KeyRound },
+      { label: "Buy", desc: "Vetted homes & investments", href: "/properties", icon: KeyRound },
       { label: "Rent", desc: "Homes with a team behind them", href: "/properties?intent=rent", icon: Building2 },
       { label: "Sell", desc: "Reach qualified buyers, quietly", href: "/sell", icon: Tag },
     ],
@@ -127,7 +127,7 @@ export default function Navigation() {
                 >
                   <Search size={16} strokeWidth={1.5} />
                 </Link>
-                <Link href="/properties?intent=buy" className={`eyebrow text-[10px] tracking-[0.2em] whitespace-nowrap transition-colors duration-300 ${isLinkActive('/properties?intent=buy') ? 'text-gold' : 'text-white/80 hover:text-gold'}`}>BUY</Link>
+                <Link href="/properties" className={`eyebrow text-[10px] tracking-[0.2em] whitespace-nowrap transition-colors duration-300 ${isLinkActive('/properties') ? 'text-gold' : 'text-white/80 hover:text-gold'}`}>BUY</Link>
                 <Link href="/sell" className={`eyebrow text-[10px] tracking-[0.2em] whitespace-nowrap transition-colors duration-300 ${isLinkActive('/sell') ? 'text-gold' : 'text-white/80 hover:text-gold'}`}>SELL</Link>
                 <Link href="/management" className={`eyebrow text-[10px] tracking-[0.2em] whitespace-nowrap transition-colors duration-300 ${isLinkActive('/management') ? 'text-gold' : 'text-white/80 hover:text-gold'}`}>MANAGEMENT</Link>
                 <Link href="/services/private-jet" className={`eyebrow text-[10px] tracking-[0.2em] whitespace-nowrap transition-colors duration-300 ${isLinkActive('/services/private-jet') ? 'text-gold' : 'text-white/80 hover:text-gold'}`}>PRIVATE JET</Link>
