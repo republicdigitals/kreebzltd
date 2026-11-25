@@ -49,15 +49,15 @@ export const bourdillon = {
   location: "Bourdillon, Ikoyi",
   city: "Lagos, Nigeria",
   positioning:
-    "A private residence on Bourdillon Road, Ikoyi — we designed it, we're building it, and we'll manage it after you move in.",
+    "A private compound of 12 six-floor homes on Bourdillon Road, Ikoyi — designed, built and managed by one accountable team.",
   /** Approved current status. Keep this accurate — it is shown publicly. */
   status: "Foundation stage",
   statusLabel: "Current status",
   heroImage: "/images/townhouse-ibj-render-aerial.webp",
   /** Required whenever the hero image is not a photograph of completed work. */
-  heroImageLabel: "Concept film — proposed design, subject to approval",
+  heroImageLabel: "Concept render — proposed design, subject to approval",
   heroImageAlt:
-    "Illustrative aerial render of the proposed Bourdillon residence, Ikoyi",
+    "Illustrative aerial render of the proposed Bourdillon homes, Ikoyi",
 
   /** "What is happening now" — latest first. */
   progress: [
@@ -65,7 +65,7 @@ export const bourdillon = {
       date: "14 May 2026",
       milestone: "Piling works underway",
       detail:
-        "Bored piling for the foundation is in progress on site — the CFA rig is drilling and casing each pile before concrete placement. This stage establishes the structural base for the residence and is verified by the project engineer before superstructure works begin.",
+        "Bored piling for the foundation is in progress on site — the CFA rig is drilling and casing each pile before concrete placement. This stage establishes the structural base for the compound and is verified by the project engineer before superstructure works begin.",
       image: "/images/bourdillon/site-piling-03.jpg",
       imageLabel: "Site photo — piling works",
     },
@@ -89,9 +89,9 @@ export const bourdillon = {
   /** "What is being created" — approved information only. */
   vision: {
     designIntent:
-      "A contemporary private residence arranged across multiple floors, planned for privacy, natural light, and long-term manageability.",
+      "A contemporary compound of 12 six-floor homes, planned for privacy, natural light, efficient vertical living and long-term manageability.",
     features: [
-      { label: "Private residence, Bourdillon Road", status: "under-construction" },
+      { label: "12-home private compound, Bourdillon Road", status: "under-construction" },
       { label: "Lift access across all floors", status: "planned" },
       { label: "Private pool and wellness facilities", status: "proposed" },
       { label: "Cinema and family lounge", status: "proposed" },
@@ -122,7 +122,7 @@ export const bourdillon = {
     {
       category: "capability",
       title: "End-to-end operating capability",
-      body: "Kreebz provides facility operations, resident care, and a vetted contractor network — the same team that markets the residence manages it after handover.",
+      body: "Kreebz provides facility operations, resident care, and a vetted contractor network — the same team that markets the homes manages the compound after handover.",
       approval: "approved",
     },
     {
@@ -154,7 +154,7 @@ export const bourdillon = {
     {
       question: "What is the residence configuration?",
       answer:
-        "The residence is planned as a multi-floor private home with lift access, staff quarters, and dedicated leisure spaces. Final configuration is subject to approved drawings.",
+        "Bourdillon is planned as a compound of 12 homes. Each home is arranged across six floors with lift access, staff/service provision and dedicated leisure spaces. Final configuration is subject to approved drawings.",
     },
     {
       question: "What amenities are planned?",
@@ -174,7 +174,7 @@ export const bourdillon = {
     {
       question: "Who manages the property after completion?",
       answer:
-        "Kreebz Ltd provides facility management, resident care, and contractor coordination for the completed residence.",
+        "Kreebz Ltd provides facility management, resident care, and contractor coordination for the completed compound.",
     },
     {
       question: "How do I arrange a private consultation or viewing?",

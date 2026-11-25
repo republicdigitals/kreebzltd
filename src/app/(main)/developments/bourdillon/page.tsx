@@ -7,11 +7,11 @@ import { getProjectContent } from "@/data/project-content";
 export const metadata: Metadata = {
   title: "Bourdillon, Ikoyi — Current Project | Kreebz Ltd",
   description:
-    "Bourdillon is a private residential development on Bourdillon Road, Ikoyi, currently at foundation stage. Request the approved brochure or arrange a private consultation with the Kreebz team.",
+    "Bourdillon is a private compound of 12 six-floor homes on Bourdillon Road, Ikoyi, currently at foundation stage. Request the approved brochure or arrange a private consultation with the Kreebz team.",
   openGraph: {
     title: "Bourdillon, Ikoyi — Current Project | Kreebz Ltd",
     description:
-      "A private residential development on Bourdillon Road, Ikoyi — currently at foundation stage. Request the approved project information.",
+      "A private compound of 12 six-floor homes on Bourdillon Road, Ikoyi — currently at foundation stage. Request the approved project information.",
     url: "/developments/bourdillon",
     images: [bourdillon.heroImage],
   },

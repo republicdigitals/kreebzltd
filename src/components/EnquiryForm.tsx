@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -83,6 +83,7 @@ export default function EnquiryForm({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [showOptional, setShowOptional] = useState(!compact);
+  const [homeInterest, setHomeInterest] = useState<string | null>(null);
   const startedRef = useRef(false);
   const router = useRouter();
 
@@ -99,6 +100,18 @@ export default function EnquiryForm({
       consent: undefined,
     },
   });
+
+  useEffect(() => {
+    const handleHomeInterest = (event: Event) => {
+      const detail = (event as CustomEvent<string>).detail;
+      if (typeof detail === "string" && detail.length > 0) {
+        setHomeInterest(detail);
+      }
+    };
+
+    window.addEventListener("bourdillon:home-interest", handleHomeInterest);
+    return () => window.removeEventListener("bourdillon:home-interest", handleHomeInterest);
+  }, []);
 
   const markStarted = () => {
     if (!startedRef.current) {
@@ -123,7 +136,7 @@ export default function EnquiryForm({
           nextStep: data.nextStep,
           timeframe: data.timeframe || undefined,
           preferredContact: data.preferredContact || undefined,
-          message: data.message || undefined,
+          message: [homeInterest, data.message].filter(Boolean).join("\n\n") || undefined,
           consent: data.consent,
           website: data.website,
           ...readAttribution(),
@@ -167,6 +180,13 @@ export default function EnquiryForm({
         <label htmlFor="enq-website">Website</label>
         <input id="enq-website" type="text" tabIndex={-1} autoComplete="off" {...register("website")} />
       </div>
+
+      {homeInterest && (
+        <div className="border border-gold/40 bg-gold/10 px-4 py-3 text-sm text-off-white">
+          <span className="eyebrow text-gold mr-3">Selected home</span>
+          {homeInterest}
+        </div>
+      )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="space-y-2">
