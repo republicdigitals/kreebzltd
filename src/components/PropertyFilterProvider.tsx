@@ -114,16 +114,28 @@ export function PropertyFilterProvider({ children, initialProperties }: { childr
   const [activePropertyId, setActivePropertyId] = useState<string | null>(null);
   const lastIntent = useRef(searchParams.get("intent"));
 
-  // Nav BUY/RENT links only change ?intent — re-sync status when it changes
+  // Nav links re-sync filter state from the URL. A bare /properties URL
+  // means an explicit portfolio navigation (BUY): manual filtering always
+  // writes its params into the URL, so no params at all = show everything.
   useEffect(() => {
     const intent = searchParams.get("intent");
-    if (!intent) {
-      lastIntent.current = null;
+    if (intent) {
+      if (intent !== lastIntent.current) {
+        lastIntent.current = intent;
+        setFilters((prev) => ({ ...prev, status: intentToStatus(intent) }));
+      }
       return;
     }
-    if (intent !== lastIntent.current) {
-      lastIntent.current = intent;
-      setFilters((prev) => ({ ...prev, status: intentToStatus(intent) }));
+    lastIntent.current = null;
+    const hasFilterParams = ["q", "location", "status", "priceMin", "priceMax", "beds", "baths", "neighbourhood", "type", "sort"].some(
+      (k) => searchParams.get(k)
+    );
+    if (!hasFilterParams) {
+      setFilters((prev) =>
+        Object.keys(defaultFilters).every((k) => prev[k as keyof PropertyFilters] === defaultFilters[k as keyof PropertyFilters])
+          ? prev
+          : { ...defaultFilters }
+      );
     }
   }, [searchParams]);
 
