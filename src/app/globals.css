@@ -102,6 +102,20 @@
   color-scheme: dark;
 }
 
+
+/* Black structural panels stay dark inside the light editorial theme.
+   Re-map token-driven text and hairlines locally so components do not need
+   parallel hardcoded colour systems. */
+.bg-panel,
+.bg-black {
+  --off-white: #ffffff;
+  --muted: rgb(255 255 255 / 0.64);
+  --border: rgb(255 255 255 / 0.14);
+  --border-strong: rgb(255 255 255 / 0.3);
+  --gold-light: #f96300;
+  color-scheme: dark;
+}
+
 @theme inline {
   /* Legacy aliases — values follow DESIGN.md */
   --color-obsidian: var(--obsidian);
