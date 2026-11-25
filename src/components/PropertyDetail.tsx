@@ -668,6 +668,7 @@ export default function PropertyDetail({ property, nextProperty, projectClips }:
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         propertyTitle={displayAddress}
+        propertyRef={`${property.address} [${property.slug}]`}
       />
 
       {/* ---------- Lightbox ---------- */}
