@@ -38,6 +38,8 @@ interface PropertyDetailProps {
   nextProperty?: { slug: string; address: string };
   /** DB-backed project site clips — overrides the registry's file defaults. */
   projectClips?: { src: string; label: string }[];
+  /** DB-backed project display name — overrides the registry name. */
+  projectName?: string;
 }
 
 const fadeUp = {
@@ -47,7 +49,7 @@ const fadeUp = {
   transition: { duration: 0.7, ease: [0.25, 0.1, 0.25, 1] as const },
 };
 
-export default function PropertyDetail({ property, nextProperty, projectClips }: PropertyDetailProps) {
+export default function PropertyDetail({ property, nextProperty, projectClips, projectName }: PropertyDetailProps) {
   const router = useRouter();
   const { savedIds, toggleSave } = useSavedProperties();
   const favourited = savedIds.has(property.id);
@@ -191,7 +193,7 @@ export default function PropertyDetail({ property, nextProperty, projectClips }:
             >
               <p className="text-white/80 text-sm leading-relaxed">
                 This residence is part of the{" "}
-                <span className="font-semibold text-white">{project.name}</span>{" "}
+                <span className="font-semibold text-white">{projectName ?? project.name}</span>{" "}
                 development — real construction progress on site.
               </p>
               <Link

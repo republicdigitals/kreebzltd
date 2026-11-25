@@ -23,7 +23,8 @@ export async function GET(
     }
 
     const content = await getProjectContent(slug);
-    return NextResponse.json({ slug: project.slug, name: project.name, url: project.url, ...content });
+    const row = await prisma.project.findUnique({ where: { slug } });
+    return NextResponse.json({ slug: project.slug, name: row?.name ?? project.name, url: project.url, ...content });
   } catch (error) {
     console.error("Project fetch error:", error instanceof Error ? error.message : "Unknown error");
     return NextResponse.json({ error: "Failed to fetch project" }, { status: 500 });
@@ -52,10 +53,14 @@ export async function PUT(
 
     const updated = await prisma.project.upsert({
       where: { slug },
-      update: { progress: parsed.data.progress, siteMedia: parsed.data.siteMedia },
+      update: {
+        ...(parsed.data.name ? { name: parsed.data.name } : {}),
+        progress: parsed.data.progress,
+        siteMedia: parsed.data.siteMedia,
+      },
       create: {
         slug,
-        name: project.name,
+        name: parsed.data.name ?? project.name,
         progress: parsed.data.progress,
         siteMedia: parsed.data.siteMedia,
       },
